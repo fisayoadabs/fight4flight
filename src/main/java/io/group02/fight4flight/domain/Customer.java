@@ -9,7 +9,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CustomerID")
-    private Long id;
+    private Long Id;
 
     private String FName;
     private String LName;
@@ -22,6 +22,8 @@ public class Customer {
         this.LName = LName;
         this.Email = Email;
     }
+
+    public Long GetId() {return Id;}
 
     public String GetFName(){ return this.FName;}
 

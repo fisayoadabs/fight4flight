@@ -2,18 +2,18 @@ DROP DATABASE IF EXISTS FIGHTFORFLIGHT;
 CREATE DATABASE FIGHTFORFLIGHT;
 USE FIGHTFORFLIGHT;
 
-DROP TABLE IF EXISTS CUSTOMER;
-CREATE TABLE CUSTOMER (
-	CustomerID 			INT AUTO_INCREMENT PRIMARY KEY,
-    FName				varchar(25) not null,
-    LName				varchar(25) not null,
-    Email				varchar(25) not null
-);
-INSERT INTO CUSTOMER(CustomerID, FName, LName, Email)
-VALUES
-(1, 'Josh', 'Pen', 'JJH@gmail.com'),
-(2, 'Jame', 'Herin', 'JH@outlook.com'),
-(3, 'Deigo', 'Costia', 'DC@ucalgary.ca');
+-- DROP TABLE IF EXISTS CUSTOMER;
+-- CREATE TABLE CUSTOMER (
+-- 	CustomerID 			INT AUTO_INCREMENT PRIMARY KEY,
+--     FName				varchar(25) not null,
+--     LName				varchar(25) not null,
+--     Email				varchar(25) not null
+-- );
+-- INSERT INTO CUSTOMER(CustomerID, FName, LName, Email)
+-- VALUES
+-- (1, 'Josh', 'Pen', 'JJH@gmail.com'),
+-- (2, 'Jame', 'Herin', 'JH@outlook.com'),
+-- (3, 'Deigo', 'Costia', 'DC@ucalgary.ca');
 
 DROP TABLE IF EXISTS USERS;
 CREATE TABLE USERS (

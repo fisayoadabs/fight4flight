@@ -3,12 +3,12 @@ package io.group02.fight4flight.domain;
 import java.util.Date;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "PAYMENT")
+// @Entity
+// @Table(name = "PAYMENT")
 public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PayID")
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Column(name = "PayID")
     private int PaymentID;
     private String PaymentType;
     private Date PaymentDate;
