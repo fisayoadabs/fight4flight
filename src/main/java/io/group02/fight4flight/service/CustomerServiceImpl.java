@@ -74,6 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer saveCustomer(Customer customer) {
+        System.out.println(customer.getEmail());
         return customerRepository.save(customer);
     }
 

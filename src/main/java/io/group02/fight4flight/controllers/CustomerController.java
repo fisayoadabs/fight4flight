@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.group02.fight4flight.domain.Customer;
+import io.group02.fight4flight.repository.CustomerRepository;
 import io.group02.fight4flight.service.CustomerService;
+import io.group02.fight4flight.service.CustomerServiceImpl;
 
 // @RestController
 // @RequestMapping("/customer")
@@ -42,22 +44,35 @@ import io.group02.fight4flight.service.CustomerService;
 
 // }
 
-
 @RestController
 @RequestMapping("/customer")
 @CrossOrigin
 public class CustomerController {
     @Autowired
-    private CustomerService customerService;
+    private CustomerServiceImpl customerService;
+    @Autowired
+    private CustomerRepository customerRpo;
+
+    // @PostMapping("/add")
+    // public ResponseEntity<String> add(@ModelAttribute("customer") Customer user)
+    // {
+    // System.out.println(user);
+    // customerRpo.save(user);
+    // return new ResponseEntity<>("User registered successfully",
+    // HttpStatus.CREATED);
+    // }
 
     @PostMapping("/add")
-    public ResponseEntity<String> add(@ModelAttribute("customer") Customer user){
-        customerService.saveCustomer(user);
-        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+    public String add(@RequestBody Customer customer) {
+        System.out.println(customer);
+        customerRpo.save(customer);
+        customerService.saveCustomer(customer);
+        return "Student Created";
     }
 
     @GetMapping("/getAll")
     public List<Customer> list() {
+        // return customerRpo.findByEmail("cl@gmail.com");
         return customerService.getAllCustomers();
     }
 }

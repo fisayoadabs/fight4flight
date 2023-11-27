@@ -57,6 +57,11 @@
 			<version>7.0.1.Final</version> <!-- Use the version compatible with Hibernate Core -->
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
