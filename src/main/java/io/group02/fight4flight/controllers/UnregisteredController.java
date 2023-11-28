@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.group02.fight4flight.domain.Customer;
-import io.group02.fight4flight.repository.CustomerRepository;
-import io.group02.fight4flight.service.CustomerService;
-import io.group02.fight4flight.service.CustomerServiceImpl;
+import io.group02.fight4flight.domain.Unregistered;
+import io.group02.fight4flight.repository.UnregisteredRepository;
+import io.group02.fight4flight.service.UnregisteredService;
+import io.group02.fight4flight.service.UnregisteredServiceImpl;
 
 // @RestController
 // @RequestMapping("/customer")
@@ -47,11 +47,11 @@ import io.group02.fight4flight.service.CustomerServiceImpl;
 @RestController
 @RequestMapping("/customer")
 @CrossOrigin
-public class CustomerController {
+public class UnregisteredController {
     @Autowired
-    private CustomerServiceImpl customerService;
+    private UnregisteredServiceImpl customerService;
     @Autowired
-    private CustomerRepository customerRpo;
+    private UnregisteredRepository customerRpo;
 
     // @PostMapping("/add")
     // public ResponseEntity<String> add(@ModelAttribute("customer") Customer user)
@@ -63,16 +63,16 @@ public class CustomerController {
     // }
 
     @PostMapping("/add")
-    public String add(@RequestBody Customer customer) {
+    public String add(@RequestBody Unregistered customer) {
         System.out.println(customer);
         customerRpo.save(customer);
-        customerService.saveCustomer(customer);
+        customerService.saveUnregistered(customer);
         return "Student Created";
     }
 
     @GetMapping("/getAll")
-    public List<Customer> list() {
+    public List<Unregistered> list() {
         // return customerRpo.findByEmail("cl@gmail.com");
-        return customerService.getAllCustomers();
+        return customerService.getAllUnregistereds();
     }
 }

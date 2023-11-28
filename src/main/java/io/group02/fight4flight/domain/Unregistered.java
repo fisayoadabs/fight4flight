@@ -3,12 +3,12 @@ package io.group02.fight4flight.domain;
 import jakarta.persistence.*;
 
 @Entity
-// @Table(name = "Customer")
+// @Table(name = "Unregistered")
 
-public class Customer {
+public class Unregistered {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    // @Column(name = "CustomerID")
+    // @Column(name = "UnregisteredID")
     private Long id;
 
     // @Column(name = "fname")
@@ -18,10 +18,10 @@ public class Customer {
     // @Column(name = "email")
     private String email;
 
-    // public Customer() {
+    // public Unregistered() {
     // }
 
-    // public Customer(String FName, String LName, String Email) {
+    // public Unregistered(String FName, String LName, String Email) {
     // this.FName = FName;
     // this.LName = LName;
     // this.Email = Email;
@@ -57,7 +57,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "Unregistered{" +
                 "fname='" + fname + '\'' +
                 ", lname='" + lname + '\'' +
                 ", email='" + email + '\'' +

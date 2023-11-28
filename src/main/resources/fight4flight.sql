@@ -2,49 +2,29 @@ DROP DATABASE IF EXISTS FIGHTFORFLIGHT;
 CREATE DATABASE FIGHTFORFLIGHT;
 USE FIGHTFORFLIGHT;
 
-DROP TABLE IF EXISTS CUSTOMER;
-CREATE TABLE CUSTOMER (
+DROP TABLE IF EXISTS UNREGISTERED;
+CREATE TABLE UNREGISTERED (
 	id 					INT PRIMARY KEY, 
     fname				varchar(25) not null,
     lname				varchar(25) not null,
     email				varchar(25) not null
 );
-INSERT INTO CUSTOMER(id, fname, lname, email)
+INSERT INTO UNREGISTERED(id, fname, lname, email)
 VALUES
 (10, 'Josh', 'Pen', 'JJH@gmail.com'),
 (20, 'Jame', 'Herin', 'JH@outlook.com'),
 (30, 'Deigo', 'Costia', 'DC@ucalgary.ca');
 
-DROP TABLE IF EXISTS USERS;
-CREATE TABLE USERS (
-	CustomerID			varchar(15) not null,
-    FName				varchar(25) not null,
-    MName				varchar(25),
-    LName				varchar(25) not null,
-    Birthday			varchar(25) not null,
-    Email				varchar(25) not null,
-    Address				varchar(50) not null,
-    primary key (CustomerID)
-);
-INSERT INTO USERS(CustomerID, FName, MName, LName, Birthday, Email, Address)
-VALUES
-('C2023_C001', 'Josh', 'Jason', 'Herin', '15-11-1989', 'JJH@gmail.com', 'Everton Rd'),
-('C2023_C002', 'Josh', null, 'Herin', '23-03-1994', 'JH@outlook.com', 'Everton Rd'),
-('C2023_C003', 'Deigo', null, 'Costia', '30-01-2000', 'DC@ucalgary.ca', 'Everton Street'),
-('C2023_C004', 'Hailey', 'Milly', 'Gennielle', '02-05-2000', 'HMG@mail.com', 'Everton Rd'),
-('C2023_C005', 'Ayooluwa', 'Chidewa', 'Tunde', '27-12-1990', 'babatunde@yahoo.com', 'Everton Street');
-
-DROP TABLE IF EXISTS REGISTERED_USER;
-CREATE TABLE REGISTERED_USER (
+DROP TABLE IF EXISTS REGISTERED;
+CREATE TABLE REGISTERED (
 	RegisteredID		varchar(15) not null,
     Customer			varchar(10) not null,
     Plan				varchar(25) not null,
     FreeCompanion		varchar(25) not null,
     Discount		varchar(25) not null,
-    primary key (RegisteredID),
-    foreign key (Customer) references USERS(CustomerID)
+    primary key (RegisteredID)
 );
-INSERT INTO REGISTERED_USER(RegisteredID, Customer, Plan, FreeCompanion, Discount)
+INSERT INTO REGISTERED(RegisteredID, Customer, Plan, FreeCompanion, Discount)
 VALUES
 ('R2023_R001', 'C2023_C005', 'Monthly?', 'Yes?', '25%');
 
@@ -142,7 +122,6 @@ CREATE TABLE TICKET (
     FlightID			varchar(15) not null,
     SeatID				varchar(5) not null,
     primary key (TicketID),
-    foreign key (CustomerID) references USERS(CustomerID),
     foreign key (FlightID) references FLIGHT(FlightID),
     foreign key (SeatID) references SEAT(SeatID)
 );

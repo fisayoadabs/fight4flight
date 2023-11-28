@@ -29,8 +29,8 @@ package io.group02.fight4flight.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.group02.fight4flight.domain.Customer;
-import io.group02.fight4flight.repository.CustomerRepository;
+import io.group02.fight4flight.domain.Unregistered;
+import io.group02.fight4flight.repository.UnregisteredRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -67,19 +67,19 @@ import java.util.Optional;
 // }
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
+public class UnregisteredServiceImpl implements UnregisteredService {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private UnregisteredRepository customerRepository;
 
     @Override
-    public Customer saveCustomer(Customer customer) {
+    public Unregistered saveUnregistered(Unregistered customer) {
         System.out.println(customer.getEmail());
         return customerRepository.save(customer);
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<Unregistered> getAllUnregistereds() {
         return customerRepository.findAll();
     }
 }
