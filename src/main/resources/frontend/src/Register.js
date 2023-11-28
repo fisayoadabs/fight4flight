@@ -48,59 +48,6 @@ const Register = () => {
     useEffect(() => {
         setErrMessage('');
     }, [username, password, matchPassword])
-
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     fetch('http://localhost:8080/registered/getAll', {
-    //     })
-    //     if (validName && validPassword && validMatch) {
-    //         const registee = {fname, lname, address, email, username, password}
-    //         fetch('http://localhost:8080/registered/register', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(registee) // add other parameters
-    //         }).then(() => {
-    //             console.log("Registee was added")
-    //         })
-    //         // console.log(data);
-    //         // if (data.status === 'success') {
-    //         //     setSuccess(true);
-    //         //     setErrMessage('Successfully registered!');
-    //         // } else {
-    //         //     setErrMessage('Usernamename already exists. Please try again.');
-    //         // }
-    //     } else {
-    //         setErrMessage('Please fill out all fields correctly.');
-    //     }
-    //     const v1 = USERNAME.test(username);
-    //     const v2 = PASSWORD.test(password);
-    //     if (!v1 || !v2) {
-    //         setErrMessage('Please fill out all fields correctly.');
-    //         return;
-    //     }
-    //     // try {
-    //     //     const response = await axios.post(REGISTER_URL, JSON.stringify({ username, password }),
-    //     //     {
-    //     //         headers: { 'Content-Type': 'application/json'},
-    //     //         withCredentials: true
-    //     //     }
-    //     //     );
-    //     //     console.log(response.data);
-    //     //     setSuccess(true);
-    //     // } catch (err) {
-    //     //     if (!err?.response) {
-    //     //         setErrMessage('No Server Response');
-    //     //     } else if (err.response?.status === 409) {
-    //     //         setErrMessage('Usernamename already exists. Please try again.');
-    //     //     } else {
-    //     //         setErrMessage('Something went wrong. Please try again.');
-    //     //     }
-    //     //     errRef.current.focus
-    //     // }
-    // }
     
     const handleSubmit = async (e) => {
         e.preventDefault();

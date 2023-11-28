@@ -20,6 +20,16 @@ public class Aircraft {
     private int fuel;
     private int fuelcapacity;
 
+
+    private int businessrows;
+    private int businesscols;
+
+    private int comfortrows;
+    private int comfortcols;
+
+    private int economyrows;
+    private int economycols;
+
     // What to do for complex data types??
     // private Seat[][] seats;
     // private Map<Date, Boolean> availability;

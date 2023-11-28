@@ -57,16 +57,16 @@ CREATE TABLE SEAT (
 );
 INSERT INTO SEAT(seatname, vacancy, seattype, price)
 VALUES
-('1A', true, 'First', 100.00),
-('1B', true, 'First', 100.00),
-('1C', true, 'First', 100.00),
-('1D', true, 'First', 100.00),
-('1E', true, 'First', 100.00),
-('2A', true, 'Business', 58.98),
-('2C', true, 'Business', 58.98),
-('2E', true, 'Economy', 38.45),
-('3B', true, 'Economy', 38.45),
-('3D', true, 'Economy', 38.45);
+('A1', true, 'Business', 100.00),
+('B1', true, 'Business', 100.00),
+('C1', true, 'Business', 100.00),
+('D1', true, 'Business', 100.00),
+('E1', true, 'Business', 100.00),
+('A2', true, 'Comfort', 58.98),
+('C2', true, 'Comfort', 58.98),
+('E2', true, 'Ordinary', 38.45),
+('B3', true, 'Ordinary', 38.45),
+('D3', true, 'Ordinary', 38.45);
 
 DROP TABLE IF EXISTS AIRCRAFT;
 CREATE TABLE AIRCRAFT (
@@ -125,15 +125,15 @@ CREATE TABLE TICKET (
     foreign key (SeatID) references SEAT(seatid)
 );
 
-DROP TABLE IF EXISTS AIRPORTCODE;
-CREATE TABLE AIRPORTCODE(
+DROP TABLE IF EXISTS AIRPORT_CODE;
+CREATE TABLE AIRPORT_CODE(
 	portid				INT AUTO_INCREMENT PRIMARY KEY,
     citystate			varchar(50) not null,
     country				varchar(50) not null,
     portcode				varchar(20) not null
 );
 
-INSERT INTO AIRPORTCODE(citystate, country, portcode)
+INSERT INTO AIRPORT_CODE(citystate, country, portcode)
 VALUES
 ("Aalborg", "Denmark", "AAL"),
 ("Aalesund", "Norway", "AES"),

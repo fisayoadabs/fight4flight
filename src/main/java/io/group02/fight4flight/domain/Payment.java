@@ -11,22 +11,20 @@ public class Payment {
     private int PaymentID;
     private String PaymentType;
     private Date PaymentDate;
-    private float GST;
+
     private float TotalPrice;
     private float Discount;
 
-    public Payment(int PaymentID, String PaymentType, Date PaymentDate, float GST, float TotalPrice, float Discount) {
+    public Payment(int PaymentID, String PaymentType, Date PaymentDate,  float TotalPrice, float Discount) {
         this.PaymentID = PaymentID;
         this.PaymentType = PaymentType;
         this.PaymentDate = PaymentDate;
-        this.GST = GST;
+
         this.TotalPrice = TotalPrice;
         this.Discount = Discount;
     }
 
-    public float getGST() {
-        return this.GST;
-    }
+
 
     public float getTotalPrice() {
         return this.TotalPrice;
@@ -48,9 +46,6 @@ public class Payment {
         return this.PaymentDate;
     }
 
-    public void setGST(float GST) {
-        this.GST = GST;
-    }
 
     public void setTotalPrice(float TotalPrice) {
         this.TotalPrice = TotalPrice;

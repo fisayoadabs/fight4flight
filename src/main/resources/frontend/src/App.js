@@ -7,12 +7,12 @@ import Seat from './Seat';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/seat" element={<Seat />} />
-        {/* Other routes */}
-      </Routes>
-    </Router>
+    // <Router>
+    //   <Routes>
+    //     {/* <Route path="/seat" element={<Seat />} /> */}
+    //   </Routes>
+    // </Router>
+    <Register/>
   );
 }
 
