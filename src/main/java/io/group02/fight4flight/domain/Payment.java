@@ -4,7 +4,6 @@ import java.util.Date;
 import jakarta.persistence.*;
 
 // @Entity
-// @Table(name = "PAYMENT")
 public class Payment {
     // @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -17,16 +17,17 @@ VALUES
 
 DROP TABLE IF EXISTS REGISTERED;
 CREATE TABLE REGISTERED (
-	RegisteredID		varchar(15) not null,
-    Customer			varchar(10) not null,
-    Plan				varchar(25) not null,
-    FreeCompanion		varchar(25) not null,
-    Discount		varchar(25) not null,
-    primary key (RegisteredID)
+	registeruserid		INT	PRIMARY KEY,
+    fname				varchar(25) not null,
+    lname				varchar(25) not null,
+    address				varchar(125) not null,
+    email				varchar(25) not null,
+    username			varchar(50) not null,
+    password			varchar(50) not null
 );
-INSERT INTO REGISTERED(RegisteredID, Customer, Plan, FreeCompanion, Discount)
+INSERT INTO REGISTERED(registeruserid, fname, lname, address, email, username, password)
 VALUES
-('R2023_R001', 'C2023_C005', 'Monthly?', 'Yes?', '25%');
+(10, "Tunde", "Baba", "Where i live","bt@gmail.com", "BabaTunde", "HIMISI");
 
 DROP TABLE IF EXISTS FLIGHT;
 CREATE TABLE FLIGHT (
@@ -45,45 +46,43 @@ VALUES
 ('F2023_F001', 'Calgary, Canada', 'Boston, USA', 'AC2023_AC02', '10:15 AM ET', '5:30 PM MT'),
 ('F2023_F003', 'Calgary, Canada', 'Paris, France', 'AC2023_AC03', '10:15 AM ET', '5:30 PM MT');
 
+
 DROP TABLE IF EXISTS SEAT;
 CREATE TABLE SEAT (
-	SeatID				varchar(5) not null,
-    Flight				varchar(10) not null,
-    Vacancy				varchar(3) not null,
-    TypeOfSeat			varchar(15) not null,
-    Price				decimal(5,2),
-    primary key (SeatID),
-    foreign key (Flight) references FLIGHT(FlightID)
+	seatid				INT AUTO_INCREMENT PRIMARY KEY,
+    seatname			varchar(10) not null,
+    vacancy				bool,
+    seattype			varchar(15) not null,
+    price				double
 );
-INSERT INTO SEAT(SeatID, Flight, Vacancy, TypeOfSeat, Price)
+INSERT INTO SEAT(seatname, vacancy, seattype, price)
 VALUES
-('1A', 'F2023_F002', 'Yes', 'First', 100.00),
-('1B', 'F2023_F002', 'Yes', 'Fisrt', 100.00),
-('1C', 'F2023_F002', 'Yes', 'First', 100.00),
-('1D', 'F2023_F002', 'Yes', 'First', 100.00),
-('1E', 'F2023_F002', 'Yes', 'First', 100.00),
-('2A', 'F2023_F002', 'Yes', 'Business', 58.98),
-('2C', 'F2023_F002', 'Yes', 'Business', 58.98),
-('2E', 'F2023_F002', 'Yes', 'Economy', 38.45),
-('3B', 'F2023_F002', 'Yes', 'Economy', 38.45),
-('3D', 'F2023_F002', 'Yes', 'Economy', 38.45);
+('1A', true, 'First', 100.00),
+('1B', true, 'First', 100.00),
+('1C', true, 'First', 100.00),
+('1D', true, 'First', 100.00),
+('1E', true, 'First', 100.00),
+('2A', true, 'Business', 58.98),
+('2C', true, 'Business', 58.98),
+('2E', true, 'Economy', 38.45),
+('3B', true, 'Economy', 38.45),
+('3D', true, 'Economy', 38.45);
 
 DROP TABLE IF EXISTS AIRCRAFT;
 CREATE TABLE AIRCRAFT (
-	AirCraftID			varchar(15) not null,
-    Flight				varchar(15) not null,
-    Seat				varchar(5) not null,
-    primary key (AirCraftID),
-    foreign key (Seat) references SEAT(SeatID),
-    foreign key (Flight) references FLIGHT(FlightID)
+	aircraftid			INT PRIMARY KEY,	
+	aircraftname		varchar(15) not null,
+    model				varchar(15) not null,
+    capacity			INT,
+    aircraftrange		INT,
+    aircraftspeed		INT,
+    fuel				INT,
+    fuelcapacity		INT
 );
-INSERT INTO AIRCRAFT(AirCraftID, Flight, Seat)
+INSERT INTO AIRCRAFT(aircraftid, aircraftname, model, capacity, aircraftrange, aircraftspeed, fuel, fuelcapacity)
 VALUES
-('AC2023_AC01', 'F2023_F001', '1A'),
-('AC2023_AC02', 'F2023_F001', '1B'),
-('AC2023_AC03', 'F2023_F001', '1C'),
-('AC2023_AC04', 'F2023_F001', '1D'),
-('AC2023_AC05', 'F2023_F001', '1E');
+(10, 'Fight4Flight', 'versionTwo', 49, 300000, 860, 150000, 150000);
+
 
 DROP TABLE IF EXISTS CREW;
 CREATE TABLE CREW (
@@ -106,13 +105,13 @@ VALUES
 ('CR2023_CR04', 'Hailey', 'Milly', 'Gennielle', '02-05-2000', 'F2023_F002', 'Flight Attendance'),
 ('CR2023_CR05', 'Ayooluwa', 'Chidewa', 'Tunde', '27-12-1990', 'F2023_F002', 'Co-pilot');
 
-DROP TABLE IF EXISTS PAYMENT;
-CREATE TABLE PAYMENT (
-	PayID				varchar(15) not null,
-    CardNumber			varchar(16) not null,
-    CardName			varchar(45) not null,
-    CardDate			varchar(6) not null,
-    primary key (PayID)
+DROP TABLE IF EXISTS CARD;
+CREATE TABLE CARD (
+	card				INT AUTO_INCREMENT PRIMARY KEY,
+    carnumber			INT,
+    cardname			varchar(45) not null,
+    carddate			varchar(6) not null,
+    ccv					INT
 );
 
 DROP TABLE IF EXISTS TICKET;
@@ -120,19 +119,11 @@ CREATE TABLE TICKET (
 	TicketID			varchar(15) not null,
     CustomerID			varchar(15) not null,
     FlightID			varchar(15) not null,
-    SeatID				varchar(5) not null,
+    SeatID				INT,
     primary key (TicketID),
     foreign key (FlightID) references FLIGHT(FlightID),
-    foreign key (SeatID) references SEAT(SeatID)
+    foreign key (SeatID) references SEAT(seatid)
 );
-
-INSERT INTO TICKET(TicketID, CustomerID, FlightID, SeatID)
-VALUES
-('T2023_T001', 'C2023_C001', 'F2023_F001', '2A'),
-('T2023_T002', 'C2023_C002', 'F2023_F002', '1B'),
-('T2023_T004', 'C2023_C003', 'F2023_F001', '2C'),
-('T2023_T005', 'C2023_C004', 'F2023_F003', '3D'),
-('T2023_T003', 'C2023_C005', 'F2023_F002', '2E');
 
 DROP TABLE IF EXISTS LOCATION;
 CREATE TABLE LOCATION(

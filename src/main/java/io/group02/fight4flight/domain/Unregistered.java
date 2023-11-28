@@ -3,33 +3,13 @@ package io.group02.fight4flight.domain;
 import jakarta.persistence.*;
 
 @Entity
-// @Table(name = "Unregistered")
-
-public class Unregistered {
+public class Unregistered implements GenericCustomer{
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    // @Column(name = "UnregisteredID")
     private Long id;
-
-    // @Column(name = "fname")
     private String fname;
-    // @Column(name = "lname")
     private String lname;
-    // @Column(name = "email")
     private String email;
-
-    // public Unregistered() {
-    // }
-
-    // public Unregistered(String FName, String LName, String Email) {
-    // this.FName = FName;
-    // this.LName = LName;
-    // this.Email = Email;
-    // }
-
-    // public Long getId() {
-    // return Id;
-    // }
 
     public String getFname() {
         return fname;
@@ -63,5 +43,19 @@ public class Unregistered {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    @Override
+    public  double getDiscountLounges(){
+        System.out.println("You area  unregistered user so you get NO discount for LOUNGES, you should register!!");
+        return 0.0;
+
+    }
+     @Override
+     public double getRefund() {
+         System.out.println("You are an unregistered user so you get 50% refund, you should register for 100%!!!");
+         return 0.5;
+     }
+     @Override 
+    public void RegisterFlight(Integer flightID, char row, Integer column){}
 
 }
