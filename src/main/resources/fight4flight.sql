@@ -125,15 +125,15 @@ CREATE TABLE TICKET (
     foreign key (SeatID) references SEAT(seatid)
 );
 
-DROP TABLE IF EXISTS LOCATION;
-CREATE TABLE LOCATION(
-    LocationCityState	varchar(50) not null,
-    LocationCountry		varchar(50) not null,
-    LocationCode		varchar(20) not null,
-    primary key (LocationCode)
+DROP TABLE IF EXISTS AIRPORTCODE;
+CREATE TABLE AIRPORTCODE(
+	portid				INT AUTO_INCREMENT PRIMARY KEY,
+    citystate			varchar(50) not null,
+    country				varchar(50) not null,
+    portcode				varchar(20) not null
 );
 
-INSERT INTO LOCATION(LocationCityState, LocationCountry, LocationCode)
+INSERT INTO AIRPORTCODE(citystate, country, portcode)
 VALUES
 ("Aalborg", "Denmark", "AAL"),
 ("Aalesund", "Norway", "AES"),
