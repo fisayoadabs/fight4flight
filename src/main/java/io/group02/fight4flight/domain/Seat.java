@@ -12,6 +12,10 @@ public class Seat {
     private String seattype;
     private Double price;
 
+    public Seat() {
+        
+    }
+
     public Long getSeatId() {
         return this.seatid;
     }
@@ -50,5 +54,11 @@ public class Seat {
 
     public void setPrice(Double cost) {
         this.price = cost;
+    }
+
+
+
+    Seat(String seatType){
+        this.seattype =seatType;
     }
 }

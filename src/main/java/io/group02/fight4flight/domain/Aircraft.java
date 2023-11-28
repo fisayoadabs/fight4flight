@@ -2,7 +2,9 @@ package io.group02.fight4flight.domain;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.List;
 import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.*;
@@ -20,15 +22,60 @@ public class Aircraft {
     private int fuel;
     private int fuelcapacity;
 
+    private int businessRows;
+    private int businessCols;
+    private int comfortRows;
+    private int comfortCols;
+    private int ordinaryRows;
+    private int ordinaryCols;
 
+    private ArrayList<ArrayList<Seat>> rowsList;
 
+    public void MixedRowsWithSeats() {
+        rowsList = new ArrayList<>();
+
+        int totalRows = businessRows + comfortRows + ordinaryRows;
+
+        for (int i = 0; i < totalRows; i++) {
+            ArrayList<Seat> row = new ArrayList<>();
+
+            // Check if the index is within business rows
+            if (i < businessRows) {
+                for (int j = 0; j < businessCols; j++) {
+                    row.add(new Seat()); // creates business Seat
+                }
+            }
+            // Check if the index is within comfort rows
+            else if (i < businessRows + comfortRows) {
+                for (int j = 0; j < comfortCols; j++) {
+                    row.add(new Seat());
+                }
+            }
+            // Index corresponds to ordinary rows
+            else {
+                for (int j = 0; j < ordinaryCols; j++) {
+                    row.add(new Seat());
+                }
+            }
+
+            rowsList.add(row);
+        }
+    }
+
+    
+
+    // List of Business Rows + comfort Rows + ordinary Rows which then has an
+    // ArrayList per row. Each index in this list has a list of Arrows based off the
+    // number of business cols it has and then comfort cols it has and then ordinary
+    // rows
     // What to do for complex data types??
     // private Seat[][] seats;
     // private Map<Date, Boolean> availability;
     // private Location currentLocation;
 
     // CTOR for inside the java file
-    // public Aircraft(String aircraftname, String model, int capacity, int aircraftrange, int
+    // public Aircraft(String aircraftname, String model, int capacity, int
+    // aircraftrange, int
     // aircraftspeed, int fuel, int fuelCapacity,
     // Seat[][] seats, Map<Date, Boolean> availability, Location currentLocation) {
     // this.aircraftname = aircraftname;
@@ -73,6 +120,10 @@ public class Aircraft {
 
     public int getFuelCapacity() {
         return this.fuelcapacity;
+    }
+
+    public ArrayList<ArrayList<Seat>> getSeats() {
+        return this.rowsList;
     }
 
     // public int getFuelCapacity() {
@@ -121,6 +172,10 @@ public class Aircraft {
 
     public void setFuelCapacity(int fuelCapacity) {
         this.fuelcapacity = fuelCapacity;
+    }
+
+    public void setSeats(ArrayList<ArrayList<Seat>> seats) {
+        this.rowsList = seats;
     }
 
     // public void setSeats(Seat[][] seats) {
