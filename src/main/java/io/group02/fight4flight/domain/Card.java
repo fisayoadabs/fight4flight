@@ -2,7 +2,12 @@ package io.group02.fight4flight.domain;
 
 import java.sql.Date;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Card {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cardid;
     private int cardnumber;
     private String cardname;
@@ -30,11 +35,11 @@ public class Card {
     }
 
     public void setCardNumber(int num) {
-        this.cardnumber=num;
+        this.cardnumber = num;
     }
 
     public void setCardName(String nom) {
-        this.cardname=nom;
+        this.cardname = nom;
     }
 
     public void setCardDate(Date today) {
@@ -42,7 +47,7 @@ public class Card {
     }
 
     public void setCcv(int ccv) {
-        this.ccv=ccv;
+        this.ccv = ccv;
     }
-    
+
 }

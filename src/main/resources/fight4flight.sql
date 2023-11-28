@@ -107,10 +107,10 @@ VALUES
 
 DROP TABLE IF EXISTS CARD;
 CREATE TABLE CARD (
-	card				INT AUTO_INCREMENT PRIMARY KEY,
-    carnumber			INT,
+	cardid				INT AUTO_INCREMENT PRIMARY KEY,
+    cardnumber			INT,
     cardname			varchar(45) not null,
-    carddate			varchar(6) not null,
+    carddate			date,
     ccv					INT
 );
 
