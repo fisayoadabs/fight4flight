@@ -29,7 +29,7 @@ const Login = () => {
                 // Check if the password matches
                 if (user.password === password) {
                     // Redirect to flight browsing page if credentials match
-                    navigate('/flightbrowsing');
+                    navigate('/registered/flightbrowsing');
                 } else {
                     // Set error message if the password does not match
                     setErrMessage('Invalid password.');
@@ -92,7 +92,7 @@ const Login = () => {
                 <button>Log In</button>
             </form>
             <p>
-                <a href="/flightbrowsing">Continue as Guest</a>
+                <a href="/guest/flightbrowsing">Continue as Guest</a>
             </p>
             <div className="options">
                 <h3>Log in as: </h3>
@@ -122,6 +122,15 @@ const Login = () => {
                     />
                     Admin
                 </ul>
+            </div>
+            <div>
+                <p>
+                    Don't have an account?
+                    {/* Option 1: Link for registration */}
+                    <a href="/register">Register Here</a>
+                    {/* Option 2: Button for registration (uncomment to use) */}
+                    {/* <button onClick={handleRegisterNavigation}>Register</button> */}
+                </p>
             </div>
         </section>
     )

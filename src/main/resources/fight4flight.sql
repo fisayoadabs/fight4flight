@@ -29,23 +29,20 @@ INSERT INTO REGISTERED(registeruserid, fname, lname, address, email, username, p
 VALUES
 (10, "Tunde", "Baba", "Where i live","bt@gmail.com", "BabaTunde", "HIMISI");
 
-DROP TABLE IF EXISTS FLIGHT;
-CREATE TABLE FLIGHT (
-	FlightID			varchar(15) not null,
-    Origin				varchar(30) not null,
-    Destination			varchar(30) not null,
-    Aircraft			varchar(15) not null,
-    ArrivalTime			varchar(15) not null,
-    DepartureTime		varchar(15) not null,
-    primary key (FlightID)
-    -- foreign key (Aircraft) references AIRCRAFT(AirCraftID)
+DROP TABLE IF EXISTS AIRCRAFT;
+CREATE TABLE AIRCRAFT (
+	aircraftid			INT AUTO_INCREMENT PRIMARY KEY,	
+	aircraftname		varchar(15) not null,
+    model				varchar(15) not null,
+    capacity			INT,
+    aircraftrange		INT,
+    aircraftspeed		INT,
+    fuel				INT,
+    fuelcapacity		INT
 );
-INSERT INTO FLIGHT(FlightID, Origin, Destination, Aircraft, ArrivalTime, DepartureTime)
+INSERT INTO AIRCRAFT(aircraftname, model, capacity, aircraftrange, aircraftspeed, fuel, fuelcapacity)
 VALUES
-('F2023_F002', 'Calgary, Canada', 'Lagos, Nigeria', 'AC2023_AC01', '10:15 AM ET', '5:30 PM MT'),
-('F2023_F001', 'Calgary, Canada', 'Boston, USA', 'AC2023_AC02', '10:15 AM ET', '5:30 PM MT'),
-('F2023_F003', 'Calgary, Canada', 'Paris, France', 'AC2023_AC03', '10:15 AM ET', '5:30 PM MT');
-
+('Fight4Flight', 'versionTwo', 49, 300000, 860, 150000, 150000);
 
 DROP TABLE IF EXISTS SEAT;
 CREATE TABLE SEAT (
@@ -68,43 +65,6 @@ VALUES
 ('B3', true, 'Ordinary', 38.45),
 ('D3', true, 'Ordinary', 38.45);
 
-DROP TABLE IF EXISTS AIRCRAFT;
-CREATE TABLE AIRCRAFT (
-	aircraftid			INT PRIMARY KEY,	
-	aircraftname		varchar(15) not null,
-    model				varchar(15) not null,
-    capacity			INT,
-    aircraftrange		INT,
-    aircraftspeed		INT,
-    fuel				INT,
-    fuelcapacity		INT
-);
-INSERT INTO AIRCRAFT(aircraftid, aircraftname, model, capacity, aircraftrange, aircraftspeed, fuel, fuelcapacity)
-VALUES
-(10, 'Fight4Flight', 'versionTwo', 49, 300000, 860, 150000, 150000);
-
-
-DROP TABLE IF EXISTS CREW;
-CREATE TABLE CREW (
-	CrewID				varchar(15) not null,
-    FName				varchar(25) not null,
-    MName				varchar(25),
-    LName				varchar(25) not null,
-    Birthday			varchar(25) not null,
-    Flight 				varchar(10) not null,
-    Job					varchar(25) not null,
-    primary key (CrewID),
-    foreign key (Flight) references FLIGHT(FlightID)
-    
-);
-INSERT INTO CREW(CrewID, FName, MName, LName, Birthday, Flight, Job)
-VALUES
-('CR2023_CR01', 'Josh', 'Jason', 'Herin', '15-11-1989', 'F2023_F002', 'Pilot'),
-('CR2023_CR02', 'Josh', null, 'Herin', '23-03-1994', 'F2023_F002', 'Flight Attendance'),
-('CR2023_CR03', 'Deigo', null, 'Costia', '30-01-2000', 'F2023_F002', 'Flight Attendance'),
-('CR2023_CR04', 'Hailey', 'Milly', 'Gennielle', '02-05-2000', 'F2023_F002', 'Flight Attendance'),
-('CR2023_CR05', 'Ayooluwa', 'Chidewa', 'Tunde', '27-12-1990', 'F2023_F002', 'Co-pilot');
-
 DROP TABLE IF EXISTS CARD;
 CREATE TABLE CARD (
 	cardid				INT AUTO_INCREMENT PRIMARY KEY,
@@ -114,23 +74,12 @@ CREATE TABLE CARD (
     ccv					INT
 );
 
-DROP TABLE IF EXISTS TICKET;
-CREATE TABLE TICKET (
-	TicketID			varchar(15) not null,
-    CustomerID			varchar(15) not null,
-    FlightID			varchar(15) not null,
-    SeatID				INT,
-    primary key (TicketID),
-    foreign key (FlightID) references FLIGHT(FlightID),
-    foreign key (SeatID) references SEAT(seatid)
-);
-
 DROP TABLE IF EXISTS AIRPORT_CODE;
 CREATE TABLE AIRPORT_CODE(
 	portid				INT AUTO_INCREMENT PRIMARY KEY,
     citystate			varchar(50) not null,
     country				varchar(50) not null,
-    portcode				varchar(20) not null
+    portcode			varchar(20)
 );
 
 INSERT INTO AIRPORT_CODE(citystate, country, portcode)
@@ -1630,6 +1579,65 @@ VALUES
 ("Zhengzhou", "China", "CGO"),
 ("Zhoushan", "China", "HSN"),
 ("Zurich", "Switzerland", "ZRH");
+
+DROP TABLE IF EXISTS FLIGHT;
+CREATE TABLE FLIGHT (
+    flightid        INT AUTO_INCREMENT PRIMARY KEY,
+    departure       INT,
+    destination     INT,
+    aircraft        INT,
+    departureTime   DATETIME,
+    arrivalTime     DATETIME,
+    flighttime		INT,
+    FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
+    FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
+    FOREIGN KEY (aircraft) REFERENCES AIRCRAFT(aircraftid),
+    CHECK (arrivalTime > departureTime)
+);
+
+DELIMITER //
+
+CREATE TRIGGER calculate_flight_time
+BEFORE INSERT ON FLIGHT
+FOR EACH ROW
+SET NEW.flighttime = TIMESTAMPDIFF(MINUTE, NEW.departureTime, NEW.arrivalTime);
+
+DELIMITER ;
+
+INSERT INTO FLIGHT (departure, destination, aircraft, departureTime, arrivalTime)
+VALUES (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
+
+DROP TABLE IF EXISTS CREW;
+CREATE TABLE CREW (
+	CrewID				varchar(15) not null,
+    FName				varchar(25) not null,
+    MName				varchar(25),
+    LName				varchar(25) not null,
+    Birthday			varchar(25) not null,
+    Flight 				INT,
+    Job					varchar(25) not null,
+    primary key (CrewID),
+    foreign key (Flight) references FLIGHT(flightid)
+    
+);
+INSERT INTO CREW(CrewID, FName, MName, LName, Birthday, Flight, Job)
+VALUES
+('CR2023_CR01', 'Josh', 'Jason', 'Herin', '15-11-1989', 1, 'Pilot'),
+('CR2023_CR02', 'Josh', null, 'Herin', '23-03-1994', 1, 'Flight Attendance'),
+('CR2023_CR03', 'Deigo', null, 'Costia', '30-01-2000', 1, 'Flight Attendance'),
+('CR2023_CR04', 'Hailey', 'Milly', 'Gennielle', '02-05-2000', 1, 'Flight Attendance'),
+('CR2023_CR05', 'Ayooluwa', 'Chidewa', 'Tunde', '27-12-1990', 1, 'Co-pilot');
+
+DROP TABLE IF EXISTS TICKET;
+CREATE TABLE TICKET (
+	TicketID			varchar(15) not null,
+    CustomerID			varchar(15) not null,
+    FlightID			INT,
+    SeatID				INT,
+    primary key (TicketID),
+    foreign key (FlightID) references FLIGHT(flightid),
+    foreign key (SeatID) references SEAT(seatid)
+);
 
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';

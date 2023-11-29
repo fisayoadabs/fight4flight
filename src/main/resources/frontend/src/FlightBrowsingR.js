@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlane } from '@fortawesome/free-solid-svg-icons';
+import Pay from './Pay';
 
-const FlightBrowsing = () => {
+const FlightBrowsingR = () => {
     const navigate = useNavigate();
     const [airports, setAirports] = useState([]); // State for storing airport data
     const [filteredDepartureAirports, setFilteredDepartureAirports] = useState([]); // Filtered list for departure
     const [filteredDestinationAirports, setFilteredDestinationAirports] = useState([]); // Filtered list for destination
-    
+
 
     // State to manage form data
     const [formData, setFormData] = useState({
@@ -185,7 +186,7 @@ const FlightBrowsing = () => {
                     <p>Departure Date: {formData.departureDate}</p>
                     <p>Return Date: {formData.returnDate}</p>
 
-                    <button onClick={(() => { navigate("/guest/seat") })}>Proceed to Seat Selection</button>
+                    <button onClick={(() => { navigate("/registered/seat") })}>Proceed to Seat Selection</button>
                 </div>
             )}
 
@@ -198,4 +199,4 @@ const FlightBrowsing = () => {
     );
 };
 
-export default FlightBrowsing;
+export default FlightBrowsingR;

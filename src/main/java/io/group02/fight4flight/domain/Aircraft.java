@@ -12,7 +12,7 @@ import jakarta.persistence.*;
 @Entity
 public class Aircraft {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long aircraftid;
     private String aircraftname;
     private String model;
@@ -22,47 +22,47 @@ public class Aircraft {
     private int fuel;
     private int fuelcapacity;
 
-    private int businessRows;
-    private int businessCols;
-    private int comfortRows;
-    private int comfortCols;
-    private int ordinaryRows;
-    private int ordinaryCols;
-
-    private ArrayList<ArrayList<Seat>> rowsList;
-
-    public void MixedRowsWithSeats() {
-        rowsList = new ArrayList<>();
-
-        int totalRows = businessRows + comfortRows + ordinaryRows;
-
-        for (int i = 0; i < totalRows; i++) {
-            ArrayList<Seat> row = new ArrayList<>();
-
-            // Check if the index is within business rows
-            if (i < businessRows) {
-                for (int j = 0; j < businessCols; j++) {
-                    row.add(new Seat()); // creates business Seat
-                }
-            }
-            // Check if the index is within comfort rows
-            else if (i < businessRows + comfortRows) {
-                for (int j = 0; j < comfortCols; j++) {
-                    row.add(new Seat());
-                }
-            }
-            // Index corresponds to ordinary rows
-            else {
-                for (int j = 0; j < ordinaryCols; j++) {
-                    row.add(new Seat());
-                }
-            }
-
-            rowsList.add(row);
-        }
-    }
-
-    
+    /*
+     * private int businessRows;
+     * private int businessCols;
+     * private int comfortRows;
+     * private int comfortCols;
+     * private int ordinaryRows;
+     * private int ordinaryCols;
+     * 
+     * private ArrayList<ArrayList<Seat>> rowsList;
+     * 
+     * public void MixedRowsWithSeats() {
+     * rowsList = new ArrayList<>();
+     * 
+     * int totalRows = businessRows + comfortRows + ordinaryRows;
+     * 
+     * for (int i = 0; i < totalRows; i++) {
+     * ArrayList<Seat> row = new ArrayList<>();
+     * 
+     * // Check if the index is within business rows
+     * if (i < businessRows) {
+     * for (int j = 0; j < businessCols; j++) {
+     * row.add(new Seat()); // creates business Seat
+     * }
+     * }
+     * // Check if the index is within comfort rows
+     * else if (i < businessRows + comfortRows) {
+     * for (int j = 0; j < comfortCols; j++) {
+     * row.add(new Seat());
+     * }
+     * }
+     * // Index corresponds to ordinary rows
+     * else {
+     * for (int j = 0; j < ordinaryCols; j++) {
+     * row.add(new Seat());
+     * }
+     * }
+     * 
+     * rowsList.add(row);
+     * }
+     * }
+     */
 
     // List of Business Rows + comfort Rows + ordinary Rows which then has an
     // ArrayList per row. Each index in this list has a list of Arrows based off the
@@ -122,9 +122,9 @@ public class Aircraft {
         return this.fuelcapacity;
     }
 
-    public ArrayList<ArrayList<Seat>> getSeats() {
-        return this.rowsList;
-    }
+    // public ArrayList<ArrayList<Seat>> getSeats() {
+    // return this.rowsList;
+    // }
 
     // public int getFuelCapacity() {
     // return this.fuelCapacity;
@@ -174,9 +174,9 @@ public class Aircraft {
         this.fuelcapacity = fuelCapacity;
     }
 
-    public void setSeats(ArrayList<ArrayList<Seat>> seats) {
-        this.rowsList = seats;
-    }
+    // public void setSeats(ArrayList<ArrayList<Seat>> seats) {
+    // this.rowsList = seats;
+    // }
 
     // public void setSeats(Seat[][] seats) {
     // this.seats = seats;

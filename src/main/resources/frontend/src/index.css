@@ -341,3 +341,16 @@ a:hover {
   justify-content: space-between;
   margin: 0;
 }
+
+.packageContainer-summary {
+  background-color: #333;
+  color: #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  width: 450px;
+}
