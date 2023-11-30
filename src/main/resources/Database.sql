@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS FIGHTFORFLIGHT;
-CREATE DATABASE FIGHTFORFLIGHT;
-USE FIGHTFORFLIGHT;
+DROP DATABASE IF EXISTS FIGHT4FLIGHTDB;
+CREATE DATABASE FIGHT4FLIGHTDB;
+USE FIGHT4FLIGHTDB;
 
 DROP TABLE IF EXISTS UNREGISTERED;
 CREATE TABLE UNREGISTERED (
@@ -79,8 +79,51 @@ CREATE TABLE AIRPORT_CODE(
 	portid				INT AUTO_INCREMENT PRIMARY KEY,
     citystate			varchar(50) not null,
     country				varchar(50) not null,
-    portcode			varchar(20)
+    portcode			varchar(20)	UNIQUE
 );
+
+DROP TABLE IF EXISTS CREW;
+CREATE TABLE CREW (
+	crewid				INT AUTO_INCREMENT PRIMARY KEY,
+    fname				varchar(25) not null,
+    lname				varchar(25) not null,
+    email				varchar(50) not null,
+    password			varchar(25) not null,
+    role 				varchar(25) not null
+);
+INSERT INTO CREW(fname, lname, email, password, role)
+VALUES	("Pilot", "Co-pilot", "pilot@gmail.com", "crewmember", "Maid");
+
+DROP TABLE IF EXISTS FLIGHT;
+CREATE TABLE FLIGHT (
+    flightid        INT AUTO_INCREMENT PRIMARY KEY,
+    departure       varchar(20),
+    destination     varchar(20),
+    aircraft        INT,
+    departuretime   DATETIME,
+    arrivaltime     DATETIME,
+    crewid          INT,
+    FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portcode),
+    FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portcode),
+    FOREIGN KEY (aircraft) REFERENCES AIRCRAFT(aircraftid),
+    FOREIGN KEY (crewid) REFERENCES CREW(crewid),
+    CHECK (arrivaltime > departuretime)
+);
+-- INSERT INTO FLIGHT (departure, destination, aircraft, departuretime, arrivaltime)
+-- VALUES ('YYC', 'LAX', 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
+
+
+DROP TABLE IF EXISTS TICKET;
+CREATE TABLE TICKET (
+	TicketID			varchar(15) not null,
+    CustomerID			varchar(15) not null,
+    FlightID			INT,
+    SeatID				INT,
+    primary key (TicketID),
+    foreign key (FlightID) references FLIGHT(flightid),
+    foreign key (SeatID) references SEAT(seatid)
+);
+
 
 INSERT INTO AIRPORT_CODE(citystate, country, portcode)
 VALUES
@@ -1580,65 +1623,6 @@ VALUES
 ("Zhoushan", "China", "HSN"),
 ("Zurich", "Switzerland", "ZRH");
 
-DROP TABLE IF EXISTS FLIGHT;
-CREATE TABLE FLIGHT (
-    flightid        INT AUTO_INCREMENT PRIMARY KEY,
-    departure       INT,
-    destination     INT,
-    aircraft        INT,
-    departureTime   DATETIME,
-    arrivalTime     DATETIME,
-    flighttime		INT,
-    FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
-    FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
-    FOREIGN KEY (aircraft) REFERENCES AIRCRAFT(aircraftid),
-    CHECK (arrivalTime > departureTime)
-);
-
-DELIMITER //
-
-CREATE TRIGGER calculate_flight_time
-BEFORE INSERT ON FLIGHT
-FOR EACH ROW
-SET NEW.flighttime = TIMESTAMPDIFF(MINUTE, NEW.departureTime, NEW.arrivalTime);
-
-DELIMITER ;
-
-INSERT INTO FLIGHT (departure, destination, aircraft, departureTime, arrivalTime)
-VALUES (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
-
-DROP TABLE IF EXISTS CREW;
-CREATE TABLE CREW (
-	CrewID				varchar(15) not null,
-    FName				varchar(25) not null,
-    MName				varchar(25),
-    LName				varchar(25) not null,
-    Birthday			varchar(25) not null,
-    Flight 				INT,
-    Job					varchar(25) not null,
-    primary key (CrewID),
-    foreign key (Flight) references FLIGHT(flightid)
-    
-);
-INSERT INTO CREW(CrewID, FName, MName, LName, Birthday, Flight, Job)
-VALUES
-('CR2023_CR01', 'Josh', 'Jason', 'Herin', '15-11-1989', 1, 'Pilot'),
-('CR2023_CR02', 'Josh', null, 'Herin', '23-03-1994', 1, 'Flight Attendance'),
-('CR2023_CR03', 'Deigo', null, 'Costia', '30-01-2000', 1, 'Flight Attendance'),
-('CR2023_CR04', 'Hailey', 'Milly', 'Gennielle', '02-05-2000', 1, 'Flight Attendance'),
-('CR2023_CR05', 'Ayooluwa', 'Chidewa', 'Tunde', '27-12-1990', 1, 'Co-pilot');
-
-DROP TABLE IF EXISTS TICKET;
-CREATE TABLE TICKET (
-	TicketID			varchar(15) not null,
-    CustomerID			varchar(15) not null,
-    FlightID			INT,
-    SeatID				INT,
-    primary key (TicketID),
-    foreign key (FlightID) references FLIGHT(flightid),
-    foreign key (SeatID) references SEAT(seatid)
-);
-
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';
-GRANT ALL ON FIGHTFORFLIGHT.* TO 'dev'@'%';
+GRANT ALL ON FIGHT4FLIGHTDB.* TO 'dev'@'%';

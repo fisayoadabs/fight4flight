@@ -52,7 +52,6 @@ const Login = () => {
 
 
     return (
-        <AuthContext.Provider value={{ handleLogout }}>
             <section>
                 <p className={errMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errMessage}</p>
                 <h1>Login</h1>
@@ -140,7 +139,6 @@ const Login = () => {
                     </p>
                 </div>
             </section>
-        </AuthContext.Provider>
     )
 }
 
