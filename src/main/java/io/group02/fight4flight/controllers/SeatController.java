@@ -10,7 +10,7 @@ import io.group02.fight4flight.service.SeatService;
 
 @RestController
 @RequestMapping("/seat")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000") // Add the origin of your React app
 public class SeatController {
     @Autowired
     private SeatService seatService;

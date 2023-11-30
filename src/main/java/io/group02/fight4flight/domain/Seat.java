@@ -5,25 +5,21 @@ import jakarta.persistence.*;
 @Entity
 public class Seat {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long seatid;
-    private String seatname;
+    private String seatid;
     private Boolean vacancy;
     private String seattype;
     private Double price;
 
+    //@ManyToOne
+    //@JoinColumn(name = "aircraftid")
+    //private Aircraft aircraft;
+
     public Seat() {
         
     }
-
-    public Long getSeatId() {
+    public String getSeatId() {
         return this.seatid;
     }
-
-    public String getSeatName() {
-        return this.seatname;
-    }
-
     public Boolean getVacancy() {
         return this.vacancy;
     }
@@ -36,12 +32,8 @@ public class Seat {
         return this.price;
     }
 
-    public void setSeatId(Long id) {
+    public void setSeatId(String id) {
         this.seatid = id;
-    }
-
-    public void setSeatName(String name) {
-        this.seatname = name;
     }
 
     public void setVacancy(Boolean free) {
@@ -56,9 +48,4 @@ public class Seat {
         this.price = cost;
     }
 
-
-
-    Seat(String seatType){
-        this.seattype =seatType;
-    }
 }

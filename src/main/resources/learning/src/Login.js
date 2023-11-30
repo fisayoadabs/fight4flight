@@ -20,7 +20,9 @@ const Login = () => {
         try {
             // Replace with the correct API URL
             const response = await fetch('http://localhost:8080/registered/getAll');
+            console.log(response);
             const users = await response.json();
+            console.log(users);
 
             // Find the user with the matching username
             const user = users.find(user => user.username === username);
