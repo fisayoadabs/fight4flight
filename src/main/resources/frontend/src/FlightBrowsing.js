@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlane } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from './Login';
 
 const FlightBrowsing = () => {
     const navigate = useNavigate();
     const [airports, setAirports] = useState([]); // State for storing airport data
     const [filteredDepartureAirports, setFilteredDepartureAirports] = useState([]); // Filtered list for departure
     const [filteredDestinationAirports, setFilteredDestinationAirports] = useState([]); // Filtered list for destination
-    
+    const { handleLogout } = useAuth(); // Use the useAuth hook
 
     // State to manage form data
     const [formData, setFormData] = useState({
@@ -20,6 +21,11 @@ const FlightBrowsing = () => {
 
     // State to manage visibility of flight summary
     const [showFlightSummary, setShowFlightSummary] = useState(false);
+
+    const handleViewBookings = () => {
+        // Implement logic to fetch and display user's bookings
+        alert('View My Bookings functionality will be implemented here.');
+    };
 
     useEffect(() => {
         // Fetch airport data from API and update state
@@ -49,7 +55,6 @@ const FlightBrowsing = () => {
         );
     };
 
-
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({
@@ -78,6 +83,7 @@ const FlightBrowsing = () => {
     return (
         <section>
             <h1>Flight Browsing</h1>
+            <button className="logout" onClick={handleLogout}>Logout</button>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="departure">
                     Departure Airport:
@@ -184,15 +190,10 @@ const FlightBrowsing = () => {
                     <p>Destination: {formData.destination}</p>
                     <p>Departure Date: {formData.departureDate}</p>
                     <p>Return Date: {formData.returnDate}</p>
-
+                    <button onClick={handleViewBookings}>View My Bookings</button>
                     <button onClick={(() => { navigate("/guest/seat") })}>Proceed to Seat Selection</button>
                 </div>
             )}
-
-            <div className="results">
-                {/* Placeholder for flight search results */}
-                <p>No results found for your search.</p>
-            </div>
 
         </section>
     );
