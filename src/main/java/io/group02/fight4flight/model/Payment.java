@@ -1,4 +1,4 @@
-package io.group02.fight4flight.domain;
+package io.group02.fight4flight.model;
 
 import java.util.Date;
 import jakarta.persistence.*;

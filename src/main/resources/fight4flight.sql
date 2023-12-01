@@ -4,20 +4,21 @@ USE FIGHTFORFLIGHT;
 
 DROP TABLE IF EXISTS UNREGISTERED;
 CREATE TABLE UNREGISTERED (
-	id 					INT PRIMARY KEY, 
-    fname				varchar(25) not null,
-    lname				varchar(25) not null,
-    email				varchar(25) not null
+    fname VARCHAR(25) NOT NULL,
+    lname VARCHAR(25) NOT NULL,
+    email VARCHAR(25) NOT NULL PRIMARY KEY
 );
-INSERT INTO UNREGISTERED(id, fname, lname, email)
+
+INSERT INTO UNREGISTERED(fname, lname, email)
 VALUES
-(10, 'Josh', 'Pen', 'JJH@gmail.com'),
-(20, 'Jame', 'Herin', 'JH@outlook.com'),
-(30, 'Deigo', 'Costia', 'DC@ucalgary.ca');
+-- (10, 'Josh', 'Pen', 'JJH@gmail.com'),
+-- (20, 'Jame', 'Herin', 'JH@outlook.com'),
+-- (30, 'Deigo', 'Costia', 'DC@ucalgary.ca'),
+("Tunde", "Baba", "bt@gmail.com");
 
 DROP TABLE IF EXISTS REGISTERED;
 CREATE TABLE REGISTERED (
-	registeruserid		INT	PRIMARY KEY,
+	registerid			INT	AUTO_INCREMENT PRIMARY KEY ,
     fname				varchar(25) not null,
     lname				varchar(25) not null,
     address				varchar(125) not null,
@@ -25,45 +26,212 @@ CREATE TABLE REGISTERED (
     username			varchar(50) not null,
     password			varchar(50) not null
 );
-INSERT INTO REGISTERED(registeruserid, fname, lname, address, email, username, password)
+INSERT INTO REGISTERED(fname, lname, address, email, username, password)
 VALUES
-(10, "Tunde", "Baba", "Where i live","bt@gmail.com", "BabaTunde", "HIMISI");
+("Tunde", "Baba", "Where i live","bt@gmail.com", "BabaTunde", "HIMISI");
 
 DROP TABLE IF EXISTS AIRCRAFT;
 CREATE TABLE AIRCRAFT (
 	aircraftid			INT AUTO_INCREMENT PRIMARY KEY,	
-	aircraftname		varchar(15) not null,
-    model				varchar(15) not null,
-    capacity			INT,
-    aircraftrange		INT,
-    aircraftspeed		INT,
-    fuel				INT,
-    fuelcapacity		INT
+	aircraftname		varchar(45) not null,
+    model				varchar(45) not null
 );
-INSERT INTO AIRCRAFT(aircraftname, model, capacity, aircraftrange, aircraftspeed, fuel, fuelcapacity)
+INSERT INTO AIRCRAFT(aircraftname, model)
 VALUES
-('Fight4Flight', 'versionTwo', 49, 300000, 860, 150000, 150000);
+('Fight4Flight', 'versionTwo');
 
+DROP TABLE IF EXISTS AIRPORT_CODE;
+CREATE TABLE AIRPORT_CODE(
+	portid				INT AUTO_INCREMENT PRIMARY KEY,
+    citystate			varchar(50) not null,
+    country				varchar(50) not null,
+    portcode			varchar(20)
+);
+
+DROP TABLE IF EXISTS FLIGHT;
+CREATE TABLE FLIGHT (
+    flightid        INT AUTO_INCREMENT PRIMARY KEY,
+    departure       int,
+    destination     int,
+    aircraft        int,
+    departureTime   DATETIME,
+    arrivalTime     DATETIME,
+   FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
+     FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
+     FOREIGN KEY (aircraft) REFERENCES AIRCRAFT(aircraftid),
+    CHECK (arrivalTime > departureTime)
+);
+DROP TABLE IF EXISTS CREW;
+CREATE TABLE CREW (
+	crewid				INT AUTO_INCREMENT PRIMARY KEY,
+--     pilot				int,
+--     copilot				int,
+    flightAttendances	int,
+    flight				int,
+    FOREIGN KEY (flight) REFERENCES FLIGHT(flightid)
+);
+
+DROP TABLE IF EXISTS PILOT;
+CREATE TABLE PILOT (
+	pilotid				INT	AUTO_INCREMENT PRIMARY KEY,
+    fname				varchar(25) not null,
+    lname				varchar(25) not null,
+    address				varchar(125) not null,
+    email				varchar(25) not null,
+    username			varchar(50) not null,
+    password			varchar(50) not null
+);
+
+DROP TABLE IF EXISTS ATTENDANCE;
+CREATE TABLE ATTENDANCE (
+	attendanceid		INT PRIMARY KEY,
+    fname				varchar(25) not null,
+    lname				varchar(25) not null,
+    address				varchar(125) not null,
+    email				varchar(25) not null,
+    username			varchar(50) not null,
+    password			varchar(50) not null,
+    crewnum				int,
+    FOREIGN KEY (crewnum) REFERENCES CREW(crewid)
+    );
+    
 DROP TABLE IF EXISTS SEAT;
 CREATE TABLE SEAT (
 	seatid				INT AUTO_INCREMENT PRIMARY KEY,
     seatname			varchar(10) not null,
     vacancy				bool,
     seattype			varchar(15) not null,
-    price				double
+    price				double,
+    aircraftid			int not null,
+    FOREIGN KEY (aircraftid) references AIRCRAFT(aircraftid)
 );
-INSERT INTO SEAT(seatname, vacancy, seattype, price)
+INSERT INTO SEAT(seatname, vacancy, seattype, price, aircraftid)
 VALUES
-('A1', true, 'Business', 100.00),
-('B1', true, 'Business', 100.00),
-('C1', true, 'Business', 100.00),
-('D1', true, 'Business', 100.00),
-('E1', true, 'Business', 100.00),
-('A2', true, 'Comfort', 58.98),
-('C2', true, 'Comfort', 58.98),
-('E2', true, 'Ordinary', 38.45),
-('B3', true, 'Ordinary', 38.45),
-('D3', true, 'Ordinary', 38.45);
+('A1', true, 'Business', 100.00, 1);
+-- ('A2', true, 'Business', 100.00),
+-- ('A3', true, 'Business', 100.00),
+-- ('A4', false, 'Business', 100.00),
+-- ('A5', true, 'Business', 100.00),
+-- ('A6', false, 'Business', 100.00),
+-- ('B1', false, 'Business', 100.00),
+-- ('B2', true, 'Business', 100.00),
+-- ('B3', true, 'Business', 100.00),
+-- ('B4', true, 'Business', 100.00),
+-- ('B5', true, 'Business', 100.00),
+-- ('B6', false, 'Business', 100.00),
+-- ('C1', false, 'Business', 100.00),
+-- ('C2', true, 'Business', 100.00),
+-- ('C3', false, 'Business', 100.00),
+-- ('C4', true, 'Business', 100.00),
+-- ('C5', false, 'Business', 100.00),
+-- ('C6', true, 'Business', 100.00),
+-- ('D1', true, 'Business', 100.00),
+-- ('D2', true, 'Business', 100.00),
+-- ('D3', false, 'Business', 100.00),
+-- ('D4', true, 'Business', 100.00),
+-- ('D5', true, 'Business', 100.00),
+-- ('D6', true, 'Business', 100.00),
+-- ('E1', true, 'Business', 100.00),
+-- ('E2', true, 'Business', 100.00),
+-- ('E3', true, 'Business', 100.00),
+-- ('E4', false, 'Business', 100.00),
+-- ('E5', true, 'Business', 100.00),
+-- ('E6', true, 'Business', 100.00),
+-- ('F1', false, 'Business', 100.00),
+-- ('F2', true, 'Business', 100.00),
+-- ('F3', true, 'Business', 100.00),
+-- ('F4', true, 'Business', 100.00),
+-- ('F5', false, 'Business', 100.00),
+-- ('A6', true, 'Comfort', 58.98),
+-- ('B6', false, 'Comfort', 58.98),
+-- ('C6', true, 'Comfort', 58.98),
+-- ('D6', false, 'Comfort', 58.98),
+-- ('E6', true, 'Comfort', 58.98),
+-- ('F6', false, 'Comfort', 58.98),
+-- ('A7', false, 'Comfort', 58.98),
+-- ('B7', false, 'Comfort', 58.98),
+-- ('C7', true, 'Comfort', 58.98),
+-- ('D7', true, 'Comfort', 58.98),
+-- ('E7', true, 'Comfort', 58.98),
+-- ('F7', false, 'Comfort', 58.98),
+-- ('A8', false, 'Comfort', 58.98),
+-- ('B8', true, 'Comfort', 58.98),
+-- ('C8', false, 'Comfort', 58.98),
+-- ('D8', true, 'Comfort', 58.98),
+-- ('E8', false, 'Comfort', 58.98),
+-- ('F8', false, 'Comfort', 58.98),
+-- ('A9', false, 'Comfort', 58.98),
+-- ('B9', true, 'Comfort', 58.98),
+-- ('C9', true, 'Comfort', 58.98),
+-- ('D9', false, 'Comfort', 58.98),
+-- ('E9', false, 'Comfort', 58.98),
+-- ('F9', false, 'Comfort', 58.98),
+-- ('A10', true, 'Comfort', 58.98),
+-- ('B10', true, 'Comfort', 58.98),
+-- ('C10', false, 'Comfort', 58.98),
+-- ('D10', false, 'Comfort', 58.98),
+-- ('E10', true, 'Comfort', 58.98),
+-- ('F10', true, 'Comfort', 58.98),
+-- ('A11', true, 'Comfort', 58.98),
+-- ('B11', false, 'Comfort', 58.98),
+-- ('C11', true, 'Comfort', 58.98),
+-- ('D11', true, 'Comfort', 58.98),
+-- ('E11', false, 'Comfort', 58.98),
+-- ('F11', false, 'Comfort', 58.98),
+-- ('A12', true, 'Ordinary', 38.45),
+-- ('B12', true, 'Ordinary', 38.45),
+-- ('C12', true, 'Ordinary', 38.45),
+-- ('D12', true, 'Ordinary', 38.45),
+-- ('E12', true, 'Ordinary', 38.45),
+-- ('F12', true, 'Ordinary', 38.45),
+-- ('A13', true, 'Ordinary', 38.45),
+-- ('B13', true, 'Ordinary', 38.45),
+-- ('C13', true, 'Ordinary', 38.45),
+-- ('D13', true, 'Ordinary', 38.45),
+-- ('E13', false, 'Ordinary', 38.45),
+-- ('F13', true, 'Ordinary', 38.45),
+-- ('A14', true, 'Ordinary', 38.45),
+-- ('B14', true, 'Ordinary', 38.45),
+-- ('C14', true, 'Ordinary', 38.45),
+-- ('D14', true, 'Ordinary', 38.45),
+-- ('E14', true, 'Ordinary', 38.45),
+-- ('F14', true, 'Ordinary', 38.45),
+-- ('A15', true, 'Ordinary', 38.45),
+-- ('B15', true, 'Ordinary', 38.45),
+-- ('C15', true, 'Ordinary', 38.45),
+-- ('D15', true, 'Ordinary', 38.45),
+-- ('E15', true, 'Ordinary', 38.45),
+-- ('F15', true, 'Ordinary', 38.45),
+-- ('A16', true, 'Ordinary', 38.45),
+-- ('B16', true, 'Ordinary', 38.45),
+-- ('C16', true, 'Ordinary', 38.45),
+-- ('D16', true, 'Ordinary', 38.45),
+-- ('E16', true, 'Ordinary', 38.45),
+-- ('F16', true, 'Ordinary', 38.45),
+-- ('A17', true, 'Ordinary', 38.45),
+-- ('B17', true, 'Ordinary', 38.45),
+-- ('C17', true, 'Ordinary', 38.45),
+-- ('D17', true, 'Ordinary', 38.45),
+-- ('E17', true, 'Ordinary', 38.45),
+-- ('F17', true, 'Ordinary', 38.45),
+-- ('A18', true, 'Ordinary', 38.45),
+-- ('B18', true, 'Ordinary', 38.45),
+-- ('C18', true, 'Ordinary', 38.45),
+-- ('D18', true, 'Ordinary', 38.45),
+-- ('E18', true, 'Ordinary', 38.45),
+-- ('F18', true, 'Ordinary', 38.45),
+-- ('A19', true, 'Ordinary', 38.45),
+-- ('B19', true, 'Ordinary', 38.45),
+-- ('C19', true, 'Ordinary', 38.45),
+-- ('D19', true, 'Ordinary', 38.45),
+-- ('E19', true, 'Ordinary', 38.45),
+-- ('F19', true, 'Ordinary', 38.45),
+-- ('A20', true, 'Ordinary', 38.45),
+-- ('B20', true, 'Ordinary', 38.45),
+-- ('C20', true, 'Ordinary', 38.45),
+-- ('D20', true, 'Ordinary', 38.45),
+-- ('E20', true, 'Ordinary', 38.45),
+-- ('F20', true, 'Ordinary', 38.45);
 
 DROP TABLE IF EXISTS CARD;
 CREATE TABLE CARD (
@@ -74,13 +242,17 @@ CREATE TABLE CARD (
     ccv					INT
 );
 
-DROP TABLE IF EXISTS AIRPORT_CODE;
-CREATE TABLE AIRPORT_CODE(
-	portid				INT AUTO_INCREMENT PRIMARY KEY,
-    citystate			varchar(50) not null,
-    country				varchar(50) not null,
-    portcode			varchar(20)
-);
+
+-- INSERT INTO FLIGHT (departure, destination, aircraft, departureTime, arrivalTime)
+-- VALUES (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
+
+-- DROP TABLE IF EXISTS TICKET;
+-- CREATE TABLE TICKET (
+-- 	ticketid			INT AUTO_INCREMENT PRIMARY KEY,
+--     customerid			json,
+--     flightid			json,
+--     seatid				json
+-- );
 
 INSERT INTO AIRPORT_CODE(citystate, country, portcode)
 VALUES
@@ -1579,65 +1751,6 @@ VALUES
 ("Zhengzhou", "China", "CGO"),
 ("Zhoushan", "China", "HSN"),
 ("Zurich", "Switzerland", "ZRH");
-
-DROP TABLE IF EXISTS FLIGHT;
-CREATE TABLE FLIGHT (
-    flightid        INT AUTO_INCREMENT PRIMARY KEY,
-    departure       INT,
-    destination     INT,
-    aircraft        INT,
-    departureTime   DATETIME,
-    arrivalTime     DATETIME,
-    flighttime		INT,
-    FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
-    FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
-    FOREIGN KEY (aircraft) REFERENCES AIRCRAFT(aircraftid),
-    CHECK (arrivalTime > departureTime)
-);
-
-DELIMITER //
-
-CREATE TRIGGER calculate_flight_time
-BEFORE INSERT ON FLIGHT
-FOR EACH ROW
-SET NEW.flighttime = TIMESTAMPDIFF(MINUTE, NEW.departureTime, NEW.arrivalTime);
-
-DELIMITER ;
-
-INSERT INTO FLIGHT (departure, destination, aircraft, departureTime, arrivalTime)
-VALUES (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
-
-DROP TABLE IF EXISTS CREW;
-CREATE TABLE CREW (
-	CrewID				varchar(15) not null,
-    FName				varchar(25) not null,
-    MName				varchar(25),
-    LName				varchar(25) not null,
-    Birthday			varchar(25) not null,
-    Flight 				INT,
-    Job					varchar(25) not null,
-    primary key (CrewID),
-    foreign key (Flight) references FLIGHT(flightid)
-    
-);
-INSERT INTO CREW(CrewID, FName, MName, LName, Birthday, Flight, Job)
-VALUES
-('CR2023_CR01', 'Josh', 'Jason', 'Herin', '15-11-1989', 1, 'Pilot'),
-('CR2023_CR02', 'Josh', null, 'Herin', '23-03-1994', 1, 'Flight Attendance'),
-('CR2023_CR03', 'Deigo', null, 'Costia', '30-01-2000', 1, 'Flight Attendance'),
-('CR2023_CR04', 'Hailey', 'Milly', 'Gennielle', '02-05-2000', 1, 'Flight Attendance'),
-('CR2023_CR05', 'Ayooluwa', 'Chidewa', 'Tunde', '27-12-1990', 1, 'Co-pilot');
-
-DROP TABLE IF EXISTS TICKET;
-CREATE TABLE TICKET (
-	TicketID			varchar(15) not null,
-    CustomerID			varchar(15) not null,
-    FlightID			INT,
-    SeatID				INT,
-    primary key (TicketID),
-    foreign key (FlightID) references FLIGHT(flightid),
-    foreign key (SeatID) references SEAT(seatid)
-);
 
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';

@@ -76,7 +76,7 @@ function Seat() {
                             <b>Remove</b>
                         </button>
                     </div>
-                    <button className="continue" onClick={() => navigate("/add")}>
+                    <button className="continue" onClick={() => navigate("guest/insurance")}>
                         <h2>Continue</h2>
                     </button>
                 </div>
