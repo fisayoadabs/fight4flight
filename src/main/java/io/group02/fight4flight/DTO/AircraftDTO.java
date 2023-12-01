@@ -49,6 +49,6 @@ public class AircraftDTO {
         aircraft.getAircraftID(),
         aircraft.getAircraftName(),
         aircraft.getModel());
-}
+    }
 
 }

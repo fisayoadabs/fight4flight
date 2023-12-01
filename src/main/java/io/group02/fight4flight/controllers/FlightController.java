@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 import io.group02.fight4flight.DTO.AircraftDTO;
+import io.group02.fight4flight.DTO.FlightDTO;
 import io.group02.fight4flight.model.Aircraft;
 import io.group02.fight4flight.model.AirportCode;
 import io.group02.fight4flight.model.Flight;
@@ -62,7 +63,6 @@ public class FlightController {
         return ResponseEntity.ok(aircraftDTOs);
     }
 
-
     // Seat Endpoints
     @GetMapping("/seat/getAll")
     public List<Seat> getAllSeats() {
@@ -91,13 +91,33 @@ public class FlightController {
     }
 
     // Flight Endpoints
-    @PostMapping("/add")
-    public ResponseEntity<String> addFlight(@RequestBody Flight flight) {
-        flightService.saveFlight(flight);
-        return ResponseEntity.ok("Flight added successfully");
+    // @PostMapping("/add")
+    // public ResponseEntity<String> addFlight(@RequestBody Flight flight) {
+    // flightService.saveFlight(flight);
+    // return ResponseEntity.ok("Flight added successfully");
+    // }
+
+    //ADDING A FLIGHT DOES NOT WORK YET
+    @PostMapping("/addFlight")
+    public ResponseEntity<?> addFlight(@RequestBody FlightDTO flightDTO) {
+        Flight flight = new Flight();
+
+        // Set departure and destination
+        airportCodeService.findById(flightDTO.getDepartureId()).ifPresent(flight::setDeparture);
+        airportCodeService.findById(flightDTO.getDestinationId()).ifPresent(flight::setDestination);
+
+        // Set aircraft
+        aircraftService.findAircraftById(flightDTO.getAircraftId()).ifPresent(flight::setAircraft);
+
+        // Set times
+        flight.setDepartureTime(flightDTO.getDepartureTime());
+        flight.setArrivalTime(flightDTO.getArrivalTime());
+
+        flight = flightService.saveFlight(flight);
+        return ResponseEntity.ok(flight);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllFlights")
     public ResponseEntity<List<Flight>> getAllFlights() {
         return ResponseEntity.ok(flightService.getAllFlights());
     }

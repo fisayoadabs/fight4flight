@@ -47,4 +47,5 @@ public class Unregistered {
         System.out.println("GenericCustomer: Registering for a flight with customerid " + flightcustomerid);
         // Implement flight registration logic for generic customers
     }
+
 }

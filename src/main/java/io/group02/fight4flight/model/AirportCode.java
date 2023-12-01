@@ -11,6 +11,12 @@ public class AirportCode {
     private String country;
     private String portcode;
 
+    public AirportCode(){}
+
+    public AirportCode(Long portid) {
+        this.portid = portid;
+    }
+
     public String getCityState() {
         return this.citystate;
     }

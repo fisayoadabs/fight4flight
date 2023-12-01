@@ -1,51 +1,55 @@
-// package io.group02.fight4flight.model;
+package io.group02.fight4flight.model;
 
-// import jakarta.persistence.*;
+import jakarta.persistence.*;
 
-// @Entity
-// public class Ticket {
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private int ticketid;
+@Entity
+public class Ticket {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ticketid;
 
-//     @ManyToOne
-//     private Unregistered customer;
+    @ManyToOne
+    @JoinColumn(name = "passemail")
+    private Unregistered user; // The user associated with this ticket
 
-//     @ManyToOne
-//     private Flight flight;
+    @ManyToOne
+    @JoinColumn(name = "flightid", nullable = false)
+    private Flight flight;
 
-//     @ManyToOne
-//     private Seat seat;
+    @ManyToOne
+    @JoinColumn(name = "seatid", nullable = false)
+    private Seat seat;
 
-//     // Add other fields or methods as needed
+    // Constructors, getters and setters
 
-//     public int getTicketid() {
-//         return ticketid;
-//     }
+    public Ticket() {
+    }
 
-//     public GenericCustomer getCustomer() {
-//         return customer;
-//     }
+    public Long getTicketId() {
+        return ticketid;
+    }
 
-//     public void setCustomer(Unregistered customer) {
-//         this.customer = customer;
-//     }
+    public String getUser() {
+        return user.getEmail();
+    }
 
-//     public Flight getFlight() {
-//         return flight;
-//     }
+    public void setUser(Unregistered user) {
+        this.user = user;
+    }
 
-//     public void setFlight(Flight flight) {
-//         this.flight = flight;
-//     }
+    public Flight getFlight() {
+        return flight;
+    }
 
-//     public Seat getSeat() {
-//         return seat;
-//     }
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
 
-//     public void setSeat(Seat seat) {
-//         this.seat = seat;
-//     }
+    public Seat getSeat() {
+        return seat;
+    }
 
-//     // Add other getters and setters as needed
-// }
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
+}

@@ -13,7 +13,7 @@ function Customer() {
         console.log(customer)
         console.log("POST SENDING")
         console.log(JSON.stringify(customer))
-        fetch('http://localhost:8080/customer/add', {
+        fetch('http://localhost:8080/user/addUnregistered', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(customer)

@@ -1,17 +1,8 @@
 package io.group02.fight4flight.model;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import java.util.List;
-import java.time.format.DateTimeFormatter;
-
 import jakarta.persistence.*;
 
 @Entity

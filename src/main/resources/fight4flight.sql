@@ -51,16 +51,17 @@ CREATE TABLE AIRPORT_CODE(
 DROP TABLE IF EXISTS FLIGHT;
 CREATE TABLE FLIGHT (
     flightid        INT AUTO_INCREMENT PRIMARY KEY,
-    departure       int,
-    destination     int,
-    aircraft        int,
-    departureTime   DATETIME,
-    arrivalTime     DATETIME,
+    departure       int not null,
+    destination     int not null,
+    aircraftid        int not null,
+    departureTime   DATETIME not null,
+    arrivalTime     DATETIME not null,
    FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
      FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
-     FOREIGN KEY (aircraft) REFERENCES AIRCRAFT(aircraftid),
+     FOREIGN KEY (aircraftid) REFERENCES AIRCRAFT(aircraftid),
     CHECK (arrivalTime > departureTime)
 );
+
 DROP TABLE IF EXISTS CREW;
 CREATE TABLE CREW (
 	crewid				INT AUTO_INCREMENT PRIMARY KEY,
@@ -242,17 +243,13 @@ CREATE TABLE CARD (
     ccv					INT
 );
 
-
--- INSERT INTO FLIGHT (departure, destination, aircraft, departureTime, arrivalTime)
--- VALUES (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
-
--- DROP TABLE IF EXISTS TICKET;
--- CREATE TABLE TICKET (
--- 	ticketid			INT AUTO_INCREMENT PRIMARY KEY,
---     customerid			json,
---     flightid			json,
---     seatid				json
--- );
+DROP TABLE IF EXISTS TICKET;
+CREATE TABLE TICKET (
+	ticketid			INT AUTO_INCREMENT PRIMARY KEY,
+    customerid			json,
+    flightid			json,
+    seatid				json
+);
 
 INSERT INTO AIRPORT_CODE(citystate, country, portcode)
 VALUES
@@ -1751,6 +1748,11 @@ VALUES
 ("Zhengzhou", "China", "CGO"),
 ("Zhoushan", "China", "HSN"),
 ("Zurich", "Switzerland", "ZRH");
+
+INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTime)
+VALUES
+(123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
+(218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
 
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';

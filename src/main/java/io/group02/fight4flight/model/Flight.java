@@ -2,6 +2,7 @@ package io.group02.fight4flight.model;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
+import jakarta.websocket.OnOpen;
 
 @Entity
 public class Flight {
@@ -9,11 +10,11 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long flightid;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "departure") // Ensures it maps to 'departure' column in FLIGHT table
     private AirportCode departure;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "destination") // Maps to 'destination' column
     private AirportCode destination;
 
@@ -39,6 +40,10 @@ public class Flight {
     // this.FlightNumber = FlightNumber;
     // this.Seats = Seats;
     // }
+
+    public Flight() {
+        
+    }
 
     public AirportCode getDestination() {
         return this.destination;

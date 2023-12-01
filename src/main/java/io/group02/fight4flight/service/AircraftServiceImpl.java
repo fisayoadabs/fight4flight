@@ -1,10 +1,11 @@
 package io.group02.fight4flight.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.group02.fight4flight.model.Aircraft;
-import io.group02.fight4flight.model.Seat;
 import io.group02.fight4flight.repository.AircraftRepository;
 
 import java.util.List;
@@ -26,12 +27,13 @@ public class AircraftServiceImpl implements AircraftService {
         return craftRepository.findAll();
     }
 
-    // @Override 
-    // public List<Seat> getAllSeats(Long id) {
-    //     return craftRepository.findAllSeatsOnAircraft(id);
-    // }
-    // @Override
-    // public Aircraft findById(int aircraftId){
-    //     return craftRepository.findById(aircraftId);
-    // }
+    @Override
+    public Aircraft findById(Long aircraftID) {
+        return craftRepository.getReferenceById(aircraftID);
+    }
+
+    @Override
+    public Optional<Aircraft> findAircraftById(Long aircraftID) {
+        return craftRepository.findById(aircraftID);
+    }
 }

@@ -8,4 +8,6 @@ import io.group02.fight4flight.model.AirportCode;
 @Repository
 public interface AirportCodeRepository extends JpaRepository<AirportCode, Long>{
 
-    AirportCode findByPortcode(String departureCode);}
+    AirportCode findByPortcode(String departureCode);
+
+}

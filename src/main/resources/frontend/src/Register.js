@@ -53,7 +53,7 @@ const Register = () => {
         e.preventDefault();
 
         // Step 1: Fetch existing user data
-        const response = await fetch('http://localhost:8080/registered/getAll');
+        const response = await fetch('http://localhost:8080/user/getAllRegistered');
         const users = await response.json();
 
         // Step 2: Check if the username already exists
@@ -67,7 +67,7 @@ const Register = () => {
             // Step 4: Proceed with registration if username does not exist
             if (validName && validPassword && validMatch) {
                 const registee = { fname, lname, address, email, username, password };
-                fetch('http://localhost:8080/registered/register', {
+                fetch('http://localhost:8080/user/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

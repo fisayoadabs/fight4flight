@@ -26,7 +26,7 @@ const FlightBrowsingR = () => {
         // Fetch airport data from API and update state
         const fetchAirports = async () => {
             try {
-                const response = await fetch('http://localhost:8080/airport/getAll');
+                const response = await fetch('http://localhost:8080/flight-management/airport/getAll');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
