@@ -27,4 +27,9 @@ public class UnregisteredServiceImpl implements UnregisteredService {
     public List<Unregistered> getAllUnregistereds() {
         return customerRepository.findAll();
     }
+
+    @Override
+    public Unregistered getByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
 }

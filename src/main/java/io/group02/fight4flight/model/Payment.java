@@ -1,70 +1,59 @@
-// package io.group02.fight4flight.model;
+package io.group02.fight4flight.model;
 
-// import java.util.Date;
-// import jakarta.persistence.*;
+import jakarta.persistence.*;
+import java.util.Date;
 
-// // @Entity
-// public class Payment {
-//     // @Id
-//     // @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     // @Column(name = "PayID")
-//     private int PaymentID;
-//     private String PaymentType;
-//     private Date PaymentDate;
+@Entity
+public class Payment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "payid")
+    private Long paymentid;
 
-//     private float TotalPrice;
-//     private float Discount;
+    @OneToOne
+    private Card card;
 
-//     public Payment(int PaymentID, String PaymentType, Date PaymentDate,  float TotalPrice, float Discount) {
-//         this.PaymentID = PaymentID;
-//         this.PaymentType = PaymentType;
-//         this.PaymentDate = PaymentDate;
+    @OneToOne
+    private Flight flight;
 
-//         this.TotalPrice = TotalPrice;
-//         this.Discount = Discount;
-//     }
+    @OneToOne
+    private Unregistered user;
 
+    // Getters and Setters for paymentid
+    public Long getPaymentId() {
+        return paymentid;
+    }
 
+    public void setPaymentId(Long paymentid) {
+        this.paymentid = paymentid;
+    }
 
-//     public float getTotalPrice() {
-//         return this.TotalPrice;
-//     }
+    // Getters and Setters for card
+    public Card getCard() {
+        return card;
+    }
 
-//     public float getDiscount() {
-//         return this.Discount;
-//     }
+    public void setCard(Card card) {
+        this.card = card;
+    }
 
-//     public int getPaymentID() {
-//         return this.PaymentID;
-//     }
+    // Getters and Setters for flight
+    public Flight getFlight() {
+        return flight;
+    }
 
-//     public String getPaymentType() {
-//         return this.PaymentType;
-//     }
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
 
-//     public Date getPaymentDate() {
-//         return this.PaymentDate;
-//     }
+    // Getters and Setters for user
+    public Unregistered getUser() {
+        return user;
+    }
 
+    public void setUser(Unregistered user) {
+        this.user = user;
+    }
 
-//     public void setTotalPrice(float TotalPrice) {
-//         this.TotalPrice = TotalPrice;
-//     }
-
-//     public void setDiscount(float Discount) {
-//         this.Discount = Discount;
-//     }
-
-//     public void setPaymentID(int PaymentID) {
-//         this.PaymentID = PaymentID;
-//     }
-
-//     public void setPaymentType(String PaymentType) {
-//         this.PaymentType = PaymentType;
-//     }
-
-//     public void setPaymentDate(Date PaymentDate) {
-//         this.PaymentDate = PaymentDate;
-//     }
-
-// }
+    // Other methods and annotations as needed
+}

@@ -8,4 +8,7 @@ public interface RegisteredService {
     public Registered saveRegistered(Registered customer);
 
     public List<Registered> getAllRegistereds();
+
+    // public Registered getRegisteredById(Long userId);
+
 }

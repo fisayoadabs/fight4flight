@@ -1,42 +1,37 @@
-// package io.group02.fight4flight.service;
+package io.group02.fight4flight.service;
 
-// import io.group02.fight4flight.model.Payment;
-// import io.group02.fight4flight.repository.PaymentRepository;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;
+import io.group02.fight4flight.model.Payment;
+import io.group02.fight4flight.repository.PaymentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// import java.util.List;
-// import java.util.Optional;
+import java.util.List;
+import java.util.Optional;
 
-// @Service
-// public class PaymentService {
+@Service
+public class PaymentService {
+    
+    @Autowired
+    private PaymentRepository paymentRepository;
 
-//     private final PaymentRepository paymentRepository;
+    public Payment createPayment(Payment payment) {
+        return paymentRepository.save(payment);
+    }
 
-//     @Autowired
-//     public PaymentService(PaymentRepository paymentRepository) {
-//         this.paymentRepository = paymentRepository;
-//     }
+    public Optional<Payment> getPaymentById(Long id) {
+        return paymentRepository.findById(id);
+    }
 
-//     public Payment createPayment(Payment payment) {
-//         return paymentRepository.save(payment);
-//     }
+    public List<Payment> getAllPayments() {
+        return paymentRepository.findAll();
+    }
 
-//     public Optional<Payment> getPaymentById(Long id) {
-//         return paymentRepository.findById(id);
-//     }
+    public Payment updatePayment(Payment payment) {
+        return paymentRepository.save(payment);
+    }
 
-//     public List<Payment> getAllPayments() {
-//         return paymentRepository.findAll();
-//     }
+    public void deletePayment(Long id) {
+        paymentRepository.deleteById(id);
+    }
 
-//     public Payment updatePayment(Payment payment) {
-//         return paymentRepository.save(payment);
-//     }
-
-//     public void deletePayment(Long id) {
-//         paymentRepository.deleteById(id);
-//     }
-
-//     // Additional business logic can be added here
-// }
+}

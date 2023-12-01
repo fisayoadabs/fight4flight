@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface RegisteredRepository extends JpaRepository<Registered, String>{
     List<Registered> findByUsername(String username);
+
+    // Registered getReferenceById(Long userId);
 }

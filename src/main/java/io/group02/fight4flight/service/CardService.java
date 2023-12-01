@@ -1,11 +1,29 @@
 package io.group02.fight4flight.service;
 
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import io.group02.fight4flight.model.Card;
+import io.group02.fight4flight.repository.CardRepository;
 
-public interface CardService {
-    public Card addCard(Card cad);
+@Service
+public class CardService{
+    @Autowired
+    private CardRepository cardRepo;
 
-    public List<Card> getAllCards();
+    public Card addCard(Card cad) {
+        return cardRepo.save(cad);
+    }
+
+    public List<Card> getAllCards() {
+        return cardRepo.findAll();
+    }
+
+    public Optional<Card> getCardByEmail(String email) {
+        return null;
+    }
+    
 }

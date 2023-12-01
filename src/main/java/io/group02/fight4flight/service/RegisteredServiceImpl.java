@@ -23,4 +23,9 @@ public class RegisteredServiceImpl implements RegisteredService {
     public List<Registered> getAllRegistereds() {
         return userRepository.findAll();
     }
+
+    // @Override
+    // public Registered getRegisteredById(Long userId) {
+    //     return userRepository.getReferenceById(userId);
+    // }
 }
