@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS UNREGISTERED;
 CREATE TABLE UNREGISTERED (
     fname VARCHAR(25) NOT NULL,
     lname VARCHAR(25) NOT NULL,
-    email VARCHAR(25) NOT NULL PRIMARY KEY
+    email VARCHAR(30) NOT NULL PRIMARY KEY
 );
 
 INSERT INTO UNREGISTERED(fname, lname, email)
@@ -22,7 +22,7 @@ CREATE TABLE REGISTERED (
     fname				varchar(25) not null,
     lname				varchar(25) not null,
     address				varchar(125) not null,
-    email				varchar(25) not null,
+    email				varchar(30) not null,
     username			varchar(50) not null,
     password			varchar(50) not null
 );
@@ -246,9 +246,12 @@ CREATE TABLE CARD (
 DROP TABLE IF EXISTS TICKET;
 CREATE TABLE TICKET (
 	ticketid			INT AUTO_INCREMENT PRIMARY KEY,
-    customerid			json,
-    flightid			json,
-    seatid				json
+    passemail			varchar(30),
+    flightid			int not null,
+    seatid				int not null,
+    foreign key (passemail) references UNREGISTERED(email),
+    foreign key (flightid) references FLIGHT(flightid),
+    foreign key (seatid) references SEAT(seatid)
 );
 
 INSERT INTO AIRPORT_CODE(citystate, country, portcode)
@@ -1753,6 +1756,10 @@ INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTim
 VALUES
 (123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
 (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
+
+-- INSERT INTO TICKET(passemail, flightid, seatid)
+-- VALUES
+-- ("bt@gmail.com", 1, 1);
 
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';

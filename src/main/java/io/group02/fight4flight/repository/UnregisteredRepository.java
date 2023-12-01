@@ -11,5 +11,5 @@ import io.group02.fight4flight.model.Unregistered;
 @Repository
 public interface UnregisteredRepository extends JpaRepository<Unregistered, String> {
 
-    Optional<Flight> findByEmail(String userEmail);
+    Unregistered findByEmail(String userEmail);
 }
