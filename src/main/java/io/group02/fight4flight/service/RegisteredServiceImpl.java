@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.group02.fight4flight.domain.Registered;
+import io.group02.fight4flight.model.Registered;
 import io.group02.fight4flight.repository.RegisteredRepository;
 
 @Service

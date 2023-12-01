@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.group02.fight4flight.domain.Seat;
+import io.group02.fight4flight.model.Seat;
 import io.group02.fight4flight.repository.SeatRepository;
 
 @Service
@@ -23,4 +23,8 @@ public class SeatServiceImpl implements SeatService {
         return seatRepo.findAll();
     }
     
+    @Override
+    public List<Seat> getSeatsByAircraftId(Long aircraftid) {
+        return seatRepo.findByAircraftAircraftid(aircraftid);
+    }
 }

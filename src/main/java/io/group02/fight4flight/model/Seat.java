@@ -1,4 +1,6 @@
-package io.group02.fight4flight.domain;
+package io.group02.fight4flight.model;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 
@@ -12,8 +14,14 @@ public class Seat {
     private String seattype;
     private Double price;
 
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "aircraftid")
+    // @JoinColumn(name = "aircraftid", referencedColumnName = "aircraftid")
+    private Aircraft aircraft;
+
     public Seat() {
-        
+
     }
 
     public Long getSeatId() {
@@ -36,10 +44,6 @@ public class Seat {
         return this.price;
     }
 
-    public void setSeatId(Long id) {
-        this.seatid = id;
-    }
-
     public void setSeatName(String name) {
         this.seatname = name;
     }
@@ -56,9 +60,26 @@ public class Seat {
         this.price = cost;
     }
 
+    public Aircraft getAircraft() {
+        return aircraft;
+    }
 
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
+    }
 
-    Seat(String seatType){
-        this.seattype =seatType;
+    Seat(String seatType) {
+        this.seattype = seatType;
+    }
+
+    @Override
+    public String toString() {
+        return "Seat{" +
+                "seatid=" + seatid +
+                ", seatname='" + seatname + '\'' +
+                ", vacancy=" + vacancy +
+                ", seattype='" + seattype + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
