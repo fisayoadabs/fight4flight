@@ -21,12 +21,6 @@ public class SeatController {
     //     seatService.addSeat(chair);
     //     return "You have added your seat";
     // }
-    @PostMapping("/add")
-    public ResponseEntity<String> addSeat(@RequestBody Seat chair) {
-        System.out.println(chair);
-        seatService.addSeat(chair);
-        return ResponseEntity.ok("Seat added successfully");
-    }
 
     @GetMapping("/getAll")
     public List<Seat> list() {
