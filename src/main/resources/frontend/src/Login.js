@@ -1,11 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
-
-// Create a context to manage authentication state
-const AuthContext = React.createContext();
-
-// Create a custom hook to access the AuthContext
-export const useAuth = () => useContext(AuthContext);
 
 const Login = () => {
     const [username, setUser] = useState('');
@@ -52,95 +46,93 @@ const Login = () => {
 
 
     return (
-        <AuthContext.Provider value={{ handleLogout }}>
-            <section>
-                <p className={errMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errMessage}</p>
-                <h1>Login</h1>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="username">Username:</label>
+        <section>
+            <p className={errMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errMessage}</p>
+            <h1>Login</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    autoComplete="off"
+                    onChange={(e) => setUser(e.target.value)}
+                    value={username}
+                    required
+                />
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    required
+                />
+                {userType == "Crew" ? <div>
+                    <label htmlFor="crewkey">Crew Key:</label>
                     <input
                         type="text"
                         id="username"
                         autoComplete="off"
-                        onChange={(e) => setUser(e.target.value)}
+                        onChange={(e) => setCrewKey(e.target.value)}
                         value={username}
                         required
                     />
-                    <label htmlFor="password">Password:</label>
+                </div> : null}
+                {userType == "Admin" ? <div>
+                    <label htmlFor="adminkey">Admin Key:</label>
                     <input
-                        type="password"
-                        id="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
+                        type="text"
+                        id="username"
+                        autoComplete="off"
+                        onChange={(e) => setAdminKey(e.target.value)}
+                        value={username}
                         required
                     />
-                    {userType === "Crew" ? <div>
-                        <label htmlFor="crewkey">Crew Key:</label>
-                        <input
-                            type="text"
-                            id="crewkey"
-                            autoComplete="off"
-                            onChange={(e) => setCrewKey(e.target.value)}
-                            value={username}
-                            required
-                        />
-                    </div> : null}
-                    {userType === "Admin" ? <div>
-                        <label htmlFor="adminkey">Admin Key:</label>
-                        <input
-                            type="text"
-                            id="adminkey"
-                            autoComplete="off"
-                            onChange={(e) => setAdminKey(e.target.value)}
-                            value={username}
-                            required
-                        />
-                    </div> : null}
-                    <button>Log In</button>
-                </form>
+                </div> : null}
+                <button>Log In</button>
+            </form>
+            <p>
+                <a href="/guest/flightbrowsing">Continue as Guest</a>
+            </p>
+            <div className="options">
+                <h3>Log in as: </h3>
+                <ul>
+                    <input
+                        type="radio"
+                        name="userType"
+                        value="User"
+                        className="radio"
+                        onChange={(e) => setUserType(e.target.value)}
+                    />{" "}
+                    User
+                    <input
+                        type="radio"
+                        name="userType"
+                        value="Crew"
+                        className="radio"
+                        onChange={(e) => setUserType(e.target.value)}
+                    />{" "}
+                    Crew
+                    <input
+                        type="radio"
+                        name="userType"
+                        value="Admin"
+                        className="radio"
+                        onChange={(e) => setUserType(e.target.value)}
+                    />
+                    Admin
+                </ul>
+            </div>
+            <div>
                 <p>
-                    <a href="/guest/flightbrowsing">Continue as Guest</a>
+                    Don't have an account?
+                    {/* Option 1: Link for registration */}
+                    <a href="/register">Register Here</a>
+                    {/* Option 2: Button for registration (uncomment to use) */}
+                    {/* <button onClick={handleRegisterNavigation}>Register</button> */}
                 </p>
-                <div className="options">
-                    <h3>Log in as: </h3>
-                    <ul>
-                        <input
-                            type="radio"
-                            name="userType"
-                            value="User"
-                            className="radio"
-                            onChange={(e) => setUserType(e.target.value)}
-                        />{" "}
-                        User
-                        <input
-                            type="radio"
-                            name="userType"
-                            value="Crew"
-                            className="radio"
-                            onChange={(e) => setUserType(e.target.value)}
-                        />{" "}
-                        Crew
-                        <input
-                            type="radio"
-                            name="userType"
-                            value="Admin"
-                            className="radio"
-                            onChange={(e) => setUserType(e.target.value)}
-                        />
-                        Admin
-                    </ul>
-                </div>
-                <div>
-                    <p>
-                        Don't have an account?
-                        {/* Option 1: Link for registration */}
-                        <a href="/register"> Register Here</a>
-                        {/* Option 2: Button for registration (uncomment to use) */}
-                        {/* <button onClick={handleRegisterNavigation}>Register</button> */}
-                    </p>
-                </div>
-            </section>
-        </AuthContext.Provider>
+            </div>
+        </section>
     )
 }
 
