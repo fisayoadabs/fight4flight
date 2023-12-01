@@ -5,12 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import io.group02.fight4flight.DTO.TicketDTO;
 import io.group02.fight4flight.model.Registered;
-import io.group02.fight4flight.model.Ticket;
 import io.group02.fight4flight.model.Unregistered;
 import io.group02.fight4flight.service.RegisteredService;
-import io.group02.fight4flight.service.TicketService;
 import io.group02.fight4flight.service.UnregisteredService;
 
 @RestController
@@ -22,54 +19,6 @@ public class UserController {
     @Autowired
     private UnregisteredService unregisteredService;
 
-    @Autowired
-    private TicketService ticketService;
-
-    // // Endpoint to create a ticket
-    // @PostMapping("/createTicket")
-    // public ResponseEntity<Ticket> createTicket(@RequestBody TicketDTO ticketDto) {
-    //     Ticket newTicket = ticketService.createTicket(ticketDto);
-    //     return ResponseEntity.ok(newTicket);
-    // }
-
-    // // Endpoint to get all tickets
-    // @GetMapping("/getAllTickets")
-    // public ResponseEntity<List<Ticket>> getAllTickets() {
-    //     List<Ticket> tickets = ticketService.getAllTickets();
-    //     return ResponseEntity.ok(tickets);
-    // }
-
-    // // Endpoint to delete a ticket by ID
-    // @DeleteMapping("/deleteTicket/{ticketId}")
-    // public ResponseEntity<String> deleteTicket(@PathVariable Long ticketId, @RequestBody String userEmail) {
-    //     try {
-    //         ticketService.deleteTicket(ticketId, userEmail);
-    //         return ResponseEntity.ok("Ticket deleted successfully.");
-    //     } catch (Exception e) {
-    //         return ResponseEntity.badRequest().body(e.getMessage());
-    //     }
-    // }
-
-    @GetMapping("/getAllTickets")
-    public ResponseEntity<List<Ticket>> getAllTickets() {
-        List<Ticket> tickets = ticketService.getAllTicketsCustom(); // Assuming you have a corresponding method in your
-                                                                    // service
-        return ResponseEntity.ok(tickets);
-    }
-
-    @DeleteMapping("/deleteTicket/{ticketId}")
-    public ResponseEntity<String> deleteTicket(@PathVariable Long ticketId,
-            @RequestParam(required = false) String userEmail) {
-        ticketService.deleteTicketCustom(ticketId, userEmail); // Assuming you have a corresponding method in your
-                                                               // service
-        return ResponseEntity.ok("Ticket deleted successfully.");
-    }
-
-    @PostMapping("/createTicket")
-    public ResponseEntity<Ticket> createTicket(@RequestBody TicketDTO ticketDto) {
-        Ticket newTicket = ticketService.createTicket(ticketDto);
-        return ResponseEntity.ok(newTicket);
-    }
 
     // Endpoint to add an unregistered user
     @PostMapping("/addUnregistered")

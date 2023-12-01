@@ -45,6 +45,8 @@ public class Flight {
         
     }
 
+    public Long getFlightid(){return flightid;}
+
     public AirportCode getDestination() {
         return this.destination;
     }

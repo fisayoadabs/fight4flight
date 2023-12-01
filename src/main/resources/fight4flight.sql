@@ -243,17 +243,6 @@ CREATE TABLE CARD (
     ccv					INT
 );
 
-DROP TABLE IF EXISTS TICKET;
-CREATE TABLE TICKET (
-	ticketid			INT AUTO_INCREMENT PRIMARY KEY,
-    passemail			varchar(30),
-    flightid			int not null,
-    seatid				int not null,
-    foreign key (passemail) references UNREGISTERED(email),
-    foreign key (flightid) references FLIGHT(flightid),
-    foreign key (seatid) references SEAT(seatid)
-);
-
 INSERT INTO AIRPORT_CODE(citystate, country, portcode)
 VALUES
 ("Aalborg", "Denmark", "AAL"),
@@ -1752,14 +1741,10 @@ VALUES
 ("Zhoushan", "China", "HSN"),
 ("Zurich", "Switzerland", "ZRH");
 
-INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTime)
-VALUES
-(123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
-(218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
-
--- INSERT INTO TICKET(passemail, flightid, seatid)
+-- INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTime)
 -- VALUES
--- ("bt@gmail.com", 1, 1);
+-- (123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
+-- (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
 
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';
