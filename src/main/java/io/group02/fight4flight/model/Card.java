@@ -9,45 +9,66 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cardid;
-    private int cardnumber;
+    private Long cardnumber;
     private String cardname;
-    private Date carddate;
+    private int expiryyear;
+    private int expirymonth;
     private int ccv;
+    private float balance;
 
-    public Long getCardId() {
-        return this.cardid;
+    public Long getCardid() {
+        return cardid;
     }
 
-    public int getCardNumber() {
-        return this.cardnumber;
+    public void setCardid(Long cardid) {
+        this.cardid = cardid;
     }
 
-    public String getCardName() {
-        return this.cardname;
+    public Long getCardnumber() {
+        return cardnumber;
     }
 
-    public Date getCardDate() {
-        return this.carddate;
+    public void setCardnumber(Long cardnumber) {
+        this.cardnumber = cardnumber;
+    }
+
+    public String getCardname() {
+        return cardname;
+    }
+
+    public void setCardname(String cardname) {
+        this.cardname = cardname;
+    }
+
+    public int getExpiryyear() {
+        return expiryyear;
+    }
+
+    public void setExpiryyear(int expiryyear) {
+        this.expiryyear = expiryyear;
+    }
+
+    public int getExpirymonth() {
+        return expirymonth;
+    }
+
+    public void setExpirymonth(int expirymonth) {
+        this.expirymonth = expirymonth;
     }
 
     public int getCcv() {
-        return this.ccv;
-    }
-
-    public void setCardNumber(int num) {
-        this.cardnumber = num;
-    }
-
-    public void setCardName(String nom) {
-        this.cardname = nom;
-    }
-
-    public void setCardDate(Date today) {
-        this.carddate = today;
+        return ccv;
     }
 
     public void setCcv(int ccv) {
         this.ccv = ccv;
     }
 
+    public float getBalance() {
+        return balance;
+    }
+
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
 }

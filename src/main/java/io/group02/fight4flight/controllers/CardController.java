@@ -14,12 +14,6 @@ public class CardController {
     @Autowired
     private CardService cardService;
 
-    @PostMapping("/add")
-    public String add(@RequestBody Card cad) {
-        cardService.addCard(cad);
-        return "You have added your card";
-    }
-
     @GetMapping("/getAll")
     public List<Card> list() {
         return cardService.getAllCards();

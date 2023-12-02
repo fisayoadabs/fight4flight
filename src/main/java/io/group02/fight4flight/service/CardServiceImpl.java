@@ -14,11 +14,6 @@ public class CardServiceImpl implements CardService {
     private CardRepository cardRepo;
 
     @Override
-    public Card addCard(Card cad) {
-        return cardRepo.save(cad);
-    }
-
-    @Override
     public List<Card> getAllCards() {
         return cardRepo.findAll();
     }
