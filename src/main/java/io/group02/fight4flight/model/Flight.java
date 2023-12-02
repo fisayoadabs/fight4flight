@@ -29,18 +29,6 @@ public class Flight {
     // @JoinColumn(name="crewid", referencedColumnName = "crewid")
     // private Crew crewid;
 
-    // public Flight(Location Destination, Location Origin, Date DepartureTime, Date
-    // ArrivalTime, Aircraft Aircraft, int FlightNumber, Map<Seat, GenericCustomer>
-    // Seats){
-    // this.Destination = Destination;
-    // this.Origin = Origin;
-    // this.DepartureTime = DepartureTime;
-    // this.ArrivalTime = ArrivalTime;
-    // this.Aircraft = Aircraft;
-    // this.FlightNumber = FlightNumber;
-    // this.Seats = Seats;
-    // }
-
     public Flight() {
         
     }

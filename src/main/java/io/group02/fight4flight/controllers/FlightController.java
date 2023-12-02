@@ -1,6 +1,7 @@
 package io.group02.fight4flight.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 import io.group02.fight4flight.DTO.AircraftDTO;
 import io.group02.fight4flight.DTO.FlightDTO;
+import io.group02.fight4flight.DTO.SeatDTO;
 import io.group02.fight4flight.model.Aircraft;
 import io.group02.fight4flight.model.AirportCode;
 import io.group02.fight4flight.model.Flight;
@@ -30,13 +32,6 @@ public class FlightController {
     @Autowired
     private SeatService seatService;
 
-    // Aircraft Endpoints
-    // @PostMapping("/aircraft/add")
-    // public ResponseEntity<String> addAircraft(@RequestBody Aircraft craft) {
-    // aircraftService.saveAircraft(craft);
-    // return ResponseEntity.ok("Aircraft added successfully");
-    // }
-
     @PostMapping("/aircraft/add")
     public ResponseEntity<String> addAircraft(@RequestBody AircraftDTO aircraftDTO) {
         Aircraft aircraft = new Aircraft();
@@ -48,11 +43,6 @@ public class FlightController {
         aircraftService.saveAircraft(aircraft);
         return ResponseEntity.ok("Aircraft added successfully");
     }
-
-    // @GetMapping("/aircraft/getAll")
-    // public ResponseEntity<List<Aircraft>> getAllAircrafts() {
-    // return ResponseEntity.ok(aircraftService.getAllAircrafts());
-    // }
 
     @GetMapping("/aircraft/getAll")
     public ResponseEntity<List<AircraftDTO>> getAllAircrafts() {
@@ -77,6 +67,72 @@ public class FlightController {
         }
         return ResponseEntity.ok(seats);
     }
+
+    // @PutMapping("/seat/updateVacancy/{aircraftid}/{seatId}")
+    // public ResponseEntity<?> updateSeatVacancy(@PathVariable Long aircraftid, @PathVariable Long seatId) {
+    //     Optional<Seat> seatOptional = seatService.getSeatById(seatId);
+
+    //     if (!seatOptional.isPresent()) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+
+    //     Seat seat = seatOptional.get();
+    //     if (seat.getAircraft() == null || !seat.getAircraft().getAircraftID().equals(aircraftid)) {
+    //         return ResponseEntity.badRequest().body("Seat does not belong to the specified aircraft");
+    //     }
+
+    //     if (!seat.getVacancy()) {
+    //         return ResponseEntity.badRequest().body("Seat is already occupied");
+    //     }
+
+    //     seat.setVacancy(false);
+    //     seatService.saveSeat(seat);
+    //     return ResponseEntity.ok("Seat vacancy updated successfully");
+    // }
+    @PutMapping("/seat/occupy")
+    public ResponseEntity<?> occupySeat(@RequestBody SeatDTO seatUpdateDTO) {
+        Optional<Seat> seatOptional = seatService.getSeatById(seatUpdateDTO.getSeatId());
+
+        if (!seatOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Seat seat = seatOptional.get();
+        if (seat.getAircraft() == null || !seat.getAircraft().getAircraftID().equals(seatUpdateDTO.getAircraftId())) {
+            return ResponseEntity.badRequest().body("Seat does not belong to the specified aircraft");
+        }
+
+        if (!seat.getVacancy()) {
+            return ResponseEntity.badRequest().body("Seat is already occupied");
+        }
+
+        seat.setVacancy(false);
+        seatService.saveSeat(seat);
+        return ResponseEntity.ok("Seat occupied successfully");
+    }
+
+    @PutMapping("/seat/unoccupy")
+    public ResponseEntity<?> unoccupySeatVacancy(@RequestBody SeatDTO seatUpdateDTO) {
+        Optional<Seat> seatOptional = seatService.getSeatById(seatUpdateDTO.getSeatId());
+
+        if (!seatOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Seat seat = seatOptional.get();
+        if (seat.getAircraft() == null || !seat.getAircraft().getAircraftID().equals(seatUpdateDTO.getAircraftId())) {
+            return ResponseEntity.badRequest().body("Seat does not belong to the specified aircraft");
+        }
+
+        if (seat.getVacancy()) {
+            return ResponseEntity.badRequest().body("Seat is already unoccupied");
+        }
+
+        seat.setVacancy(true);
+        seatService.saveSeat(seat);
+        return ResponseEntity.ok("Seat remove successfully");
+    }
+
 
     // Airport Code Endpoints
     @PostMapping("/airport/add")

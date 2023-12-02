@@ -24,8 +24,10 @@ public class RegisteredServiceImpl implements RegisteredService {
         return userRepository.findAll();
     }
 
-    // @Override
-    // public Registered getRegisteredById(Long userId) {
-    //     return userRepository.getReferenceById(userId);
-    // }
+    @Override
+    public Registered getRegisteredByEmail(String mail) {
+        return userRepository.getReferenceById(mail);
+    }
+
+    
 }

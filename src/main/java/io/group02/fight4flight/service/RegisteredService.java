@@ -9,6 +9,6 @@ public interface RegisteredService {
 
     public List<Registered> getAllRegistereds();
 
-    // public Registered getRegisteredById(Long userId);
+    public Registered getRegisteredByEmail(String mail);
 
 }

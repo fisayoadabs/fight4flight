@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "UNREGISTERED")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Unregistered {
+public class Unregistered implements GenericCustomer{
 
     private String fname;
     private String lname;
@@ -33,13 +32,14 @@ public class Unregistered {
         return email;
     }
 
+    @Override
     public double getDiscountLounges() {
-        System.out.println("GenericCustomer: You get a default discount for LOUNGES.");
-        return 0.1; // Default discount
+        System.out.println("Unregistered so no lounge privilages");
+        return 0.0; // Default discount
     }
 
     public double getRefund() {
-        System.out.println("GenericCustomer: You get a default refund.");
+        System.out.println("Unregistered you get 20% refunds");
         return 0.2; // Default refund
     }
 

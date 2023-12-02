@@ -4,29 +4,48 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "REGISTERED")
-public class Registered extends Unregistered {
+public class Registered implements GenericCustomer{
 
-    private int registerid;
-
+    @Id
+    private String email;
+    private String fname;
+    private String lname;
     private String address;
     private String username;
     private String password;
 
     // Add other fields as needed
 
-    public Registered() {
-        super();
-    }
+    public Registered() {}
 
-    public Registered(Unregistered user, String address, String username, String password) {
-        super(user.getFname(), user.getLname(), user.getEmail());
+    public Registered(String fname, String lname, String email, String address, String username, String password) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
         this.address = address;
         this.username = username;
         this.password = password;
     }
 
-    public int getRegisterId() {
-        return registerid;
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getFname() {
+        return this.fname;
+    }
+
+    public void setFname(String name) {
+        this.fname = name;
+    }
+
+
+     public String getLname() {
+        return this.lname;
+    }
+
+    public void setLname(String name) {
+        this.lname = name;
     }
 
     public String getAddress() {

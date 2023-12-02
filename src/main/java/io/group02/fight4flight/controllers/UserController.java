@@ -31,7 +31,7 @@ public class UserController {
     private PaymentService paymentService;
 
     // Endpoint to add an unregistered user
-    @PostMapping("/addUnregistered")
+    @PutMapping("/addUnregistered")
     public String addUnregistered(@RequestBody Unregistered customer) {
         unregisteredService.saveUnregistered(customer);
         return "Unregistered user created";
@@ -44,14 +44,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody Registered user) {
-        // Create an Unregistered user with only common fields
-        Unregistered unregisteredUser = new Unregistered(user.getEmail(), user.getFname(), user.getLname());
-        unregisteredService.saveUnregistered(unregisteredUser);
-
+    public String register(@RequestBody Registered user) {;
         // Save the Registered user
         registeredService.saveRegistered(user);
-        return "User registered successfully and added to both Unregistered and Registered tables.";
+        return "User registered successfully";
     }
 
     // Endpoint to get all registered users
@@ -60,47 +56,47 @@ public class UserController {
         return registeredService.getAllRegistereds();
     }
 
-    @PostMapping("/{email}/addPayment")
-    public ResponseEntity<?> addPayment(@PathVariable String email, @RequestBody Payment payment) {
-        if (!email.equals(payment.getEmail())) {
-            return ResponseEntity.badRequest().body("Email mismatch");
-        }
-        Unregistered user = unregisteredService.getByEmail(email);
-        if (user == null) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        Payment newPayment = paymentService.createPayment(payment);
-        return ResponseEntity.ok(newPayment);
-    }
+    // @PostMapping("/{email}/addPayment")
+    // public ResponseEntity<?> addPayment(@PathVariable String email, @RequestBody Payment payment) {
+    //     if (!email.equals(payment.getEmail())) {
+    //         return ResponseEntity.badRequest().body("Email mismatch");
+    //     }
+    //     Unregistered user = unregisteredService.getByEmail(email);
+    //     if (user == null) {
+    //         return ResponseEntity.badRequest().body("User not found");
+    //     }
+    //     Payment newPayment = paymentService.createPayment(payment);
+    //     return ResponseEntity.ok(newPayment);
+    // }
 
-    // Endpoint to remove a payment for a registered user
-    @DeleteMapping("/{email}/removePayment/{paymentId}")
-    public ResponseEntity<?> removePayment(@PathVariable String email, @PathVariable Long paymentId) {
-        Optional<Payment> paymentOptional = paymentService.getPaymentById(paymentId);
-        if (!paymentOptional.isPresent() || !email.equals(paymentOptional.get().getEmail())) {
-            return ResponseEntity.badRequest().body("User or Payment not found or email mismatch");
-        }
-        paymentService.deletePayment(paymentId);
-        return ResponseEntity.ok("Payment removed successfully");
-    }
+    // // Endpoint to remove a payment for a registered user
+    // @DeleteMapping("/{email}/removePayment/{paymentId}")
+    // public ResponseEntity<?> removePayment(@PathVariable String email, @PathVariable Long paymentId) {
+    //     Optional<Payment> paymentOptional = paymentService.getPaymentById(paymentId);
+    //     if (!paymentOptional.isPresent() || !email.equals(paymentOptional.get().getEmail())) {
+    //         return ResponseEntity.badRequest().body("User or Payment not found or email mismatch");
+    //     }
+    //     paymentService.deletePayment(paymentId);
+    //     return ResponseEntity.ok("Payment removed successfully");
+    // }
 
-    @GetMapping("/{email}/payments/{id}")
-    public ResponseEntity<?> getPaymentsByEmail(@PathVariable String email, @PathVariable Long id) {
-        // Assuming the PaymentService has a method to get payments by email
-        Optional<Payment> payments = paymentService.getPaymentById(id);
-        if (payments.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Payment payment = payments.get();
+    // @GetMapping("/{email}/payments/{id}")
+    // public ResponseEntity<?> getPaymentsByEmail(@PathVariable String email, @PathVariable Long id) {
+    //     // Assuming the PaymentService has a method to get payments by email
+    //     Optional<Payment> payments = paymentService.getPaymentById(id);
+    //     if (payments.isEmpty()) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     Payment payment = payments.get();
 
-        // Assuming 'Payment' has a method to get the associated user's email.
-        // This also assumes that there is a relationship between Payment and User entities.
-        if (!email.equals(payment.getEmail())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied for this email");
-        }
+    //     // Assuming 'Payment' has a method to get the associated user's email.
+    //     // This also assumes that there is a relationship between Payment and User entities.
+    //     if (!email.equals(payment.getEmail())) {
+    //         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied for this email");
+    //     }
 
-        return ResponseEntity.ok(payment);
-    }
+    //     return ResponseEntity.ok(payment);
+    // }
     
     // Add card-related endpoints from CardController
     @PostMapping("/{useremail}/addCard")
