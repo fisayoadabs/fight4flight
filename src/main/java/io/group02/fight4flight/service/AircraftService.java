@@ -8,11 +8,11 @@ import java.util.Optional;
 import io.group02.fight4flight.model.Aircraft;
 
 public interface AircraftService {
-    public Aircraft saveAircraft(Aircraft customer);
+    Aircraft saveAircraft(Aircraft customer);
 
-    public List<Aircraft> getAllAircrafts();
+    List<Aircraft> getAllAircrafts();
 
-    public Aircraft findById(Long aircraftID);
+    Aircraft findById(Long aircraftID);
 
     Optional<Aircraft> findAircraftById(Long aircraftID);
 }

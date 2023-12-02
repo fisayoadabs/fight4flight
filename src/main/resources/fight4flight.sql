@@ -43,7 +43,7 @@ CREATE TABLE AIRPORT_CODE(
 	portid				INT AUTO_INCREMENT PRIMARY KEY,
     citystate			varchar(50) not null,
     country				varchar(50) not null,
-    portcode			varchar(20)
+    portcode			varchar(20) not null
 );
 
 DROP TABLE IF EXISTS FLIGHT;
@@ -52,22 +52,12 @@ CREATE TABLE FLIGHT (
     departure       int not null,
     destination     int not null,
     aircraftid      int not null,
-    departureTime   DATETIME not null,
-    arrivalTime     DATETIME not null,
-   FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
-     FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
-     FOREIGN KEY (aircraftid) REFERENCES AIRCRAFT(aircraftid),
-    CHECK (arrivalTime > departureTime)
-);
-
-DROP TABLE IF EXISTS CREW;
-CREATE TABLE CREW (
-	crewid				INT AUTO_INCREMENT PRIMARY KEY,
---     pilot				int,
---     copilot				int,
-    flightAttendances	int,
-    flight				int,
-    FOREIGN KEY (flight) REFERENCES FLIGHT(flightid)
+    departuretime   DATETIME,
+    arrivaltime     DATETIME,
+	FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
+	FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
+	FOREIGN KEY (aircraftid) REFERENCES AIRCRAFT(aircraftid)
+--     CHECK (arrivalTime > departureTime)
 );
     
 DROP TABLE IF EXISTS SEAT;
@@ -1715,11 +1705,14 @@ VALUES
 ("Zhoushan", "China", "HSN"),
 ("Zurich", "Switzerland", "ZRH");
 
-INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTime)
-VALUES
-(123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
-(218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
+-- INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTime)
+-- VALUES
+-- (123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
+-- (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
 
+INSERT INTO FLIGHT(departure, destination, aircraftid, departuretime, arrivaltime)
+VALUES
+(123, 245, 1, "2023-12-01 12:00:00", "2023-12-01 05:30:00");
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';
 GRANT ALL ON FIGHTFORFLIGHT.* TO 'dev'@'%';

@@ -38,7 +38,6 @@ public class FlightController {
         aircraft.setAircraftID(aircraftDTO.getAircraftId());
         aircraft.setAircraftName(aircraftDTO.getAircraftName());
         aircraft.setModel(aircraftDTO.getModel());
-        // Set other fields as necessary
 
         aircraftService.saveAircraft(aircraft);
         return ResponseEntity.ok("Aircraft added successfully");
@@ -68,27 +67,6 @@ public class FlightController {
         return ResponseEntity.ok(seats);
     }
 
-    // @PutMapping("/seat/updateVacancy/{aircraftid}/{seatId}")
-    // public ResponseEntity<?> updateSeatVacancy(@PathVariable Long aircraftid, @PathVariable Long seatId) {
-    //     Optional<Seat> seatOptional = seatService.getSeatById(seatId);
-
-    //     if (!seatOptional.isPresent()) {
-    //         return ResponseEntity.notFound().build();
-    //     }
-
-    //     Seat seat = seatOptional.get();
-    //     if (seat.getAircraft() == null || !seat.getAircraft().getAircraftID().equals(aircraftid)) {
-    //         return ResponseEntity.badRequest().body("Seat does not belong to the specified aircraft");
-    //     }
-
-    //     if (!seat.getVacancy()) {
-    //         return ResponseEntity.badRequest().body("Seat is already occupied");
-    //     }
-
-    //     seat.setVacancy(false);
-    //     seatService.saveSeat(seat);
-    //     return ResponseEntity.ok("Seat vacancy updated successfully");
-    // }
     @PutMapping("/seat/occupy")
     public ResponseEntity<?> occupySeat(@RequestBody SeatDTO seatUpdateDTO) {
         Optional<Seat> seatOptional = seatService.getSeatById(seatUpdateDTO.getSeatId());
@@ -133,7 +111,6 @@ public class FlightController {
         return ResponseEntity.ok("Seat remove successfully");
     }
 
-
     // Airport Code Endpoints
     @PostMapping("/airport/add")
     public ResponseEntity<String> addAirport(@RequestBody AirportCode port) {
@@ -147,30 +124,58 @@ public class FlightController {
     }
 
     // Flight Endpoints
-    // @PostMapping("/add")
-    // public ResponseEntity<String> addFlight(@RequestBody Flight flight) {
-    // flightService.saveFlight(flight);
-    // return ResponseEntity.ok("Flight added successfully");
-    // }
 
-    //ADDING A FLIGHT DOES NOT WORK YET
+    // ADDING A FLIGHT DOES NOT WORK YET
+    // @PostMapping("/addFlight")
+    // public ResponseEntity<?> addFlight(@RequestBody FlightDTO flightDTO) {
+    // Flight flight = new Flight();
+
+    // // Set departure and destination
+    // Optional<AirportCode> departure =
+    // airportCodeService.findById(flightDTO.getDepartureId());
+    // Optional<AirportCode> destination =
+    // airportCodeService.findById(flightDTO.getDestinationId());
+    // Aircraft aircraftid = aircraftService.findById(flightDTO.getAircraftId());
+    // if (!departure.isPresent() || !destination.isPresent()) {
+    // return ResponseEntity.badRequest().body("Invalid departure or destination
+    // ID");
+    // }
+    // flight.setDeparture(departure.get());
+    // flight.setDestination(destination.get());
+    // flight.setAircraft(aircraftid);
+    // // Set departure and destination
+    // airportCodeService.findById(flightDTO.getDepartureId()).ifPresent(flight::setDeparture);
+    // airportCodeService.findById(flightDTO.getDestinationId()).ifPresent(flight::setDestination);
+
+    // // Set aircraft
+    // aircraftService.findAircraftById(flightDTO.getAircraftId()).ifPresent(flight::setAircraft);
+
+    // // Set times
+    // flight.setDepartureTime(flightDTO.getDepartureTime());
+    // flight.setArrivalTime(flightDTO.getArrivalTime());
+
+    // flight = flightService.saveFlight(flight);
+    // return ResponseEntity.ok(flight);
+    // }
     @PostMapping("/addFlight")
-    public ResponseEntity<?> addFlight(@RequestBody FlightDTO flightDTO) {
+    public ResponseEntity<String> addFlight(@RequestBody FlightDTO flightDTO) {
         Flight flight = new Flight();
 
-        // Set departure and destination
-        airportCodeService.findById(flightDTO.getDepartureId()).ifPresent(flight::setDeparture);
-        airportCodeService.findById(flightDTO.getDestinationId()).ifPresent(flight::setDestination);
+        flight.setFlightid(flightDTO.getFlightId());
+        Optional<AirportCode> depart = airportCodeService.findById(flightDTO.getDepartureId());
+        flight.setDeparture(depart.get());
+        Optional<AirportCode> destin = airportCodeService.findById(flightDTO.getDestinationId());
+        flight.setDestination(destin.get());
+        Aircraft kraft = aircraftService.findById(flightDTO.getAircraftId());
+        flight.setAircraft(kraft);
 
-        // Set aircraft
-        aircraftService.findAircraftById(flightDTO.getAircraftId()).ifPresent(flight::setAircraft);
-
-        // Set times
         flight.setDepartureTime(flightDTO.getDepartureTime());
+
         flight.setArrivalTime(flightDTO.getArrivalTime());
 
-        flight = flightService.saveFlight(flight);
-        return ResponseEntity.ok(flight);
+        flightService.saveFlight(flight);
+        return ResponseEntity.ok("Flight added successfully"); // This should now return a Flight object with the
+                                                               // generated flightid
     }
 
     @GetMapping("/getAllFlights")
