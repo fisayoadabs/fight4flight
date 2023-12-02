@@ -13,7 +13,7 @@ public class Registered implements GenericCustomer {
     private String address;
     private String username;
     private String password;
-
+    
     // Add other fields as needed
 
     public Registered() {

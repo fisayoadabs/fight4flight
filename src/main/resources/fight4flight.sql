@@ -46,19 +46,6 @@ CREATE TABLE AIRPORT_CODE(
     portcode			varchar(20) not null
 );
 
-DROP TABLE IF EXISTS CREW_MEMBER;
-CREATE TABLE CREW_MEMBER (
-	crewid			INT AUTO_INCREMENT PRIMARY KEY,
-    fname			VARCHAR(30) NOT NULL,
-    lname			VARCHAR(30) NOT NULL,
-    role			ENUM('Pilot','Co-pilot', 'Attendance'),
-    email			VARCHAR(30) NOT NULL,
-    username		VARCHAR(30) NOT NULL,
-    password		VARCHAR(30) NOT NULL
-);
-INSERT INTO CREW_MEMBER(fname, lname, role, email, username, password)
-VALUES("John", "Doe", "Pilot", "john.doe@example.com", "johndoe", "securepassword");
-
 DROP TABLE IF EXISTS FLIGHT;
 CREATE TABLE FLIGHT (
     flightid        INT AUTO_INCREMENT PRIMARY KEY,
@@ -70,6 +57,19 @@ CREATE TABLE FLIGHT (
 	FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
 	FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
 	FOREIGN KEY (aircraftid) REFERENCES AIRCRAFT(aircraftid)
+);
+
+DROP TABLE IF EXISTS CREW_MEMBER;
+CREATE TABLE CREW_MEMBER (
+	crewid			INT AUTO_INCREMENT PRIMARY KEY,
+    fname			VARCHAR(30) NOT NULL,
+    lname			VARCHAR(30) NOT NULL,
+    role			ENUM('Pilot','Co-pilot', 'Attendance'),
+    email			VARCHAR(30) NOT NULL,
+    username		VARCHAR(30) NOT NULL,
+    password		VARCHAR(30) NOT NULL,
+    flightnumber	INT,
+    FOREIGN KEY(flightnumber) REFERENCES FLIGHT(flightid)
 );
     
 DROP TABLE IF EXISTS SEAT;
@@ -217,6 +217,20 @@ CREATE TABLE CARD (
     cardname			varchar(45) not null,
     carddate			date,
     ccv					INT
+);
+
+DROP TABLE IF EXISTS TICKET;
+CREATE TABLE TICKET (
+    ticketid             INT AUTO_INCREMENT PRIMARY KEY,
+    passenger_email      VARCHAR(30) NOT NULL,
+    flightid             INT NOT NULL,
+    seatid               INT NOT NULL,
+    departure_location   VARCHAR(50) NOT NULL,
+    destination_location VARCHAR(50) NOT NULL,
+    departure_time       DATETIME NOT NULL,
+    arrival_time         DATETIME NOT NULL,
+    FOREIGN KEY (flightid) REFERENCES FLIGHT(flightid),
+    FOREIGN KEY (seatid) REFERENCES SEAT(seatid)
 );
 
 INSERT INTO AIRPORT_CODE(citystate, country, portcode)
@@ -1717,14 +1731,13 @@ VALUES
 ("Zhoushan", "China", "HSN"),
 ("Zurich", "Switzerland", "ZRH");
 
--- INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTime)
--- VALUES
--- (123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
--- (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
-
 INSERT INTO FLIGHT(departure, destination, aircraftid, departuretime, arrivaltime)
 VALUES
 (123, 245, 1, "2023-12-01 12:00:00", "2023-12-01 05:30:00");
+
+INSERT INTO CREW_MEMBER(fname, lname, role, email, username, password, flightnumber)
+VALUES("John", "Doe", "Pilot", "john.doe@example.com", "johndoe", "securepassword", 1);
+
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';
 GRANT ALL ON FIGHTFORFLIGHT.* TO 'dev'@'%';

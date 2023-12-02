@@ -8,4 +8,6 @@ public interface FlightService {
     public Flight saveFlight(Flight plane);
 
     public List<Flight> getAllFlights();
+
+    Flight findById(Long flightid);
 }

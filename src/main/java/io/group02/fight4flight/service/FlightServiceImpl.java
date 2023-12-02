@@ -22,5 +22,10 @@ public class FlightServiceImpl implements FlightService {
     public List<Flight> getAllFlights() {
         return planeRepo.findAll();
     }
-    
+
+    @Override
+    public Flight findById(Long flightid) {
+        return planeRepo.getReferenceById(flightid);
+    }
+
 }

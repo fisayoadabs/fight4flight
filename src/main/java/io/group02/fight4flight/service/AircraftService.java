@@ -15,4 +15,6 @@ public interface AircraftService {
     Aircraft findById(Long aircraftID);
 
     Optional<Aircraft> findAircraftById(Long aircraftID);
+
+    void deleteAircraftById(Long aircraftId);
 }

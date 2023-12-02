@@ -1,7 +1,9 @@
 package io.group02.fight4flight.model;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -28,9 +30,9 @@ public class Flight {
 
     private LocalDateTime arrivaltime;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name="crewid", referencedColumnName = "crewid")
-    // private Crew crewid;
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<CrewMember> crewid;
 
     public Flight() {
     }
@@ -87,6 +89,16 @@ public class Flight {
 
     public void setArrivalTime(LocalDateTime day) {
     this.arrivaltime = day;
+    }
+
+    public void addCrewMember(CrewMember crewMember) {
+        crewid.add(crewMember);
+        crewMember.setFlight(this);
+    }
+
+    public void removeCrewMember(CrewMember crewMember) {
+        crewid.remove(crewMember);
+        crewMember.setFlight(null);
     }
 
 }

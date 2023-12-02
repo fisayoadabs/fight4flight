@@ -4,20 +4,25 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 import io.group02.fight4flight.DTO.AircraftDTO;
+import io.group02.fight4flight.DTO.CrewDTO;
 import io.group02.fight4flight.DTO.FlightDTO;
 import io.group02.fight4flight.DTO.SeatDTO;
 import io.group02.fight4flight.model.Aircraft;
 import io.group02.fight4flight.model.AirportCode;
+import io.group02.fight4flight.model.CrewMember;
 import io.group02.fight4flight.model.Flight;
 import io.group02.fight4flight.model.Seat;
 import io.group02.fight4flight.service.AircraftService;
 import io.group02.fight4flight.service.AirportCodeService;
+import io.group02.fight4flight.service.CrewMemberService;
 import io.group02.fight4flight.service.FlightService;
 import io.group02.fight4flight.service.SeatService;
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/flight-management")
@@ -31,6 +36,9 @@ public class FlightController {
     private FlightService flightService;
     @Autowired
     private SeatService seatService;
+
+    @Autowired
+    private CrewMemberService crewService;
 
     @PostMapping("/aircraft/add")
     public ResponseEntity<String> addAircraft(@RequestBody AircraftDTO aircraftDTO) {
@@ -50,6 +58,18 @@ public class FlightController {
                 .map(AircraftDTO::fromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(aircraftDTOs);
+    }
+
+    @DeleteMapping("/aircraft/remove/{aircraftId}")
+    public ResponseEntity<?> removeAircraft(@PathVariable Long aircraftId) {
+        try {
+            aircraftService.deleteAircraftById(aircraftId);
+            return ResponseEntity.ok("Aircraft and all related flights removed successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aircraft not found");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
+        }
     }
 
     // Seat Endpoints
@@ -148,6 +168,74 @@ public class FlightController {
     @GetMapping("/getAllFlights")
     public ResponseEntity<List<Flight>> getAllFlights() {
         return ResponseEntity.ok(flightService.getAllFlights());
+    }
+
+    @PutMapping("/modifyFlights")
+    public ResponseEntity<?> modifyFlight(@RequestBody FlightDTO flightDTO) {
+        try {
+            Flight flight = flightService.findById(flightDTO.getFlightId());
+
+            // Update the flight entity based on the provided DTO
+            updateFlightEntity(flight, flightDTO);
+
+            flightService.saveFlight(flight);
+
+            return ResponseEntity.ok("Flight updated successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
+
+    private void updateFlightEntity(Flight flight, FlightDTO flightDTO) {
+        // Only update fields that are provided in the DTO
+        if (flightDTO.getDepartureId() != null) {
+            flight.setDeparture(airportCodeService.findById(flightDTO.getDepartureId()).orElse(null));
+        }
+        if (flightDTO.getDestinationId() != null) {
+            flight.setDestination(airportCodeService.findById(flightDTO.getDestinationId()).orElse(null));
+        }
+        if (flightDTO.getAircraftId() != null) {
+            flight.setAircraft(aircraftService.findById(flightDTO.getAircraftId()).orElse(null));
+        }
+        if (flightDTO.getDepartureTime() != null) {
+            flight.setDepartureTime(flightDTO.getDepartureTime());
+        }
+        if (flightDTO.getArrivalTime() != null) {
+            flight.setArrivalTime(flightDTO.getArrivalTime());
+        }
+    }
+
+    @GetMapping("/workers/getCrewMem")
+    public List<CrewMember> listsCrew() {
+        return crewService.getAllCrewMembers();
+    }
+
+    @PostMapping("/workers/addCrewMem")
+    public ResponseEntity<String> create(@RequestBody CrewMember pilot) {
+        crewService.saveCrew(pilot);
+        return ResponseEntity.ok("Crew member created");
+    }
+
+    @PutMapping("/workers/assignCrewMemToFlight")
+    public ResponseEntity<?> assignCrewToFlight(@RequestBody CrewDTO crewAssignmentDTO) {
+        try {
+            crewService.assignCrewToFlight(crewAssignmentDTO.getCrewMemberId(), crewAssignmentDTO.getFlightId());
+            return ResponseEntity.ok("Crew member assigned to flight successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/workers/removeCrewMemToFlight")
+    public ResponseEntity<?> removeCrewToFlight(@RequestBody CrewDTO crewAssignmentDTO) {
+        try {
+            crewService.removeCrewToFlight(crewAssignmentDTO.getCrewMemberId(), crewAssignmentDTO.getFlightId());
+            return ResponseEntity.ok("Crew member removed from flight successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import io.group02.fight4flight.model.Aircraft;
 import io.group02.fight4flight.repository.AircraftRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 
@@ -35,5 +36,13 @@ public class AircraftServiceImpl implements AircraftService {
     @Override
     public Optional<Aircraft> findAircraftById(Long aircraftID) {
         return craftRepository.findById(aircraftID);
+    }
+
+    @Override
+    public void deleteAircraftById(Long aircraftId) {
+        if (!craftRepository.existsById(aircraftId)) {
+            throw new EntityNotFoundException("Aircraft not found");
+        }
+        craftRepository.deleteById(aircraftId);
     }
 }

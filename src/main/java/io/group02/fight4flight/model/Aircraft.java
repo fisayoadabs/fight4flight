@@ -17,7 +17,8 @@ public class Aircraft {
     @JsonManagedReference
     private List<Seat> seats;
 
-    
+    @OneToMany(mappedBy = "aircraftid", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Flight> flights;
 
     public Aircraft() {
         this.seats = initializeSeats();
@@ -90,6 +91,10 @@ public class Aircraft {
                 seat.setAircraft(this);
             }
         }
+    }
+
+    public Aircraft orElse(Object object) {
+        return null;
     }
 
 }

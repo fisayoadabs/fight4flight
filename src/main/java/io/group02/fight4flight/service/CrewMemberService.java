@@ -8,4 +8,8 @@ public interface CrewMemberService {
     public CrewMember saveCrew(CrewMember customer);
 
     public List<CrewMember> getAllCrewMembers();
+
+    public void assignCrewToFlight(Long crewMemberId, Long flightId);
+
+    public void removeCrewToFlight(Long crewMemberId, Long flightId);
 }

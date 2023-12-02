@@ -1,6 +1,6 @@
 package io.group02.fight4flight.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 
@@ -17,6 +17,11 @@ public class CrewMember {
     private String email;
     private String username;
     private String password;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "flightnumber")
+    private Flight flight;
 
     public CrewMember() {
     }
@@ -85,5 +90,13 @@ public class CrewMember {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Flight getFlight() {
+        return this.flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 }
