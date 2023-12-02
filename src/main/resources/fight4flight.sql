@@ -1715,10 +1715,10 @@ VALUES
 ("Zhoushan", "China", "HSN"),
 ("Zurich", "Switzerland", "ZRH");
 
--- INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTime)
--- VALUES
--- (123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
--- (218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
+INSERT INTO FLIGHT(departure, destination, aircraftid, departureTime, arrivalTime)
+VALUES
+(123, 245, 1, "2023-12-01 12:00:00", "2023-12-02 12:00:00"),
+(218, 728, 1, "2023-11-30 15:30:00", "2023-12-01 05:30:00");
 
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';
