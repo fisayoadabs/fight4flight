@@ -15,7 +15,6 @@ public class RegisteredServiceImpl implements RegisteredService {
 
     @Override
     public Registered saveRegistered(Registered user) {
-        System.out.println(user.getUsername());
         return userRepository.save(user);
     }
 

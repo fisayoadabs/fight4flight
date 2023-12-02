@@ -46,6 +46,19 @@ CREATE TABLE AIRPORT_CODE(
     portcode			varchar(20) not null
 );
 
+DROP TABLE IF EXISTS CREW_MEMBER;
+CREATE TABLE CREW_MEMBER (
+	crewid			INT AUTO_INCREMENT PRIMARY KEY,
+    fname			VARCHAR(30) NOT NULL,
+    lname			VARCHAR(30) NOT NULL,
+    role			ENUM('Pilot','Co-pilot', 'Attendance'),
+    email			VARCHAR(30) NOT NULL,
+    username		VARCHAR(30) NOT NULL,
+    password		VARCHAR(30) NOT NULL
+);
+INSERT INTO CREW_MEMBER(fname, lname, role, email, username, password)
+VALUES("John", "Doe", "Pilot", "john.doe@example.com", "johndoe", "securepassword");
+
 DROP TABLE IF EXISTS FLIGHT;
 CREATE TABLE FLIGHT (
     flightid        INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,7 +70,6 @@ CREATE TABLE FLIGHT (
 	FOREIGN KEY (departure) REFERENCES AIRPORT_CODE(portid),
 	FOREIGN KEY (destination) REFERENCES AIRPORT_CODE(portid),
 	FOREIGN KEY (aircraftid) REFERENCES AIRCRAFT(aircraftid)
---     CHECK (arrivalTime > departureTime)
 );
     
 DROP TABLE IF EXISTS SEAT;

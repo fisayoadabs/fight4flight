@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "REGISTERED")
-public class Registered implements GenericCustomer{
+public class Registered implements GenericCustomer {
 
     @Id
     private String email;
@@ -16,7 +16,8 @@ public class Registered implements GenericCustomer{
 
     // Add other fields as needed
 
-    public Registered() {}
+    public Registered() {
+    }
 
     public Registered(String fname, String lname, String email, String address, String username, String password) {
         this.fname = fname;
@@ -39,8 +40,7 @@ public class Registered implements GenericCustomer{
         this.fname = name;
     }
 
-
-     public String getLname() {
+    public String getLname() {
         return this.lname;
     }
 
