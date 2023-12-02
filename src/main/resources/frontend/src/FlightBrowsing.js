@@ -48,7 +48,7 @@ const FlightBrowsing = () => {
     const departureArray = flights.map((flight) => flight.departure.portCode);
     // Access all destination portCodes
     const destinationArray = flights.map((flight) => flight.destination.portCode);
-
+    const[flightid, setFlightid] = useState(0);
 
     const checkFlights = () => {
         const matchingDep = [];
@@ -101,6 +101,9 @@ const FlightBrowsing = () => {
                 setShowFlightSummary(true);
                 setStart(false);
                 console.log("flight does exist");
+                const sum = i + 1;
+                setFlightid(sum);
+                console.log(flightid);
                 break;
             } else {
                 setShowFlightSummary(false);
@@ -258,7 +261,7 @@ const FlightBrowsing = () => {
                     <p>Departure Date: {formData.departureDate}</p>
                     <p>Return Date: {formData.returnDate}</p>
 
-                    <button onClick={(() => { navigate("/guest/seat") })}>Proceed to Seat Selection</button>
+                    <button onClick={(() => { navigate(`/guest/seat/${flightid}`) })}>Proceed to Seat Selection</button>
                 </div>
 
             )}

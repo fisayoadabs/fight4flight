@@ -28,7 +28,7 @@ function App() {
         <Route path="/agent/flightbrowsing" element={<FlightBrowsing />} />
 
         <Route path="/guest/flightbrowsing" element={<FlightBrowsing />} />
-        <Route path="guest/seat" element={<Seat />} />
+        <Route path="guest/seat/:flightid" element={<Seat />} />
         <Route path="guest/insurance" element={<Insurance />} />
 
         <Route path="/pay" element={<Pay />} />

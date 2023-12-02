@@ -208,17 +208,25 @@ a:hover {
   height: 40px;
 }
 
+.seat-button:disabled {
+  background-color: rgb(128, 128, 128);
+  color: #ddd;
+  cursor: not-allowed;
+}
+
 .seat-button:hover {
-  border: none;
   background-color: purple;
+  color: #ddd;
+}
+
+.seat-button:disabled:hover {
+  background-color: rgb(128, 128, 128);
   color: #ddd;
 }
 
 .seat-button.clicked {
   background-color: purple;
-  /* Change to the desired background color */
   color: #ddd;
-  /* Change to the desired text color */
 }
 
 .add {
@@ -277,7 +285,7 @@ a:hover {
 }
 
 #price {
-  font-style: bold;
+  font-style: normal;
   padding-left: 333px;
 }
 

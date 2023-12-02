@@ -1,13 +1,16 @@
 // ButtonArray.js
 import React, { useEffect, useState } from "react";
 
-const ButtonArray = ({ onButtonClick, rows, cols, offset }) => {
+const ButtonArray = ({ onButtonClick, rows, cols, offset, airplane }) => {
     const [seats, setSeats] = useState([]);
+    console.log(airplane);
+    console.log(rows);
+    console.log(cols);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/seat/getAll');
+                const response = await fetch(`http://localhost:8080/flight-management/seat/getByAircraft/${airplane}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -19,9 +22,8 @@ const ButtonArray = ({ onButtonClick, rows, cols, offset }) => {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData();
-    }, []); // Run once on component mount
+    }, [airplane]);
     console.log(seats);
 
 

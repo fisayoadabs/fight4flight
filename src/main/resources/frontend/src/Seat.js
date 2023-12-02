@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ButtonArray from "./ButtonArray"; // Import the ButtonArray component
 
 function Seat() {
     const [seats, setSeats] = useState([]);
-
+    const { flightid } = useParams();
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/seat/getAll');
+                const response = await fetch(`http://localhost:8080/flight-management/seat/getByAircraft/${flightid}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -20,17 +20,78 @@ function Seat() {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData();
-    }, []); // Run once on component mount
+    }, [flightid]);
+
+    console.log(flightid);
+    const businessSeats = [];
+    const ordinarySeats = [];
+    const comfortSeats = [];
+
+    // Organize seats into arrays
+    seats.forEach(seat => {
+        switch (seat.seatType) {
+            case 'Business':
+                businessSeats.push(seat);
+                break;
+            case 'Comfort':
+                comfortSeats.push(seat);
+                break;
+            case 'Ordinary':
+                ordinarySeats.push(seat);
+                break;
+            // Handle other seat types if needed
+            default:
+                break;
+        }
+    });
+    console.log(businessSeats.length);
+    console.log(ordinarySeats.length);
+    console.log(comfortSeats.length);
     console.log(seats);
+
+    const [businessRows, setBusinessRows] = useState(0);
+    const [businessCols, setBusinessCols] = useState(0);
+    const [comfortRows, setComfortRows] = useState(0);
+    const [comfortCols, setComfortCols] = useState(0);
+    const [ordinaryRows, setOrdinaryRows] = useState(0);
+    const [ordinaryCols, setOrdinaryCols] = useState(0);
+    const [offset, setOffset] = useState(0);
+
+    useEffect(() => {
+        const calculateSeatConfig = (seatLength) => {
+            switch (seatLength) {
+                case 9:
+                    setBusinessRows(1);
+                    setBusinessCols(3);
+                    setComfortRows(1);
+                    setComfortCols(3);
+                    setOrdinaryRows(1);
+                    setOrdinaryCols(3);
+                    break;
+                case 12:
+                    setBusinessRows(2);
+                    setBusinessCols(2);
+                    setComfortRows(2);
+                    setComfortCols(2);
+                    setOrdinaryRows(2);
+                    setOrdinaryCols(2);
+                    break;
+                default:
+            }
+        };
+
+        calculateSeatConfig(seats.length);
+    }, [seats.length]);
+
+
     const navigate = useNavigate();
 
     const [showBusinessArray, setShowBusinessArray] = useState(false);
     const [showComfortArray, setShowComfortArray] = useState(false);
     const [showOrdinaryArray, setShowOrdinaryArray] = useState(false);
 
-    const [seatNumber, setSeatNumber] = useState(""); // State to hold the seat number
+    const [seatNumber, setSeatNumber] = useState("");
     const [selectedButton, setSelectedButton] = useState(null);
 
     const toggleArray = (arrayType) => {
@@ -118,27 +179,30 @@ function Seat() {
                     {showBusinessArray && (
                         <ButtonArray
                             onButtonClick={(row, col) => logButtonClick('', row, col)}
-                            rows={5}
-                            cols={6}
+                            rows={businessRows}
+                            cols={businessCols}
                             offset={0}
+                            airplane={flightid}
                         />
                     )}
 
                     {showComfortArray && (
                         <ButtonArray
                             onButtonClick={(row, col) => logButtonClick('', row, col)}
-                            rows={6}
-                            cols={6}
-                            offset={5}
+                            rows={comfortRows}
+                            cols={comfortCols}
+                            offset={2}
+                            airplane={flightid}
                         />
                     )}
 
                     {showOrdinaryArray && (
                         <ButtonArray
                             onButtonClick={(row, col) => logButtonClick('', row, col)}
-                            rows={9}
-                            cols={6}
-                            offset={11}
+                            rows={ordinaryRows}
+                            cols={ordinaryCols}
+                            offset={4}
+                            airplane={flightid}
                         />
                     )}
                 </div>

@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import userEvent from "@testing-library/user-event";
-// import axios from './api/axios';
 
-const USERNAME = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/; // must start with lower/uppercase character, then can follow with any upper/lowercase characters, digits, -, or _. 4-24 character username
+const CARDNUMBER = /^\d{16}$/;
 const PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/; // requires 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character (shift 12345). 8-24 characters
 
 const Pay = () => {
@@ -23,9 +19,9 @@ const Pay = () => {
     const [errMessage, setErrMessage] = useState('');
     const [success, setSuccess] = useState(false);
 
-    // validating username
+
     useEffect(() => {
-        const result = USERNAME.test(user);
+        const result = CARDNUMBER.test(user);
         console.log(result);
         console.log(user);
         setValidName(result);
@@ -48,62 +44,23 @@ const Pay = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (validName && validPassword && validMatch) {
-        //     const response = await fetch('http://localhost:5000/register', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({user, password})
-        //     })
-        //     const data = await response.json();
-        //     console.log(data);
-        //     if (data.status === 'success') {
-        //         setSuccess(true);
-        //         setErrMessage('Successfully registered!');
-        //     } else {
-        //         setErrMessage('Username already exists. Please try again.');
-        //     }
-        // } else {
-        //     setErrMessage('Please fill out all fields correctly.');
-        // }
-        const v1 = USERNAME.test(user);
+
+        const v1 = CARDNUMBER.test(user);
         const v2 = PASSWORD.test(password);
         if (!v1 || !v2) {
             setErrMessage('Please fill out all fields correctly.');
             return;
         }
-        // try {
-        //     const response = await axios.post(REGISTER_URL, JSON.stringify({ user, password }),
-        //     {
-        //         headers: { 'Content-Type': 'application/json'},
-        //         withCredentials: true
-        //     }
-        //     );
-        //     console.log(response.data);
-        //     setSuccess(true);
-        // } catch (err) {
-        //     if (!err?.response) {
-        //         setErrMessage('No Server Response');
-        //     } else if (err.response?.status === 409) {
-        //         setErrMessage('Username already exists. Please try again.');
-        //     } else {
-        //         setErrMessage('Something went wrong. Please try again.');
-        //     }
-        //     errRef.current.focus
-        // }
+
     }
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+    };
+
 
     return (
         <>
-            {success ? (
-                <section>
-                    <h1>Success!</h1>
-                    <p>You have successfully registered!
-                        <a href="#">Log In Now!</a
-                        ></p>
-                </section>
-            ) : (
                 <section>
                     <p className={errMessage ? "errmessage" : "offscreen"} aria-live="assertive">{errMessage}</p>
                     <h1>Pay with Card</h1>
@@ -111,12 +68,6 @@ const Pay = () => {
                         {/* for first name */}
                         <label htmlFor="firstname">
                             Card Number:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
                         </label>
                         <input
                             type="text"
@@ -133,12 +84,6 @@ const Pay = () => {
                         {/* for last name */}
                         <label htmlFor="lastname">
                             First Name:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
                         </label>
                         <input
                             type="text"
@@ -155,12 +100,6 @@ const Pay = () => {
                         {/* for address */}
                         <label htmlFor="address">
                             Last Name:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
                         </label>
                         <input
                             type="text"
@@ -176,35 +115,22 @@ const Pay = () => {
 
                         {/* for email */}
                         <label htmlFor="email">
-                            Email:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
+                            Expiration Date:
                         </label>
                         <input
                             type="email"
                             id="email"
                             autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
+                            onChange={handleChange}
                             required
                             aria-invalid={validName ? "false" : "true"}
                             aria-describedby="uidnote"
                             onFocus={() => setUserFocus(true)}
                             onBlur={() => setUserFocus(false)}
+                            placeholder={"MMYYYY"}
                         />
-
-                        {/* for username */}
                         <label htmlFor="username">
-                            Username:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
+                            CVV:
                         </label>
                         <input
                             type="text"
@@ -217,83 +143,10 @@ const Pay = () => {
                             onFocus={() => setUserFocus(true)}
                             onBlur={() => setUserFocus(false)}
                         />
-                        <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Username must be 4-24 characters and start with a letter.<br />
-                            Letters, numbers, underscores, and hyphens allowed. <br />
-                        </p>
 
-                        {/* for password */}
-                        <label htmlFor="password">
-                            Password:
-                            <span className={validPassword ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validPassword || !password ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            autoComplete="off"
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            aria-invalid={validPassword ? "false" : "true"}
-                            aria-describedby="pwdnote"
-                            onFocus={() => setPasswordFocus(true)}
-                            onBlur={() => setPasswordFocus(false)}
-                        />
-                        <p id="pwdnote" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Password must be 4-24 characters.<br />
-                            Must include uppercase and lowercase letters, a number, and a special character.<br />
-                            Allowed special characters:
-                            <span aria-label="exclamation mark">!</span>
-                            <span aria-label="at sign">@</span>
-                            <span aria-label="hashtag">#</span>
-                            <span aria-label="dollar sign">$</span>
-                            <span aria-label="percent">%</span>
-                        </p>
-
-                        {/* for matching password (confirmation) */}
-                        <label htmlFor="confirm_password">
-                            Confirm Password:
-                            <span className={validMatch && matchPassword ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validMatch || !matchPassword ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="password"
-                            id="confirm_password"
-                            onChange={(e) => setMatchPassword(e.target.value)}
-                            required
-                            aria-invalid={validMatch ? "false" : "true"}
-                            aria-describedby="confirmnote"
-                            onFocus={() => setMatchFocus(true)}
-                            onBlur={() => setMatchFocus(false)}
-                        />
-                        <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Make sure your password here matches the first password input field.<br />
-                        </p>
-
-                        <button disabled={!validName || !validPassword || !validMatch ? true : false}>Sign Up!</button>
+                        <button disabled={!validName || !validPassword || !validMatch ? true : false}>Pay Now!</button>
                     </form>
-
-                    {/* at the end of sign up form */}
-                    <p>
-                        Already registered?<br />
-                        <span className="line">
-                            {/* # is a placeholder for now, will replace with router link to login page */}
-                            <a href="login">Log In Here</a>
-                        </span>
-                    </p>
                 </section>
-            )}
         </>
     )
 }
