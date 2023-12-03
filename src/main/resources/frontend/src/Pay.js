@@ -1,154 +1,107 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-const CARDNUMBER = /^\d{16}$/;
-const PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/; // requires 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character (shift 12345). 8-24 characters
-
-const Pay = () => {
+function Pay() {
     const [user, setUser] = useState('');
-    const [validName, setValidName] = useState(false); // boolean, tied to whether name validates or not
-    const [userFocus, setUserFocus] = useState(false); // boolean, tied to whether  we have focus on input field or nah
-
-    const [password, setPassword] = useState('');
-    const [validPassword, setValidPassword] = useState(false);
-    const [passwordFocus, setPasswordFocus] = useState(false);
-
-    const [matchPassword, setMatchPassword] = useState('');
-    const [validMatch, setValidMatch] = useState(false);
-    const [matchFocus, setMatchFocus] = useState(false);
-
-    const [errMessage, setErrMessage] = useState('');
-    const [success, setSuccess] = useState(false);
-
+    const [card, setCard] = useState([]);
 
     useEffect(() => {
-        const result = CARDNUMBER.test(user);
-        console.log(result);
-        console.log(user);
-        setValidName(result);
-    }, [user])
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/card/getAll');
 
-    // validating password
-    useEffect(() => {
-        const result = PASSWORD.test(password);
-        console.log(result);
-        console.log(password);
-        setValidPassword(result);
-        const match = password === matchPassword;
-        setValidMatch(match);
-    }, [password, matchPassword])
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
 
-    // for error message
-    useEffect(() => {
-        setErrMessage('');
-    }, [user, password, matchPassword])
+                const data = await response.json();
+                setCard(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    console.log(card);
+
+
+    //Hypothetical Balance:
+    const payment = 900.00;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const v1 = CARDNUMBER.test(user);
-        const v2 = PASSWORD.test(password);
-        if (!v1 || !v2) {
-            setErrMessage('Please fill out all fields correctly.');
-            return;
+        for(let i = 0; i < card.length; i++){
+            console.log(card[i].cardnumber);
+            console.log(user);
+            //Match the cardnumber with user
+            if(parseInt(card[i].cardnumber, 10) === parseInt(user,10)){
+                console.log("card is equal to user");
+                if(parseFloat(card[i].balance) < payment){
+                    window.alert("Insufficient funds!");
+                } else{
+                    window.alert("Transaction Successful! An email will be sent to you with your ticket");
+                }
+            }
         }
-
-    }
-
-    const handleChange = (e) => {
-        const value = e.target.value;
     };
 
-
     return (
-        <>
-                <section>
-                    <p className={errMessage ? "errmessage" : "offscreen"} aria-live="assertive">{errMessage}</p>
-                    <h1>Pay with Card</h1>
-                    <form onSubmit={handleSubmit}>
-                        {/* for first name */}
-                        <label htmlFor="firstname">
-                            Card Number:
-                        </label>
-                        <input
-                            type="text"
-                            id="firstname"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
+        <section>
+            <h1>Pay with Card</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="firstname">
+                    Card Number:
+                </label>
+                <input
+                    type="text"
+                    id="firstname"
+                    autoComplete="off"
+                    onChange={(e) => setUser(e.target.value)}
+                    required
+                />
 
-                        {/* for last name */}
-                        <label htmlFor="lastname">
-                            First Name:
-                        </label>
-                        <input
-                            type="text"
-                            id="lastname"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
+                <label htmlFor="lastname">
+                    First Name:
+                </label>
+                <input
+                    type="text"
+                    id="lastname"
+                    autoComplete="off"
+                />
 
-                        {/* for address */}
-                        <label htmlFor="address">
-                            Last Name:
-                        </label>
-                        <input
-                            type="text"
-                            id="address"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
+                <label htmlFor="address">
+                    Last Name:
+                </label>
+                <input
+                    type="text"
+                    id="address"
+                    autoComplete="off"
+                />
 
-                        {/* for email */}
-                        <label htmlFor="email">
-                            Expiration Date:
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            autoComplete="off"
-                            onChange={handleChange}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                            placeholder={"MMYYYY"}
-                        />
-                        <label htmlFor="username">
-                            CVV:
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
+                <label htmlFor="email">
+                    Expiration Date:
+                </label>
+                <input
+                    type="text"
+                    id="email"
+                    autoComplete="off"
+                    placeholder={"MMYYYY"}
+                />
 
-                        <button disabled={!validName || !validPassword || !validMatch ? true : false}>Pay Now!</button>
-                    </form>
-                </section>
-        </>
-    )
-}
+                <label htmlFor="username">
+                    CVV:
+                </label>
+                <input
+                    type="text"
+                    id="username"
+                    autoComplete="off"
+                    required
+                />
+
+                <button>Pay Now!</button>
+            </form>
+        </section>
+    );
+};
 
 export default Pay;
