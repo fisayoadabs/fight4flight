@@ -8,6 +8,13 @@ body {
 section {
   background-color: #fff;
   max-width: 400px;
+  position: absolute;
+  display: flex;
+  width: 100%;
+  top: 0;
+  left: 33%;
+  flex-direction: column;
+  justify-content: center;
   margin: 50px auto;
   padding: 20px;
   border-radius: 8px;
@@ -353,4 +360,65 @@ a:hover {
   border: 1px solid lightgrey;
   border-radius: 4px;
   width: 450px;
+}
+
+.log {
+  background-color: #ccc;
+  position: absolute;
+  width: 60px;
+  left: 75%;
+  bottom: 85%;
+  color: #ff0000;
+}
+
+.back {
+  background-color: #ccc;
+  position: absolute;
+  width: 60px;
+  left: 10%;
+  bottom: 85%;
+  color: #ff0000;
+}
+
+.back-wagwan {
+  background-color: #ccc;
+  position: absolute;
+  width: 60px;
+  left: 55%;
+  bottom: 85%;
+  color: #ff0000;
+  size: 20%;
+}
+
+.admin {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-button {
+  margin: 10%;
+  width: 150px;
+}
+
+.mainbg {
+  width: 100%;
+  height: 100vh;
+}
+
+video {
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  background-color: rgba(0, 0, 0, 0.5);
 }

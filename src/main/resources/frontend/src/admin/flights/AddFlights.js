@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlane } from '@fortawesome/free-solid-svg-icons';
-// import { useAuth } from './Login';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const FlightBrowsing = () => {
+const AddAircraft = () => {
     const navigate = useNavigate();
     const [airports, setAirports] = useState([]); // State for storing airport data
     const [filteredDepartureAirports, setFilteredDepartureAirports] = useState([]); // Filtered list for departure
     const [filteredDestinationAirports, setFilteredDestinationAirports] = useState([]); // Filtered list for destination
-    // const { handleLogout } = useAuth(); // Use the useAuth hook
 
     // State to manage form data
     const [formData, setFormData] = useState({
-        departure: '',
-        destination: '',
-        departureDate: '',
-        returnDate: '',
+        departureId: '',
+        destinationId: '',
+        aircraftId: '',
+        departureTime: '',
+        arrivalTime: '',
     });
 
     // State to manage visibility of flight summary
@@ -72,45 +71,52 @@ const FlightBrowsing = () => {
         }
     };
 
-    // const handleLogout = (e) => {
-    //     navigate('/login')
-    // };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add validation logic here if needed
-
-        // Show the flight summary
         setShowFlightSummary(true);
     };
 
     return (
         <section>
-            <h1>Flight Browsing</h1>
-            <button className="log" onClick={() => navigate("/login")}>Login</button>
+            <h1>Add an Flight</h1>
+            <button className="back" onClick={() => navigate("/admin/modifyaircrafts")}>Back</button>
+            <button className="log" onClick={() => navigate("/login")}>Logout</button>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="departure">
-                    Departure Airport:
+                <label htmlFor="departureId">
+                    Departure ID:
                     <input
                         type="text"
-                        id="departure"
+                        id="departureId"
                         autoComplete="off"
                         placeholder="Enter departure airport"
                         required
-                        value={formData.departure}
+                        value={formData.departureId}
                         onChange={handleInputChange}
                     />
                 </label>
 
                 <label htmlFor="destination">
-                    Destination Airport:
+                    Destination ID:
                     <input
                         type="text"
-                        id="destination"
+                        id="destinationId"
                         autoComplete="off"
                         placeholder="Enter destination airport"
                         required
-                        value={formData.destination}
+                        value={formData.destinationId}
+                        onChange={handleInputChange}
+                    />
+                </label>
+
+                <label htmlFor="aircraft">
+                    Aircraft ID:
+                    <input
+                        type="text"
+                        id="aircraftId"
+                        autoComplete="off"
+                        placeholder="Enter aircraft ID"
+                        required
+                        value={formData.aircraftId}
                         onChange={handleInputChange}
                     />
                 </label>
@@ -155,34 +161,44 @@ const FlightBrowsing = () => {
                     </div>
                 )}
 
-
-                <label htmlFor="departureDate">
-                    Departure Date:
+                <label htmlFor="departureTime">
+                    Departure Time:
                     <input
-                        type="date"
-                        id="departureDate"
+                        type="text"
+                        id="departureTime"
                         autoComplete="off"
                         required
-                        value={formData.departureDate}
+                        value={formData.departureTime}
                         onChange={handleInputChange}
                     />
                 </label>
+                <p id="departureTime" className={formData.departureTime ? "offscreen" : "instructions"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Put in the format "YYYY-MM-DD_T_HH:MM:SS" but ignore underscores<br />
+                    Eg. 2023-12-01T22:21:20.<br />
+                </p>
 
-                <label htmlFor="returnDate">
-                    Return Date:
+                <label htmlFor="arrivalTime">
+                    Arrival Time:
                     <input
-                        type="date"
-                        id="returnDate"
+                        type="text"
+                        id="arrivalTime"
                         autoComplete="off"
                         required
-                        value={formData.returnDate}
+                        value={formData.arrivalTime}
                         onChange={handleInputChange}
                     />
                 </label>
+                <p id="arrivalTime" className={formData.arrivalTime ? "offscreen" : "instructions"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Put in the format "YYYY-MM-DD_T_HH:MM:SS" but ignore underscores<br />
+                    Eg. 2023-12-01T22:21:20.<br />
+                </p>
+                
 
                 <button>
                     <div className="icon-container">
-                        <FontAwesomeIcon icon={faPlane} className="plane-icon" />
+                        +
                     </div>
                 </button>
             </form>
@@ -190,12 +206,13 @@ const FlightBrowsing = () => {
             {showFlightSummary && (
                 <div className="flight-summary">
                     <h2>Flight Summary</h2>
-                    <p>Departure: {formData.departure}</p>
-                    <p>Destination: {formData.destination}</p>
-                    <p>Departure Date: {formData.departureDate}</p>
-                    <p>Return Date: {formData.returnDate}</p>
-                    <button onClick={handleViewBookings}>View My Bookings</button>
-                    <button onClick={(() => { navigate("/guest/seat") })}>Proceed to Seat Selection</button>
+                    <p>DepartureID: {formData.departureId}</p>
+                    <p>DestinationID: {formData.destinationId}</p>
+                    <p>AircraftID: {formData.aircraftId}</p>
+                    <p>Departure Date: {formData.departureTime}</p>
+                    <p>Return Date: {formData.arrivalTime}</p>
+                    {/* <button onClick={handleViewBookings}>View My Bookings</button>
+                    <button onClick={(() => { navigate("/guest/seat") })}>Proceed to Seat Selection</button> */}
                 </div>
             )}
 
@@ -203,4 +220,4 @@ const FlightBrowsing = () => {
     );
 };
 
-export default FlightBrowsing;
+export default AddAircraft;

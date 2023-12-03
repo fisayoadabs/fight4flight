@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import userEvent from "@testing-library/user-event";
-// import axios from './api/axios';
 
 const USERNAME = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/; // must start with lower/uppercase character, then can follow with any upper/lowercase characters, digits, -, or _. 4-24 character username
 const PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/; // requires 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character (shift 12345). 8-24 characters
@@ -48,50 +46,12 @@ const Pay = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (validName && validPassword && validMatch) {
-        //     const response = await fetch('http://localhost:5000/register', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({user, password})
-        //     })
-        //     const data = await response.json();
-        //     console.log(data);
-        //     if (data.status === 'success') {
-        //         setSuccess(true);
-        //         setErrMessage('Successfully registered!');
-        //     } else {
-        //         setErrMessage('Username already exists. Please try again.');
-        //     }
-        // } else {
-        //     setErrMessage('Please fill out all fields correctly.');
-        // }
         const v1 = USERNAME.test(user);
         const v2 = PASSWORD.test(password);
         if (!v1 || !v2) {
             setErrMessage('Please fill out all fields correctly.');
             return;
         }
-        // try {
-        //     const response = await axios.post(REGISTER_URL, JSON.stringify({ user, password }),
-        //     {
-        //         headers: { 'Content-Type': 'application/json'},
-        //         withCredentials: true
-        //     }
-        //     );
-        //     console.log(response.data);
-        //     setSuccess(true);
-        // } catch (err) {
-        //     if (!err?.response) {
-        //         setErrMessage('No Server Response');
-        //     } else if (err.response?.status === 409) {
-        //         setErrMessage('Username already exists. Please try again.');
-        //     } else {
-        //         setErrMessage('Something went wrong. Please try again.');
-        //     }
-        //     errRef.current.focus
-        // }
     }
 
     return (

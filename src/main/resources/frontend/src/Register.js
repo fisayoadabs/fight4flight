@@ -190,8 +190,8 @@ const Register = () => {
                             onBlur={() => setUsernameFocus(false)}
                         />
 
-                        {/* for usernamename */}
-                        <label htmlFor="usernamename">
+                        {/* for username */}
+                        <label htmlFor="username">
                             Username:
                             <span className={validName ? "valid" : "hide"}>
                                 <FontAwesomeIcon icon={faCheck} />
@@ -213,7 +213,7 @@ const Register = () => {
                         />
                         <p id="uidnote" className={usernameFocus && username && !validName ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            Usernamename must be 4-24 characters and start with a letter.<br />
+                            Username must be 4-24 characters and start with a letter.<br />
                             Letters, numbers, underscores, and hyphens allowed. <br />
                         </p>
 

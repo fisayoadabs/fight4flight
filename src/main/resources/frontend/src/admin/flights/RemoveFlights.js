@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlane } from '@fortawesome/free-solid-svg-icons';
-// import { useAuth } from './Login';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const FlightBrowsing = () => {
+const RemoveFlights = () => {
     const navigate = useNavigate();
     const [airports, setAirports] = useState([]); // State for storing airport data
     const [filteredDepartureAirports, setFilteredDepartureAirports] = useState([]); // Filtered list for departure
     const [filteredDestinationAirports, setFilteredDestinationAirports] = useState([]); // Filtered list for destination
-    // const { handleLogout } = useAuth(); // Use the useAuth hook
 
     // State to manage form data
     const [formData, setFormData] = useState({
         departure: '',
         destination: '',
-        departureDate: '',
-        returnDate: '',
+        departureTime: '',
+        arrivalTime: '',
     });
 
     // State to manage visibility of flight summary
@@ -72,22 +70,16 @@ const FlightBrowsing = () => {
         }
     };
 
-    // const handleLogout = (e) => {
-    //     navigate('/login')
-    // };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add validation logic here if needed
-
-        // Show the flight summary
         setShowFlightSummary(true);
     };
 
     return (
         <section>
-            <h1>Flight Browsing</h1>
-            <button className="log" onClick={() => navigate("/login")}>Login</button>
+            <h1>Add a Flight</h1>
+            <button className="back" onClick={() => navigate("/admin/")}>Back</button>
+            <button className="log" onClick={() => navigate("/login")}>Logout</button>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="departure">
                     Departure Airport:
@@ -155,34 +147,55 @@ const FlightBrowsing = () => {
                     </div>
                 )}
 
-
-                <label htmlFor="departureDate">
-                    Departure Date:
+                <label htmlFor="departureTime">
+                    Departure Time:
                     <input
-                        type="date"
-                        id="departureDate"
+                        type="time"
+                        id="departureTime"
                         autoComplete="off"
                         required
                         value={formData.departureDate}
                         onChange={handleInputChange}
                     />
                 </label>
+                <p id="departureTime" className={formData.departureTime ? "offscreen" : "instructions"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Time displayed is local time.<br />
+                </p>
 
-                <label htmlFor="returnDate">
-                    Return Date:
+                <label htmlFor="arrivalTime">
+                    Arrival Time:
                     <input
-                        type="date"
-                        id="returnDate"
+                        type="time"
+                        id="arrivalTime"
                         autoComplete="off"
                         required
                         value={formData.returnDate}
                         onChange={handleInputChange}
                     />
                 </label>
+                <p id="arrivalTime" className={formData.arrivalTime ? "offscreen" : "instructions"}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Time displayed is local time.<br />
+                </p>
+
+                <label htmlFor="aircraft">
+                    Aircraft:
+                    <input
+                        type="text"
+                        id="aircraft"
+                        autoComplete="off"
+                        placeholder="Enter destination airport"
+                        required
+                        value={formData.destination}
+                        onChange={handleInputChange}
+                    />
+                </label>
+                
 
                 <button>
                     <div className="icon-container">
-                        <FontAwesomeIcon icon={faPlane} className="plane-icon" />
+                        +
                     </div>
                 </button>
             </form>
@@ -203,4 +216,4 @@ const FlightBrowsing = () => {
     );
 };
 
-export default FlightBrowsing;
+export default RemoveFlights;

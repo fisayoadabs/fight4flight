@@ -79,6 +79,7 @@ const FlightBrowsingR = () => {
     return (
         <section>
             <h1>Flight Browsing</h1>
+            <button className="log" onClick={() => navigate("/login")}>Logout</button>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="departure">
                     Departure Airport:
@@ -189,11 +190,6 @@ const FlightBrowsingR = () => {
                     <button onClick={(() => { navigate("/registered/seat") })}>Proceed to Seat Selection</button>
                 </div>
             )}
-
-            <div className="results">
-                {/* Placeholder for flight search results */}
-                <p>No results found for your search.</p>
-            </div>
 
         </section>
     );

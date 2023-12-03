@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlane } from '@fortawesome/free-solid-svg-icons';
-// import { useAuth } from './Login';
 
-const FlightBrowsing = () => {
+const Modify = () => {
     const navigate = useNavigate();
     const [airports, setAirports] = useState([]); // State for storing airport data
     const [filteredDepartureAirports, setFilteredDepartureAirports] = useState([]); // Filtered list for departure
     const [filteredDestinationAirports, setFilteredDestinationAirports] = useState([]); // Filtered list for destination
-    // const { handleLogout } = useAuth(); // Use the useAuth hook
 
     // State to manage form data
     const [formData, setFormData] = useState({
@@ -72,22 +70,16 @@ const FlightBrowsing = () => {
         }
     };
 
-    // const handleLogout = (e) => {
-    //     navigate('/login')
-    // };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add validation logic here if needed
-
-        // Show the flight summary
         setShowFlightSummary(true);
     };
 
     return (
         <section>
-            <h1>Flight Browsing</h1>
-            <button className="log" onClick={() => navigate("/login")}>Login</button>
+            <h1>Welcome Admin!</h1>
+            <button className="back" onClick={() => navigate("/admin/")}>Back</button>
+            <button className="log" onClick={() => navigate("/login")}>Logout</button>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="departure">
                     Departure Airport:
@@ -203,4 +195,4 @@ const FlightBrowsing = () => {
     );
 };
 
-export default FlightBrowsing;
+export default Modify;

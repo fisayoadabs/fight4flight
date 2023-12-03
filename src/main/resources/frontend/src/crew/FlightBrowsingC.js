@@ -1,31 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlane } from '@fortawesome/free-solid-svg-icons';
-// import { useAuth } from './Login';
+import Flights from './Flights';
+import Pay from '../Pay';
 
-const FlightBrowsing = () => {
+const FlightBrowsingC = () => {
     const navigate = useNavigate();
     const [airports, setAirports] = useState([]); // State for storing airport data
     const [filteredDepartureAirports, setFilteredDepartureAirports] = useState([]); // Filtered list for departure
     const [filteredDestinationAirports, setFilteredDestinationAirports] = useState([]); // Filtered list for destination
-    // const { handleLogout } = useAuth(); // Use the useAuth hook
+
 
     // State to manage form data
     const [formData, setFormData] = useState({
         departure: '',
         destination: '',
         departureDate: '',
-        returnDate: '',
+        // returnDate: '',
     });
 
-    // State to manage visibility of flight summary
+    // // State to manage visibility of flight summary
     const [showFlightSummary, setShowFlightSummary] = useState(false);
-
-    const handleViewBookings = () => {
-        // Implement logic to fetch and display user's bookings
-        alert('View My Bookings functionality will be implemented here.');
-    };
 
     useEffect(() => {
         // Fetch airport data from API and update state
@@ -55,6 +51,7 @@ const FlightBrowsing = () => {
         );
     };
 
+
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({
@@ -72,22 +69,17 @@ const FlightBrowsing = () => {
         }
     };
 
-    // const handleLogout = (e) => {
-    //     navigate('/login')
-    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add validation logic here if needed
-
-        // Show the flight summary
         setShowFlightSummary(true);
     };
 
     return (
         <section>
-            <h1>Flight Browsing</h1>
-            <button className="log" onClick={() => navigate("/login")}>Login</button>
+            <h1>Search Flights</h1>
+            <button className="back" onClick={() => navigate("/crew")}>Back</button>
+            <button className="log" onClick={() => navigate("/login")}>Logout</button>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="departure">
                     Departure Airport:
@@ -168,7 +160,7 @@ const FlightBrowsing = () => {
                     />
                 </label>
 
-                <label htmlFor="returnDate">
+                {/* <label htmlFor="returnDate">
                     Return Date:
                     <input
                         type="date"
@@ -178,14 +170,27 @@ const FlightBrowsing = () => {
                         value={formData.returnDate}
                         onChange={handleInputChange}
                     />
-                </label>
+                </label> */}
 
-                <button>
+                {/* <button>
                     <div className="icon-container">
                         <FontAwesomeIcon icon={faPlane} className="plane-icon" />
                     </div>
-                </button>
+                </button> */}
+                <button onClick={() => navigate("/crew/flights")}>Browse Current Flights</button>
             </form>
+
+            {/* {showFlightSummary && (
+                <div className="flight-summary">
+                    <h2>Flight Summary</h2>
+                    <p>Departure: {formData.departure}</p>
+                    <p>Destination: {formData.destination}</p>
+                    <p>Departure Date: {formData.departureDate}</p>
+                    <p>Return Date: {formData.returnDate}</p>
+
+                    <button onClick={(() => { navigate("/registered/seat") })}>Proceed to Seat Selection</button>
+                </div>
+            )} */}
 
             {showFlightSummary && (
                 <div className="flight-summary">
@@ -193,8 +198,8 @@ const FlightBrowsing = () => {
                     <p>Departure: {formData.departure}</p>
                     <p>Destination: {formData.destination}</p>
                     <p>Departure Date: {formData.departureDate}</p>
-                    <p>Return Date: {formData.returnDate}</p>
-                    <button onClick={handleViewBookings}>View My Bookings</button>
+                    {/* <p>Return Date: {formData.returnDate}</p> */}
+                    {/* <button onClick={handleViewBookings}>View My Bookings</button> */}
                     <button onClick={(() => { navigate("/guest/seat") })}>Proceed to Seat Selection</button>
                 </div>
             )}
@@ -203,4 +208,4 @@ const FlightBrowsing = () => {
     );
 };
 
-export default FlightBrowsing;
+export default FlightBrowsingC;
