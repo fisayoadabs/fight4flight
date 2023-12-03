@@ -12,6 +12,8 @@ import SeatR from './SeatR';
 import Summary from './Summary';
 import Insurance from './Insurance';
 import InsuranceR from './InsuranceR';
+import AircraftList from './AircraftList';
+import AddFlights from './AddFlights';
 
 function App() {
   return (
@@ -33,6 +35,13 @@ function App() {
 
         <Route path="/pay" element={<Pay />} />
         <Route path="/summary" element={<Summary />} />
+        <Route path="/admin/modifyaircrafts/aircraftlist" element={<AircraftList />} />
+
+        {/* <Route path="/admin/modifyaircrafts/removeaircraft" element={<RemoveAircrafts />} />
+        <Route path="/admin/modifyaircrafts/aircraftlist" element={<AircraftList />} /> */}
+
+        <Route path="/admin/modifyflights/addflights" element={<AddFlights />} />
+
       </Routes>
     </Router>
   );

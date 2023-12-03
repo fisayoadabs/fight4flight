@@ -80,6 +80,7 @@ CREATE TABLE SEAT (
     seattype			varchar(15) not null,
     price				double,
     aircraftid			int not null,
+    email				varchar(50),
     FOREIGN KEY (aircraftid) references AIRCRAFT(aircraftid)
 );
 INSERT INTO SEAT(seatname, vacancy, seattype, price, aircraftid)
@@ -212,12 +213,19 @@ VALUES
 
 DROP TABLE IF EXISTS CARD;
 CREATE TABLE CARD (
-	cardid				INT AUTO_INCREMENT PRIMARY KEY,
-    cardnumber			INT,
-    cardname			varchar(45) not null,
-    carddate			date,
-    ccv					INT
+    cardid                INT AUTO_INCREMENT PRIMARY KEY,
+    cardnumber            BIGINT not null,
+    cardname            varchar(50) not null,
+    expiryyear            INT not null,
+    expirymonth            INT not null, 
+    ccv                    INT not null,
+    balance                DECIMAL not null
 );
+INSERT INTO CARD(cardnumber, cardname, expiryyear, expirymonth, ccv, balance)
+VALUES 
+(1234567890123456, 'John Doe', 2023, 12, 123, 1000.00),
+(9876543210987654, 'Jane Smith', 2024, 6, 456, 2500.50),
+(9876543210917654, 'Jan Smith', 2024, 7, 556, 2550.50);
 
 DROP TABLE IF EXISTS TICKET;
 CREATE TABLE TICKET (
@@ -1737,6 +1745,10 @@ VALUES
 
 INSERT INTO CREW_MEMBER(fname, lname, role, email, username, password, flightnumber)
 VALUES("John", "Doe", "Pilot", "john.doe@example.com", "johndoe", "securepassword", 1);
+
+INSERT INTO TICKET(passenger_email, flightid, seatid,departure_location,destination_location,departure_time,arrival_time)
+VALUES
+('JJH@gmail.com', 1, 1, 123, 245, "2023-12-01 12:00:00", "2023-12-01 05:30:00");
 
 DROP USER IF EXISTS 'dev'@'%';
 CREATE USER 'dev'@'%' identified by 'developer';

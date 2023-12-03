@@ -105,12 +105,14 @@ public class FlightController {
         }
 
         seat.setVacancy(false);
+        seat.setEmail(seatUpdateDTO.getUserEmail()); // Set the email of the user occupying the seat
         seatService.saveSeat(seat);
+
         return ResponseEntity.ok("Seat occupied successfully");
     }
 
-    @PutMapping("/seat/unoccupy")
-    public ResponseEntity<?> unoccupySeatVacancy(@RequestBody SeatDTO seatUpdateDTO) {
+    @PutMapping("/seat/deoccupy")
+    public ResponseEntity<?> deoccupySeat(@RequestBody SeatDTO seatUpdateDTO) {
         Optional<Seat> seatOptional = seatService.getSeatById(seatUpdateDTO.getSeatId());
 
         if (!seatOptional.isPresent()) {
@@ -127,10 +129,11 @@ public class FlightController {
         }
 
         seat.setVacancy(true);
+        seat.setEmail(null); // Reset the email to null
         seatService.saveSeat(seat);
-        return ResponseEntity.ok("Seat remove successfully");
-    }
 
+        return ResponseEntity.ok("Seat deoccupied successfully");
+    }
     // Airport Code Endpoints
     @PostMapping("/airport/add")
     public ResponseEntity<String> addAirport(@RequestBody AirportCode port) {

@@ -13,6 +13,7 @@ public class Seat {
     private Boolean vacancy;
     private String seattype;
     private Double price;
+    private String email;
 
     @ManyToOne
     @JsonBackReference
@@ -81,5 +82,13 @@ public class Seat {
                 ", seattype='" + seattype + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
