@@ -8,10 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.group02.fight4flight.model.Admin;
 import io.group02.fight4flight.model.Card;
 import io.group02.fight4flight.model.Registered;
 import io.group02.fight4flight.model.Ticket;
 import io.group02.fight4flight.model.Unregistered;
+import io.group02.fight4flight.service.AdminService;
 import io.group02.fight4flight.service.CardService;
 import io.group02.fight4flight.service.RegisteredService;
 import io.group02.fight4flight.service.TicketService;
@@ -29,9 +31,11 @@ public class UserController {
     private CardService cardService;
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private AdminService adminService;
 
     // Endpoint to add an unregistered user
-    @PutMapping("/addUnregistered")
+    @PostMapping("/addUnregistered")
     public String addUnregistered(@RequestBody Unregistered customer) {
         unregisteredService.saveUnregistered(customer);
         return "Unregistered user created";
@@ -44,7 +48,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody Registered user) {;
+    public String register(@RequestBody Registered user) {
+        ;
         // Save the Registered user
         registeredService.saveRegistered(user);
         return "User registered successfully";
@@ -55,23 +60,10 @@ public class UserController {
     public List<Registered> listAllRegistered() {
         return registeredService.getAllRegistereds();
     }
-    
-    // Add card-related endpoints from CardController
-    @PostMapping("/{useremail}/addCard")
-    public ResponseEntity<String> addCard(@PathVariable Long useremail, @RequestBody Card card) {
-        // You can add logic here to associate the card with a user based on userId if
-        // needed
-        cardService.addCard(card);
-        return ResponseEntity.ok("You have added your card");
-    }
 
-    @GetMapping("/card/{email}")
-    public ResponseEntity<?> getCardByEmail(@PathVariable String email) {
-        Optional<Card> card = cardService.getCardByEmail(email);
-        if (!card.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(card.get());
+    @GetMapping("/getAll")
+    public List<Card> list() {
+        return cardService.getAllCards();
     }
 
     // GET endpoint to retrieve all tickets
@@ -97,5 +89,23 @@ public class UserController {
         }
     }
 
-    
+    // Method to get all admins
+    @GetMapping("/getAllAdmins")
+    public ResponseEntity<List<Admin>> getAllAdmins() {
+        List<Admin> admins = adminService.getAllAdmins();
+        return ResponseEntity.ok(admins);
+    }
+
+    // @PostMapping("/purchaseSeats")
+    // public ResponseEntity<?> purchaseSeats(@RequestBody PurchaseRequest purchaseRequest) {
+    //     try {
+    //         cardService.deductSeatCost(purchaseRequest.getCardId(), purchaseRequest.getSeatCost());
+    //         return ResponseEntity.ok("Purchase successful");
+    //     } catch (Exception e) {
+    //         // Handle exceptions
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during purchase");
+    //     }
+    // }
+
+
 }

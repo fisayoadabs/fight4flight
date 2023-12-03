@@ -1,55 +1,73 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUser] = useState('');
     const [password, setPassword] = useState('');
     const [errMessage, setErrMessage] = useState('');
-    const [userType, setUserType] = useState('');
-    const [adminKey, setAdminKey] = useState('');
-    const [crewKey, setCrewKey] = useState('');
-    const navigate = useNavigate(); // Initialize useNavigate
+    const [userType, setUserType] = useState('User'); // Default to 'User'
+    const [adminid, setAdminid] = useState('');
+    const [crewid, setCrewid] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         setErrMessage('');
     }, [username, password])
 
+    const getApiEndpoint = () => {
+        if (userType === 'Admin') {
+            return 'http://localhost:8080/user/getAllAdmins'; // Replace with actual admin login API
+        } else if (userType === 'Crew') {
+            return 'http://localhost:8080/flight-management/workers/getCrewMem'; // Replace with actual crew login API
+        }
+        return 'http://localhost:8080/user/getAllRegistered'; // Default API for regular users
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            // Replace with the correct API URL
-            const response = await fetch('http://localhost:8080/user/getAllRegistered');
-            const users = await response.json();
+            const endpoint = getApiEndpoint();
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password, adminid, crewid })
+            });
 
-            // Find the user with the matching username
-            const user = users.find(user => user.username === username);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const user = await response.json();
 
             if (user) {
-                // Check if the password matches
-                if (user.password === password) {
-                    // Redirect to flight browsing page if credentials match
-                    navigate('/registered/flightbrowsing');
+                // Redirect to appropriate page based on user type
+                if (userType === 'Admin') {
+                    navigate('/admin/dashboard');
+                } else if (userType === 'Crew') {
+                    navigate('/crew/dashboard');
                 } else {
-                    // Set error message if the password does not match
-                    setErrMessage('Invalid password.');
+                    navigate('/registered/flightbrowsing');
                 }
             } else {
-                // Set error message if username does not exist
-                setErrMessage('Invalid username. You must register.');
+                setErrMessage('Invalid login credentials.');
             }
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error during login:', error);
             setErrMessage('An error occurred. Please try again later.');
         }
     }
 
-
     return (
         <section>
+            {/* Error Message Display */}
             <p className={errMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errMessage}</p>
+
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
+                {/* Form Inputs */}
                 <label htmlFor="username">Username:</label>
                 <input
                     type="text"
@@ -67,69 +85,89 @@ const Login = () => {
                     value={password}
                     required
                 />
-                {userType == "Crew" ? <div>
-                    <label htmlFor="crewkey">Crew Key:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        autoComplete="off"
-                        onChange={(e) => setCrewKey(e.target.value)}
-                        value={username}
-                        required
-                    />
-                </div> : null}
-                {userType == "Admin" ? <div>
-                    <label htmlFor="adminkey">Admin Key:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        autoComplete="off"
-                        onChange={(e) => setAdminKey(e.target.value)}
-                        value={username}
-                        required
-                    />
-                </div> : null}
+
+                {/* Additional Fields for Crew and Admin */}
+                {userType === "Crew" && (
+                    <div>
+                        <label htmlFor="crewid">Crew Key:</label>
+                        <input
+                            type="text"
+                            id="crew"
+                            autoComplete="off"
+                            onChange={(e) => setCrewid(e.target.value)}
+                            value={crewid}
+                            required
+                        />
+                    </div>
+                )}
+                {userType === "Admin" && (
+                    <div>
+                        <label htmlFor="adminid">Admin Key:</label>
+                        <input
+                            type="text"
+                            id="admin"
+                            autoComplete="off"
+                            onChange={(e) => setAdminid(e.target.value)}
+                            value={adminid}
+                            required
+                        />
+                    </div>
+                )}
+
                 <button>Log In</button>
             </form>
+
+            {/* Continue as Guest and Registration Links */}
             <p>
                 <a href="/guest/flightbrowsing">Continue as Guest</a>
             </p>
             <div className="options">
                 <h3>Log in as: </h3>
                 <ul>
-                    <input
-                        type="radio"
-                        name="userType"
-                        value="User"
-                        className="radio"
-                        onChange={(e) => setUserType(e.target.value)}
-                    />{" "}
-                    User
-                    <input
-                        type="radio"
-                        name="userType"
-                        value="Crew"
-                        className="radio"
-                        onChange={(e) => setUserType(e.target.value)}
-                    />{" "}
-                    Crew
-                    <input
-                        type="radio"
-                        name="userType"
-                        value="Admin"
-                        className="radio"
-                        onChange={(e) => setUserType(e.target.value)}
-                    />
-                    Admin
+                    <li>
+                        <label>
+                            <input
+                                type="radio"
+                                name="userType"
+                                value="User"
+                                className="radio"
+                                onChange={(e) => setUserType(e.target.value)}
+                                checked={userType === "User"}
+                            />
+                            User
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input
+                                type="radio"
+                                name="userType"
+                                value="Crew"
+                                className="radio"
+                                onChange={(e) => setUserType(e.target.value)}
+                                checked={userType === "Crew"}
+                            />
+                            Crew
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input
+                                type="radio"
+                                name="userType"
+                                value="Admin"
+                                className="radio"
+                                onChange={(e) => setUserType(e.target.value)}
+                                checked={userType === "Admin"}
+                            />
+                            Admin
+                        </label>
+                    </li>
                 </ul>
             </div>
             <div>
                 <p>
-                    Don't have an account?
-                    {/* Option 1: Link for registration */}
-                    <a href="/register">Register Here</a>
-                    {/* Option 2: Button for registration (uncomment to use) */}
-                    {/* <button onClick={handleRegisterNavigation}>Register</button> */}
+                    Don't have an account? <a href="/register">Register Here</a>
                 </p>
             </div>
         </section>

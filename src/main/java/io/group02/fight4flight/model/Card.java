@@ -14,7 +14,7 @@ public class Card {
     private int expiryyear;
     private int expirymonth;
     private int ccv;
-    private float balance;
+    private double balance;
 
     public Long getCardid() {
         return cardid;
@@ -64,11 +64,11 @@ public class Card {
         this.ccv = ccv;
     }
 
-    public float getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(float balance) {
-        this.balance = balance;
+    public void setBalance(double d) {
+        this.balance = d;
     }
 }

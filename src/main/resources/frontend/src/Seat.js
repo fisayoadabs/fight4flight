@@ -1,54 +1,87 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ButtonArray from "./ButtonArray"; // Import the ButtonArray component
+import { useNavigate, useParams } from "react-router-dom";
+import ButtonArray from "./ButtonArray"; // Make sure this component is implemented correctly
 
 function Seat() {
+    const [seats, setSeats] = useState([]);
+    const { flightid } = useParams();
     const navigate = useNavigate();
-    const LOCAL_STORAGE_KEY = "notesApp.notes";
 
-    const [notes, setNotes] = useState(() => {
-        const stored = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-        return stored || [];
-    });
+    const [seatNumber, setSeatNumber] = useState("");
+    const [selectedButton, setSelectedButton] = useState(null);
 
-    const [seatData, setSeatData] = useState([]); // State for storing seat data from API
+    // Fetch seat data on component mount
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/flight-management/seat/getByAircraft/${flightid}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                setSeats(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [flightid]);
 
-    const [showBusinessArray, setShowBusinessArray] = useState(false);
-    const [showComfortArray, setShowComfortArray] = useState(false);
-    const [showOrdinaryArray, setShowOrdinaryArray] = useState(false);
-    const [showFirstArray, setShowFirstArray] = useState(true);
-    const [seatNumber, setSeatNumber] = useState(""); // State to hold the seat number
-    const [selectedSeat, setSelectedSeat] = useState("");
+    // Function to occupy a seat
+    const occupySeat = async (seatId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/flight-management/seat/occupy`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ seatId: seatId, userEmail: 'user@example.com' }) // Replace with actual user email
+            });
 
-    const toggleArray = (arrayType) => {
-        setShowBusinessArray(arrayType === "business");
-        setShowComfortArray(arrayType === "comfort");
-        setShowOrdinaryArray(arrayType === "ordinary");
-        setShowFirstArray(arrayType === "first"); // Add this line
+            if (!response.ok) {
+                throw new Error('Failed to occupy the seat');
+            }
+
+            console.log("Seat occupied successfully");
+        } catch (error) {
+            console.error('Error occupying seat:', error);
+        }
     };
 
+    // Function to deoccupy a seat
+    const deoccupySeat = async (seatId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/flight-management/seat/deoccupy`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ seatId: seatId })
+            });
 
-    const logButtonClick = (seatName) => {
-        setSeatNumber(seatName);
-        setSelectedSeat(seatName);
+            if (!response.ok) {
+                throw new Error('Failed to deoccupy the seat');
+            }
+
+            console.log("Seat deoccupied successfully");
+        } catch (error) {
+            console.error('Error deoccupying seat:', error);
+        }
     };
 
+    const logButtonClick = (seatId, row, col) => {
+        const newSeatNumber = `${String.fromCharCode("A".charCodeAt(0) + col)}${row}`;
+        setSeatNumber(newSeatNumber);
+        occupySeat(seatId);
+    };
 
     const clearSeatNumber = () => {
+        const seatToClear = seats.find(seat => seat.seatNumber === seatNumber);
+        if (seatToClear) {
+            deoccupySeat(seatToClear.seatId);
+        }
         setSeatNumber("");
     };
-
-    useEffect(() => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(notes));
-    }, [notes]);
-
-    useEffect(() => {
-        // Fetch seat data from the API
-        fetch("http://localhost:8080/seat/getAll") // Replace with your API URL
-            .then(response => response.json())
-            .then(data => setSeatData(data))
-            .catch(error => console.error("Error fetching seat data:", error));
-    }, []);
 
     return (
         <>
@@ -60,34 +93,42 @@ function Seat() {
                     <div id="head">
                         <h2>Seat Type</h2>
                     </div>
-                    <button className="nav-menu-items" onClick={() => toggleArray("business")}>
+                    <button
+                        className={`nav-menu-items ${selectedButton === "business" ? "selected" : ""}`}
+                        onClick={() => setSelectedButton("business")}>
                         <h2>Business</h2>
                     </button>
-                    <button className="nav-menu-items" onClick={() => toggleArray("comfort")}>
+                    <button
+                        className={`nav-menu-items ${selectedButton === "comfort" ? "selected" : ""}`}
+                        onClick={() => setSelectedButton("comfort")}>
                         <h2>Comfort</h2>
                     </button>
-                    <button className="nav-menu-items" onClick={() => toggleArray("ordinary")}>
+                    <button
+                        className={`nav-menu-items ${selectedButton === "ordinary" ? "selected" : ""}`}
+                        onClick={() => setSelectedButton("ordinary")}>
                         <h2>Ordinary</h2>
                     </button>
-                    <br />
+                    <br></br>
                     <div id="head">
                         <h2>Seat: {seatNumber}</h2>
                         <button onClick={clearSeatNumber} className="remove">
                             <b>Remove</b>
                         </button>
                     </div>
-                    <button className="continue" onClick={() => navigate("guest/insurance")}>
+                    <button className="continue"
+                        onClick={() => {
+                            if (seatNumber) {
+                                navigate("/pay");
+                            } else {
+                                alert("Please select a seat before continuing.");
+                            }
+                        }}>
                         <h2>Continue</h2>
                     </button>
                 </div>
                 <div className="right-content">
-                    {showFirstArray && (
-                        <ButtonArray
-                            seatData={seatData.filter(seat => seat.seattype === "First")}
-                            onButtonClick={logButtonClick}
-                            selectedSeat={selectedSeat}
-                        />
-                    )}
+                    {/* ButtonArray components for different seat types */}
+                    {/* You will need to pass the appropriate props based on the seat type */}
                 </div>
             </div>
         </>

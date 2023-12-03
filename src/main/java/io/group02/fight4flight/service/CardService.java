@@ -25,5 +25,12 @@ public class CardService{
     public Optional<Card> getCardByEmail(String email) {
         return null;
     }
+
+    public void deductSeatCost(Long cardId, double seatCost) {
+        Card card = cardRepo.findById(cardId).orElseThrow(
+                () -> new RuntimeException("Card not found"));
+            card.setBalance(card.getBalance() - seatCost);
+            cardRepo.save(card);
+    }
     
 }

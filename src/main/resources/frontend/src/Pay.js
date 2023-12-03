@@ -1,301 +1,139 @@
-import { useState, useEffect } from "react";
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import userEvent from "@testing-library/user-event";
-// import axios from './api/axios';
+import React, { useEffect, useState } from "react";
 
-const USERNAME = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/; // must start with lower/uppercase character, then can follow with any upper/lowercase characters, digits, -, or _. 4-24 character username
-const PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/; // requires 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character (shift 12345). 8-24 characters
-
-const Pay = () => {
+function Pay() {
     const [user, setUser] = useState('');
-    const [validName, setValidName] = useState(false); // boolean, tied to whether name validates or not
-    const [userFocus, setUserFocus] = useState(false); // boolean, tied to whether  we have focus on input field or nah
+    const [card, setCard] = useState([]);
 
-    const [password, setPassword] = useState('');
-    const [validPassword, setValidPassword] = useState(false);
-    const [passwordFocus, setPasswordFocus] = useState(false);
-
-    const [matchPassword, setMatchPassword] = useState('');
-    const [validMatch, setValidMatch] = useState(false);
-    const [matchFocus, setMatchFocus] = useState(false);
-
-    const [errMessage, setErrMessage] = useState('');
-    const [success, setSuccess] = useState(false);
-
-    // validating username
     useEffect(() => {
-        const result = USERNAME.test(user);
-        console.log(result);
-        console.log(user);
-        setValidName(result);
-    }, [user])
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/card/getAll');
 
-    // validating password
-    useEffect(() => {
-        const result = PASSWORD.test(password);
-        console.log(result);
-        console.log(password);
-        setValidPassword(result);
-        const match = password === matchPassword;
-        setValidMatch(match);
-    }, [password, matchPassword])
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
 
-    // for error message
-    useEffect(() => {
-        setErrMessage('');
-    }, [user, password, matchPassword])
+                const data = await response.json();
+                setCard(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    console.log(card);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (validName && validPassword && validMatch) {
-        //     const response = await fetch('http://localhost:5000/register', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({user, password})
-        //     })
-        //     const data = await response.json();
-        //     console.log(data);
-        //     if (data.status === 'success') {
-        //         setSuccess(true);
-        //         setErrMessage('Successfully registered!');
-        //     } else {
-        //         setErrMessage('Username already exists. Please try again.');
-        //     }
-        // } else {
-        //     setErrMessage('Please fill out all fields correctly.');
-        // }
-        const v1 = USERNAME.test(user);
-        const v2 = PASSWORD.test(password);
-        if (!v1 || !v2) {
-            setErrMessage('Please fill out all fields correctly.');
-            return;
+
+        // Assuming card validation and transaction logic is handled in the backend
+        const payload = {
+            cardNumber: user,
+            // ... other necessary data like amount, user details, etc.
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/payment/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                window.alert("Transaction Successful! An email will be sent to you with your ticket");
+                // You can also navigate the user to a success page or similar here
+            } else {
+                window.alert(result.message || "Payment failed. Please try again.");
+            }
+        } catch (error) {
+            console.error('Error during transaction:', error);
+            window.alert("An error occurred. Please try again.");
         }
-        // try {
-        //     const response = await axios.post(REGISTER_URL, JSON.stringify({ user, password }),
-        //     {
-        //         headers: { 'Content-Type': 'application/json'},
-        //         withCredentials: true
-        //     }
-        //     );
-        //     console.log(response.data);
-        //     setSuccess(true);
-        // } catch (err) {
-        //     if (!err?.response) {
-        //         setErrMessage('No Server Response');
-        //     } else if (err.response?.status === 409) {
-        //         setErrMessage('Username already exists. Please try again.');
-        //     } else {
-        //         setErrMessage('Something went wrong. Please try again.');
-        //     }
-        //     errRef.current.focus
-        // }
-    }
+    };
+
+
+    //Hypothetical Balance:
+    const payment = 900.00;
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     for (let i = 0; i < card.length; i++) {
+    //         console.log(card[i].cardnumber);
+    //         console.log(user);
+    //         //Match the cardnumber with user
+    //         if (parseInt(card[i].cardnumber, 10) === parseInt(user, 10)) {
+    //             console.log("card is equal to user");
+    //             if (parseFloat(card[i].balance) < payment) {
+    //                 window.alert("Insufficient funds!");
+    //             } else {
+    //                 window.alert("Transaction Successful! An email will be sent to you with your ticket");
+    //             }
+    //         }
+    //     }
+    // };
 
     return (
-        <>
-            {success ? (
-                <section>
-                    <h1>Success!</h1>
-                    <p>You have successfully registered!
-                        <a href="#">Log In Now!</a
-                        ></p>
-                </section>
-            ) : (
-                <section>
-                    <p className={errMessage ? "errmessage" : "offscreen"} aria-live="assertive">{errMessage}</p>
-                    <h1>Pay with Card</h1>
-                    <form onSubmit={handleSubmit}>
-                        {/* for first name */}
-                        <label htmlFor="firstname">
-                            Card Number:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="text"
-                            id="firstname"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
+        <section>
+            <h1>Pay with Card</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="firstname">
+                    Card Number:
+                </label>
+                <input
+                    type="text"
+                    id="firstname"
+                    autoComplete="off"
+                    onChange={(e) => setUser(e.target.value)}
+                    required
+                />
 
-                        {/* for last name */}
-                        <label htmlFor="lastname">
-                            First Name:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="text"
-                            id="lastname"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
+                <label htmlFor="lastname">
+                    First Name:
+                </label>
+                <input
+                    type="text"
+                    id="lastname"
+                    autoComplete="off"
+                />
 
-                        {/* for address */}
-                        <label htmlFor="address">
-                            Last Name:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="text"
-                            id="address"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
+                <label htmlFor="address">
+                    Last Name:
+                </label>
+                <input
+                    type="text"
+                    id="address"
+                    autoComplete="off"
+                />
 
-                        {/* for email */}
-                        <label htmlFor="email">
-                            Email:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
+                <label htmlFor="email">
+                    Expiration Date:
+                </label>
+                <input
+                    type="text"
+                    id="email"
+                    autoComplete="off"
+                    placeholder={"MMYYYY"}
+                />
 
-                        {/* for username */}
-                        <label htmlFor="username">
-                            Username:
-                            <span className={validName ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validName || !user ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            required
-                            aria-invalid={validName ? "false" : "true"}
-                            aria-describedby="uidnote"
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
-                        <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Username must be 4-24 characters and start with a letter.<br />
-                            Letters, numbers, underscores, and hyphens allowed. <br />
-                        </p>
+                <label htmlFor="username">
+                    CVV:
+                </label>
+                <input
+                    type="text"
+                    id="username"
+                    autoComplete="off"
+                    required
+                />
 
-                        {/* for password */}
-                        <label htmlFor="password">
-                            Password:
-                            <span className={validPassword ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validPassword || !password ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            autoComplete="off"
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            aria-invalid={validPassword ? "false" : "true"}
-                            aria-describedby="pwdnote"
-                            onFocus={() => setPasswordFocus(true)}
-                            onBlur={() => setPasswordFocus(false)}
-                        />
-                        <p id="pwdnote" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Password must be 4-24 characters.<br />
-                            Must include uppercase and lowercase letters, a number, and a special character.<br />
-                            Allowed special characters:
-                            <span aria-label="exclamation mark">!</span>
-                            <span aria-label="at sign">@</span>
-                            <span aria-label="hashtag">#</span>
-                            <span aria-label="dollar sign">$</span>
-                            <span aria-label="percent">%</span>
-                        </p>
-
-                        {/* for matching password (confirmation) */}
-                        <label htmlFor="confirm_password">
-                            Confirm Password:
-                            <span className={validMatch && matchPassword ? "valid" : "hide"}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span className={validMatch || !matchPassword ? "hide" : "invalid"}>
-                                <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                        </label>
-                        <input
-                            type="password"
-                            id="confirm_password"
-                            onChange={(e) => setMatchPassword(e.target.value)}
-                            required
-                            aria-invalid={validMatch ? "false" : "true"}
-                            aria-describedby="confirmnote"
-                            onFocus={() => setMatchFocus(true)}
-                            onBlur={() => setMatchFocus(false)}
-                        />
-                        <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Make sure your password here matches the first password input field.<br />
-                        </p>
-
-                        <button disabled={!validName || !validPassword || !validMatch ? true : false}>Sign Up!</button>
-                    </form>
-
-                    {/* at the end of sign up form */}
-                    <p>
-                        Already registered?<br />
-                        <span className="line">
-                            {/* # is a placeholder for now, will replace with router link to login page */}
-                            <a href="login">Log In Here</a>
-                        </span>
-                    </p>
-                </section>
-            )}
-        </>
-    )
-}
+                <button>Pay Now!</button>
+            </form>
+        </section>
+    );
+};
 
 export default Pay;
