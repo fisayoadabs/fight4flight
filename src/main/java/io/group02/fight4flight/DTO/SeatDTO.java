@@ -1,17 +1,17 @@
 package io.group02.fight4flight.DTO;
 
 public class SeatDTO {
-    private Long aircraftId;
+    private Long flightId;
     private Long seatId;
     private String userEmail;
 
     // Getters and setters
-    public Long getAircraftId() {
-        return aircraftId;
+    public Long getFlightId() {
+        return flightId;
     }
 
-    public void setAircraftId(Long aircraftId) {
-        this.aircraftId = aircraftId;
+    public void setFlightId(Long flightId) {
+        this.flightId = flightId;
     }
 
     public Long getSeatId() {

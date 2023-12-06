@@ -1,5 +1,6 @@
 package io.group02.fight4flight.controllers;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +88,28 @@ public class FlightController {
         return ResponseEntity.ok(seats);
     }
 
+    @GetMapping("/seat/getByFlight/{flightid}")
+    public ResponseEntity<List<Seat>> getSeatsByFlight(@PathVariable Long flightid)
+    {
+        List<Seat> seats;
+        List<Flight> flights= flightService.getAllFlights();
+        Long temp= -9999L;
+        for (Flight flight : flights) {
+            if (flight.getFlightid().equals(flightid)) {
+                temp = flight.getAircraft().getAircraftID();
+                break;
+            }
+        }
+        if(temp == -9999L)
+        {
+            return ResponseEntity.notFound().build();
+        }
+        else{
+            seats = seatService.getSeatsByAircraftId(temp);
+        }
+        return ResponseEntity.ok(seats);
+    }
+
     @PutMapping("/seat/occupy")
     public ResponseEntity<?> occupySeat(@RequestBody SeatDTO seatUpdateDTO) {
         Optional<Seat> seatOptional = seatService.getSeatById(seatUpdateDTO.getSeatId());
@@ -94,10 +117,17 @@ public class FlightController {
         if (!seatOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-
+        List<Flight> flights= flightService.getAllFlights();
+        Long temp = null;
+        for (Flight flight : flights) {
+            if (flight.getFlightid().equals(seatUpdateDTO.getFlightId())) {
+                temp = flight.getAircraft().getAircraftID();
+                break;
+            }
+        }
         Seat seat = seatOptional.get();
-        if (seat.getAircraft() == null || !seat.getAircraft().getAircraftID().equals(seatUpdateDTO.getAircraftId())) {
-            return ResponseEntity.badRequest().body("Seat does not belong to the specified aircraft");
+        if (seat.getAircraft() == null || !seat.getAircraft().getAircraftID().equals(temp)) {
+            return ResponseEntity.badRequest().body("Seat does not belong to the specified flight");
         }
 
         if (!seat.getVacancy()) {
@@ -118,10 +148,17 @@ public class FlightController {
         if (!seatOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-
+        List<Flight> flights= flightService.getAllFlights();
+        Long temp = null;
+        for (Flight flight : flights) {
+            if (flight.getFlightid().equals(seatUpdateDTO.getFlightId())) {
+                temp = flight.getAircraft().getAircraftID();
+                break;
+            }
+        }
         Seat seat = seatOptional.get();
-        if (seat.getAircraft() == null || !seat.getAircraft().getAircraftID().equals(seatUpdateDTO.getAircraftId())) {
-            return ResponseEntity.badRequest().body("Seat does not belong to the specified aircraft");
+        if (seat.getAircraft() == null || !seat.getAircraft().getAircraftID().equals(temp)) {
+            return ResponseEntity.badRequest().body("Seat does not belong to the specified flight");
         }
 
         if (seat.getVacancy()) {

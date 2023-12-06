@@ -3,6 +3,8 @@ package io.group02.fight4flight.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import io.group02.fight4flight.service.*;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,6 @@ import io.group02.fight4flight.model.Card;
 import io.group02.fight4flight.model.Registered;
 import io.group02.fight4flight.model.Ticket;
 import io.group02.fight4flight.model.Unregistered;
-import io.group02.fight4flight.service.AdminService;
-import io.group02.fight4flight.service.CardService;
-import io.group02.fight4flight.service.RegisteredService;
-import io.group02.fight4flight.service.TicketService;
-import io.group02.fight4flight.service.UnregisteredService;
 
 @RestController
 @RequestMapping("/user")
@@ -33,6 +30,8 @@ public class UserController {
     private TicketService ticketService;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private EmailSenderServices sendEmail;
 
     // Endpoint to add an unregistered user
     @PostMapping("/addUnregistered")
@@ -61,9 +60,16 @@ public class UserController {
         return registeredService.getAllRegistereds();
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllCards")
     public List<Card> list() {
         return cardService.getAllCards();
+    }
+
+    @PostMapping("/makeCard")
+    public  String addCard(@RequestBody Card cad){
+        cardService.addCard(cad);
+        sendEmail.sendEmail(cad.getEmail(), "Fight4Flight Ticket Purchase", cad.getBody());
+        return "Card created email sent";
     }
 
     // GET endpoint to retrieve all tickets

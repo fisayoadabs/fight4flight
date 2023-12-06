@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS UNREGISTERED;
 CREATE TABLE UNREGISTERED (
     fname VARCHAR(25) NOT NULL,
     lname VARCHAR(25) NOT NULL,
-    email VARCHAR(30) PRIMARY KEY
+    email VARCHAR(130) PRIMARY KEY
 );
 
 INSERT INTO UNREGISTERED(fname, lname, email)
@@ -30,7 +30,7 @@ CREATE TABLE REGISTERED (
     fname				varchar(25) not null,
     lname				varchar(25) not null,
     address				varchar(125) not null,
-    email				varchar(30) primary key,
+    email				varchar(130) primary key,
     username			varchar(50) not null,
     password			varchar(50) not null
 );
@@ -76,7 +76,7 @@ CREATE TABLE CREW_MEMBER (
     fname			VARCHAR(30) NOT NULL,
     lname			VARCHAR(30) NOT NULL,
     role			ENUM('Pilot','Co-pilot', 'Attendance'),
-    email			VARCHAR(30) NOT NULL,
+    email			VARCHAR(130) NOT NULL,
     username		VARCHAR(30) NOT NULL,
     password		VARCHAR(30) NOT NULL,
     flightnumber	INT,
@@ -91,7 +91,7 @@ CREATE TABLE SEAT (
     seattype			varchar(15) not null,
     price				double,
     aircraftid			int not null,
-    email				varchar(50),
+    email				varchar(150),
     FOREIGN KEY (aircraftid) references AIRCRAFT(aircraftid)
 );
 INSERT INTO SEAT(seatname, vacancy, seattype, price, aircraftid)
@@ -127,18 +127,19 @@ CREATE TABLE CARD (
     expiryyear            INT not null,
     expirymonth            INT not null, 
     ccv                    INT not null,
-    balance                DECIMAL not null
+    email				varchar(155) not null,
+    body				varchar(2150)
 );
-INSERT INTO CARD(cardnumber, cardname, expiryyear, expirymonth, ccv, balance)
+INSERT INTO CARD(cardnumber, cardname, expiryyear, expirymonth, ccv, email)
 VALUES 
-(1234567890123456, 'John Doe', 2023, 12, 123, 1000.00),
-(9876543210987654, 'Jane Smith', 2024, 6, 456, 2500.50),
-(9876543210917654, 'Jan Smith', 2024, 7, 556, 2550.50);
+(1234567890123456, 'John Doe', 2023, 12, 123, 'JohnDoe@gmail.com'),
+(9876543210987654, 'Jane Smith', 2024, 6, 456, 'janeSmith@gmail.com'),
+(9876543210917654, 'Jan Smith', 2024, 7, 556, 'janSmith@gmail.com');
 
 DROP TABLE IF EXISTS TICKET;
 CREATE TABLE TICKET (
     ticketid             INT AUTO_INCREMENT PRIMARY KEY,
-    passenger_email      VARCHAR(30) NOT NULL,
+    passenger_email      VARCHAR(130) NOT NULL,
     flightid             INT NOT NULL,
     seatid               INT NOT NULL,
     departure_location   VARCHAR(50) NOT NULL,
