@@ -1,0 +1,364 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  background-color: #fff;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+input {
+  padding: 8px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+p.instructions {
+  margin: 5px 0 15px 0;
+  font-size: 12px;
+  color: #777;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.errmessage {
+  color: #ff0000;
+  margin-top: 10px;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.valid {
+  color: #4caf50;
+  margin-left: 5px;
+}
+
+.invalid {
+  color: #f44336;
+  margin-left: 5px;
+}
+
+.hide {
+  display: none;
+}
+
+a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+.container {
+  display: flex;
+  flex: 1;
+  /* Take up all available vertical space */
+  justify-content: center;
+  /* Center content horizontally */
+  align-items: center;
+  /* Center content vertically */
+}
+
+.left-menu {
+  width: 300px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+.right-content {
+  flex: 1;
+  /* Take up remaining space */
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  /* Center content horizontally */
+  align-items: center;
+  /* Center content vertically */
+}
+
+.nav-menu-items:hover {
+  border: none;
+  background-color: purple;
+  color: #ddd;
+}
+
+.nav-menu-items {
+  margin: 10px;
+  padding: 0px;
+  width: 280px;
+  height: 75px;
+  overflow: auto;
+  border: none;
+  background-color: #ddd;
+  color: #333;
+}
+
+.nav-menu-items.selected {
+  background-color: purple;
+  color: white;
+}
+
+#head {
+  display: flex;
+  width: 300px;
+  height: 60px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid lightgrey;
+}
+
+#title {
+  background-color: white;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border-top: 5px solid rgb(60, 47, 80);
+  border-bottom: 1px solid lightgrey;
+  z-index: 50;
+}
+
+.continue {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  margin: 10px;
+  width: 280px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.continue:hover {
+  background-color: #39853c;
+  color: white;
+}
+
+.remove {
+  background-color: #ddd;
+  color: red;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transform: translateX(-10px);
+  /* Adjust the pixel value as needed */
+
+}
+
+.remove:hover {
+  background-color: red;
+  color: #ddd;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.seat-button {
+  background-color: #ddd;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 8px;
+  width: 60px;
+  height: 40px;
+}
+
+.seat-button:disabled {
+  background-color: rgb(128, 128, 128);
+  color: #ddd;
+  cursor: not-allowed;
+}
+
+.seat-button:hover {
+  background-color: purple;
+  color: #ddd;
+}
+
+.seat-button:disabled:hover {
+  background-color: rgb(128, 128, 128);
+  color: #ddd;
+}
+
+.seat-button.clicked {
+  background-color: purple;
+  color: #ddd;
+}
+
+.add {
+  background-color: #ddd;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transform: translateX(-10px);
+  /* Adjust the pixel value as needed */
+
+}
+
+.add.clicked {
+  background-color: purple;
+  color: white;
+}
+
+.packageContainer {
+  background-color: #333;
+  color: #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  width: 450px;
+}
+
+.list {
+  display: flex;
+  /* Make the li element a flex container */
+  justify-content: space-between;
+  /* Align items in a row with space in between */
+  padding-left: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid black;
+}
+
+#headpackage {
+  display: flex;
+  width: 430px;
+  height: 60px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid lightgrey;
+  padding-left: 10px;
+}
+
+#include {
+  font-style: italic;
+  padding-right: 20px;
+}
+
+#price {
+  font-style: normal;
+  padding-left: 333px;
+}
+
+.selectbutton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  margin: 5px;
+  width: 435px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.selectbutton.clicked {
+  background-color: #39853c;
+  color: white;
+}
+
+.right-content-add {
+  flex: 1;
+  /* Take up remaining space */
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  /* Center content horizontally */
+  align-items: center;
+  /* Center content vertically */
+  flex-direction: column;
+  /* Display content vertically */
+}
+
+.packageContainer {
+  background-color: #333;
+  color: #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  width: 450px;
+  height: 400px;
+}
+
+.list-lounge {
+  display: flex;
+  /* Make the li element a flex container */
+  justify-content: space-between;
+  /* Align items in a row with space in between */
+  padding-left: 10px;
+  padding-top: 160px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid black;
+}
+
+.radio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.packageContainer-summary {
+  background-color: #333;
+  color: #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  width: 450px;
+}
